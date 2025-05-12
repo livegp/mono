@@ -1,0 +1,11 @@
+{
+  "name": "@mono/ts-config",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "tsconfigs for Mono",
+  "license": "MIT",
+  "exports": {
+    ".": "./tsconfig.base.json"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "@mono/vite-config",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "viteconfig for Mono",
+  "license": "MIT",
+  "exports": {
+    ".": "./vite.config.base.ts"
+  }
+}
