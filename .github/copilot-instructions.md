@@ -18,18 +18,22 @@ mono/
 ├── bun.lock
 ├── bunfig.toml
 ├── docker-compose.yml
-├── Dockerfile
 ├── lefthook.yml
 ├── LICENSE.md
 ├── package.json
 ├── README.md
 ├── structure.txt
+|
 ├── tsconfig.json
+|
 ├── .github/
-│   └── copilot-instructions.md
+│   ├── copilot-instructions.md
+│   ├── instructions/
+│   └── prompts/
 ├── .vscode/
 │   ├── .vscodeextensions.json
 │   └── settings.json
+|
 ├── apps/
 │   ├── backend/
 │   │   ├── .gitignore
@@ -38,6 +42,7 @@ mono/
 │   │   ├── Dockerfile.tmp
 │   │   ├── package.json
 │   │   ├── README.md
+│   │   ├── structure.txt
 │   │   ├── tsconfig.json
 │   │   └── src/
 │   │       ├── index.ts
@@ -53,9 +58,9 @@ mono/
 │       ├── .env.development
 │       ├── .env.production
 │       ├── .gitignore
+│       ├── 404.html
 │       ├── Dockerfile
 │       ├── Dockerfile.tmp
-│       ├── eslint.config.js
 │       ├── index.html
 │       ├── package.json
 │       ├── README.md
@@ -72,29 +77,37 @@ mono/
 │           ├── main.tsx
 │           ├── vite-env.d.ts
 │           ├── assets/
-│           │   └── react.svg
+│           │   ├── react.svg
+│           │   ├── icons/
+│           │   │   ├── favicon.svg
+│           │   │   ├── react.svg
+│           │   │   ├── ts.svg
+│           │   │   └── vite.svg
+│           │   └── img/
 │           └── lib/
 │               └── eden.ts
-├── packages/
-│   ├── configs/
-│   │   ├── typescript/
-│   │   │   ├── tsconfig.base.json
-│   │   │   ├── package.json
-│   │   │   └── README.md
-│   │   └── vite/
-│   │       ├── base.ts
-│   │       ├── frontend.ts
-│   │       └── package.json
-│   └── ui/
-│       ├── bun.lock
-│       ├── package.json
-│       ├── tsconfig.app.json
-│       ├── tsconfig.json
-│       ├── tsconfig.node.json
-│       ├── vite.config.ts
-│       └── src/
-│           ├── Button.tsx
-│           └── index.ts
+|
+└── packages/
+    ├── configs/
+    │   ├── ts/
+    │   │   ├── package.json
+    │   │   ├── README.md
+    │   │   └── tsconfig.base.json
+    │   └── vite/
+    │       ├── package.json
+    │       ├── README.md
+    │       └── vite.config.base.ts
+    ├── types/
+    └── ui/
+        ├── bun.lock
+        ├── package.json
+        ├── tsconfig.app.json
+        ├── tsconfig.json
+        ├── tsconfig.node.json
+        ├── vite.config.ts
+        └── src/
+            ├── Button.tsx
+            └── index.ts
 ```
 
 * **`apps/frontend/`**: Фронтенд-додаток (React + Vite).

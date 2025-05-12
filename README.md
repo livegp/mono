@@ -1,81 +1,151 @@
 # mono 🚀
 
-## Monorepo
+## Про проєкт
 
-This is a monorepo, a collection of related projects that share a common root directory. It provides a centralized location for managing and maintaining multiple projects.
+**mono** - це монорепозиторій, розроблений з використанням Bun та TypeScript. Він призначений для централізованого керування та розробки пов'язаних між собою проєктів (додатків та пакетів).
 
-## Project Purpose and Background
+## Структура монорепозиторію
 
-mono is designed to be a lightweight, flexible, and scalable monorepo solution. It aims to provide a simple and intuitive way to manage and maintain multiple projects, reducing the complexity and overhead associated with traditional monorepo solutions.
+Монорепозиторій організований наступним чином:
 
-## Features and Functionality
+- **`apps/`**: Директорія, що містить окремі додатки.
+  - `frontend/`: Фронтенд-додаток, розроблений на React та Vite.
+  - `backend/`: Бекенд-додаток, побудований на ElysiaJS.
+- **`packages/`**: Директорія для спільних бібліотек та конфігурацій.
+  - `ui/`: Пакет зі спільними UI-компонентами на React.
+  - `configs/`: Пакет зі спільними конфігураціями.
+    - `ts/`: Базова конфігурація TypeScript (`@mono/ts-config`).
+    - `vite/`: Базова конфігурація Vite (`@mono/vite-config`).
 
-* Simple and intuitive management interface
-* Support for multiple projects and repositories
-* Scalable and flexible architecture
-* Lightweight and easy to install
+## Технологічний стек
 
-## Technology Stack
+- **Середовище виконання:** [Bun](https://bun.sh/) (версія >=1.2.13)
+- **Мова програмування:** [TypeScript](https://www.typescriptlang.org/)
+- **Фронтенд:**
+  - [React](https://react.dev/)
+  - [Vite](https://vitejs.dev/)
+- **Бекенд:**
+  - [ElysiaJS](https://elysiajs.com/)
+- **Інструменти розробки:**
+  - [Biome](https://biomejs.dev/) (форматування, лінтинг)
+  - [Lefthook](https://github.com/evilmartians/lefthook) (Git хуки)
+- **Менеджер пакетів:** [Bun](https://bun.sh/)
 
-* No specific technology stack
+## Попередні вимоги
 
-## Installation and Setup
+- [Bun](https://bun.sh/docs/installation) (версія >=1.2.13, як зазначено в `package.json`)
 
-Prerequisites:
+## Встановлення та налаштування
 
-* Node.js (version v24.0.1 or later)
-* Bun (version 1.2.13 or later)
+1. **Клонуйте репозиторій:**
 
-Step-by-step installation instructions:
+   ```bash
+   git clone <URL_вашого_репозиторію>
+   cd mono
+   ```
 
-1. Clone or download the mono repository
-2. Run `bun install` to install dependencies
-3. Run `bun start` to start the monorepo
+2. **Встановіть залежності:**
 
-Environment configuration:
+    ```bash
+    bun install
+    ```
 
-* Set the `MONOREPO_ROOT` environment variable to the root directory of the monorepo
+## Розробка
 
-## Usage Examples
+Для запуску всіх додатків та пакетів у режимі розробки (dev mode) виконайте з кореня проєкту:
 
-Basic usage instructions:
+```bash
+bun dev
+```
 
-* Create a new project by running `bun run new <project-name>`
-* Enter the project directory by running `cd <project-name>`
-* Run `bun run start` to start the project
+Ця команда виконає скрипт dev для кожного пакету, визначеного у workspaces (наприклад, @mono/frontend, @mono/backend).
 
-Code examples or screenshots if appropriate:
+Щоб запустити конкретний додаток або пакет у режимі розробки, використовуйте фільтр:
 
-* Coming soon!
+```bash
+bun --filter @mono/frontend dev  # Запуск тільки фронтенду
+bun --filter @mono/backend dev   # Запуск тільки бекенду
+```
 
-## Project Structure
+## Збірка проекту
 
-The project structure is as follows:
+Для збірки всіх додатків та пакетів виконайте з кореня проекту:
 
-* `src/`: the source code directory
-* `tests/`: the unit test directory
-* `docs/`: the documentation directory
+```bash
+bun build
+```
 
-## Contributing Guidelines
+Ця команда виконає скрипт build для кожного пакету.
 
-How others can contribute:
+Для збірки конкретного пакету:
 
-* Open an issue to suggest a new feature or bug fix
-* Fork the repository and create a pull request with your changes
-* Run the unit tests and ensure they pass
+```bash
+bun --filter @mono/frontend build # Збірка тільки фронтенду
+```
 
-Development workflow:
+## Перевірка типів
 
-* Create a new branch for each feature or bug fix
-* Make changes and commit them
-* Push the changes to the remote repository
-* Open a pull request to merge the changes
+Для перевірки типів TypeScript у всіх пакетах:
 
-Code style and standards:
+```bash
+bun check-types
+```
 
-* Follow the code style guide
-* Use static analysis tools to ensure code quality
+Або для конкретного пакету:
 
-## License Information
+```bash
+bun --filter @mono/frontend check-types
+```
 
-mono is released under the MIT license. See the `LICENSE` file for more information.
+## Линтінг та форматування
+
+Проєкт використовує Biome для лінтингу та форматування коду.
+
+- Перевірка коду (лінтинг + форматування):
+
+```bash
+bun check
+```
+
+- Форматування коду:
+
+```bash
+bun format
+```
+
+- Лінтинг коду:
+
+```bash
+bun lint
+```
+
+Ці команди застосовують правила Biome до всього проєкту.
+
+## Скрипти
+
+Основні скрипти, доступні з кореневого package.json:
+
+- `bun dev`: Запускає всі пакети в режимі розробки.
+- `bun build`: Збирає всі пакети для продакшену.
+- `bun preview`: Запускає попередній перегляд збірок (якщо підтримується пакетами).
+- `bun check-types`: Виконує перевірку типів TypeScript для всіх пакетів.
+- `bun check`: Запускає Biome для перевірки коду (форматування та лінтинг) з автоматичним виправленням.
+- `bun format`: Форматує код за допомогою Biome з автоматичним виправленням.
+- `bun lint`: Перевіряє код за допомогою Biome лінтера з автоматичним виправленням.
+
+## Внесок у проєкт
+
+Ми вітаємо будь-який внесок! Будь ласка, дотримуйтесь наступних кроків:
+
+1. Відкрийте issue для обговорення нової функціональності або виправлення помилки.
+2. Зробіть форк репозиторію.
+3. Створіть нову гілку для ваших змін ( git checkout -b feature/AmazingFeature або bugfix/FixSomething ).
+4. Зробіть ваші зміни та закомітьте їх ( git commit -m 'Add some AmazingFeature' ).
+5. Відправте зміни у ваш форк ( git push origin feature/AmazingFeature ).
+6. Відкрийте Pull Request до основного репозиторію.
+
+Будь ласка, переконайтеся, що ваш код відповідає стандартам коду проєкту та проходить всі перевірки (типи, лінтинг).
+
+## Ліцензія
+
+Цей проєкт розповсюджується під ліцензією MIT. Детальніше дивіться у файлі LICENSE.
