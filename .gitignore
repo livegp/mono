@@ -1,5 +1,6 @@
 # Dependencies
 node_modules
+**/node_modules
 .pnp
 .pnp.js
 package-lock.json
@@ -48,6 +49,7 @@ yarn-error.log*
 tmp
 temp
 .cache
+**/.cache
 
 # Local env files
 .env*
@@ -65,7 +67,9 @@ coverage*
 .next/
 out/
 build/
+**/build
 dist/
+**/dist
 .output
 
 # Turbo
