@@ -1,0 +1,31 @@
+# --- STAGE 1: Build ---
+  FROM oven/bun:latest@sha256:a02c6162266611419fd84c8f96dbdbf3029532e2491314dee5172a27223e5428 AS builder
+
+  WORKDIR /app
+
+  # Копіюємо лише lock та package.json
+  COPY bun.lockb package.json ./
+
+  # Копіюємо код бекенду + спільні пакети
+  COPY apps/backend ./apps/backend
+  COPY packages ./packages
+
+  # Встановлюємо залежності
+  RUN bun install
+
+  # Білдимо бекенд
+  RUN bun run --cwd ./apps/backend build
+
+  # --- STAGE 2: Runtime ---
+  FROM oven/bun:slim@sha256:fb7c5bad6da9573cd637bc1a5ade6602e3bcf5a54988aea874bef5831d3d3fc5 AS runner
+
+  WORKDIR /app
+
+  # Копіюємо лише зібраний dist
+  COPY --from=builder /app/apps/backend/dist ./dist
+
+  # Якщо є `.env.production`, можеш скопіювати і його:
+  # COPY apps/backend/.env.production .env
+
+  # Запускаємо продакшен код
+  CMD ["bun", "run", "dist/index.js"]
