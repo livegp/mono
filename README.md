@@ -52,10 +52,6 @@ The monorepo is organized as follows:
   - [Lefthook](https://github.com/evilmartians/lefthook) (Git hooks)
 - **Package Manager:** [Bun](https://bun.sh/)
 
-## Prerequisites
-
-- [Bun](https://bun.sh/docs/installation) (version >=1.2.13, as specified in `package.json`)
-
 ## Installation
 
 **Clone the repository:**
