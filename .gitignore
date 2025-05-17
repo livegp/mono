@@ -33,9 +33,6 @@ yarn.lock
 .docker-compose.*.yml
 .dockerignore
 
-# Documentation and Assets
-**/assets/
-
 # IDE and Config
 **/.idea/
 *.njsproj
@@ -44,7 +41,6 @@ yarn.lock
 *.suo
 *.swp
 *.swo
-.editorconfig
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.json
@@ -80,6 +76,3 @@ ehthumbs_vista.db
 
 # Vercel
 **/.vercel/
-
-# Version Control
-.gitattributes
