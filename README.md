@@ -1,161 +1,155 @@
 # mono 🚀
 
-![GitHub package.json version](https://img.shields.io/github/package-json/v/livegp/mono) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Bun version](https://img.shields.io/badge/bun-%3E%3D1.2.13-orange.svg)](https://bun.sh/)
+🌍 **Change language to:** [`Українська (UA)`](./README.ua.md)
 
-## Зміст
+---
 
-- [Про проєкт](#про-проєкт)
-- [Структура монорепозиторію](#структура-монорепозиторію)
-- [Технологічний стек](#технологічний-стек)
+[![Version](https://img.shields.io/github/package-json/v/livegp/mono)](https://github.com/yourusername/mono) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Bun Version](https://img.shields.io/badge/bun-%3E%3D1.2.13-orange)](https://bun.sh/)
 
-## Про проєкт
+## Table of Contents
 
-**mono** - це монорепозиторій, розроблений з використанням Bun та TypeScript. Він призначений для централізованого керування та розробки пов'язаних між собою проєктів (додатків та пакетів).
+- [About the Project](#about-the-project)
+- [Monorepo Structure](#monorepo-structure)
+- [Tech Stack](#tech-stack)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Development](#development)
+- [Building the Project](#building-the-project)
+- [Type Checking](#type-checking)
+- [Contribution](#contribution)
+- [License](#license)
 
-## Структура монорепозиторію
+## About the Project
 
-Монорепозиторій організований наступним чином:
+**mono** is a monorepo built with Bun and TypeScript, designed for centralized management and development of related projects (applications and packages).
+
+## Monorepo Structure
+
+The monorepo is organized as follows:
 
 ```sh
-├── apps/           # Директорія, що містить окремі додатки
-│   ├── frontend/   # Фронтенд-додаток, розроблений на React та Vite
-│   └── backend/    # Бекенд-додаток, побудований на ElysiaJS
-├── packages/       # Директорія для спільних бібліотек та конфігурацій
-│   ├── ui/         # Пакет зі спільними UI-компонентами на React
-│   └── configs/    # Пакет зі спільними конфігураціями
-│       ├── ts/     # Базова конфігурація TypeScript (@mono/ts-config)
-│       └── vite/   # Базова конфігурація Vite (@mono/vite-config)
+├── apps/           # Directory containing individual applications
+│   ├── frontend/   # Frontend application built with React and Vite
+│   └── backend/    # Backend application built with ElysiaJS
+├── packages/       # Directory for shared libraries and configurations
+│   ├── ui/         # Shared UI components package (React)
+│   └── configs/    # Shared configurations package
+│       ├── ts/     # Base TypeScript configuration (@mono/ts-config)
+│       └── vite/   # Base Vite configuration (@mono/vite-config)
 ```
 
-## Технологічний стек
+## Tech Stack
 
-- **Середовище виконання:** [Bun](https://bun.sh/) (версія >=1.2.13)
-- **Мова програмування:** [TypeScript](https://www.typescriptlang.org/)
-- **Фронтенд:**
+- **Runtime:** [Bun](https://bun.sh/) (version >=1.2.13)
+- **Programming Language:** [TypeScript](https://www.typescriptlang.org/)
+- **Frontend:**
   - [React](https://react.dev/)
   - [Vite](https://vitejs.dev/)
-- **Бекенд:**
+- **Backend:**
   - [ElysiaJS](https://elysiajs.com/)
-- **Інструменти розробки:**
-  - [Biome](https://biomejs.dev/) (форматування, лінтинг)
-  - [Lefthook](https://github.com/evilmartians/lefthook) (Git хуки)
-- **Менеджер пакетів:** [Bun](https://bun.sh/)
+- **Development Tools:**
+  - [Biome](https://biomejs.dev/) (formatting, linting)
+  - [Lefthook](https://github.com/evilmartians/lefthook) (Git hooks)
+- **Package Manager:** [Bun](https://bun.sh/)
 
-## Попередні вимоги
+## Prerequisites
 
-- [Bun](https://bun.sh/docs/installation) (версія >=1.2.13, як зазначено в `package.json`)
+- [Bun](https://bun.sh/docs/installation) (version >=1.2.13, as specified in `package.json`)
 
-## Встановлення та налаштування
+## Installation
 
-**Клонуйте репозиторій:**
+**Clone the repository:**
 
 ```bash
-git clone <URL_вашого_репозиторію>
+git clone <your_repository_url>
 cd mono
 ```
 
-**Встановіть залежності:**
+**Install dependencies:**
 
 ```bash
 bun install
 ```
 
-## Розробка
+## Development
 
-Для запуску всіх додатків та пакетів у режимі розробки (dev mode) виконайте з кореня проєкту:
+To run all applications and packages in development mode, execute from the project root:
 
 ```bash
 bun dev
 ```
 
-Ця команда виконає скрипт dev для кожного пакету, визначеного у workspaces (наприклад, @mono/frontend, @mono/backend).
+This command will run the dev script for each package defined in workspaces (e.g., @mono/frontend, @mono/backend).
 
-Щоб запустити конкретний додаток або пакет у режимі розробки, використовуйте фільтр:
+To run a specific application or package in development mode, use the filter:
 
 ```bash
-bun --filter @mono/frontend dev  # Запуск тільки фронтенду
-bun --filter @mono/backend dev   # Запуск тільки бекенду
+bun --filter @mono/frontend dev  # Run only frontend
+bun --filter @mono/backend dev   # Run only backend
 ```
 
-## Збірка проекту
+## Building the Project
 
-Для збірки всіх додатків та пакетів виконайте з кореня проекту:
+To build all applications and packages, run from the project root:
 
 ```bash
 bun build
 ```
 
-Ця команда виконає скрипт build для кожного пакету.
+This command will run the build script for each package.
 
-Для збірки конкретного пакету:
+To build a specific package:
 
 ```bash
-bun --filter @mono/frontend build # Збірка тільки фронтенду
+bun --filter @mono/frontend build # Build only frontend
 ```
 
-## Перевірка типів
+## Type Checking
 
-Для перевірки типів TypeScript у всіх пакетах:
+To check TypeScript types in all packages:
 
 ```bash
 bun check-types
 ```
 
-Або для конкретного пакету:
+## Available Scripts
 
-```bash
-bun --filter @mono/frontend check-types
-```
+- `bun dev`: Starts all packages in development mode.
+- `bun build`: Builds all packages for production.
+- `bun preview`: Starts a preview of the built applications (if supported by the packages).
+- `bun check-types`: Runs TypeScript type checking for all packages.
+- `bun check`: Runs Biome for code checking (formatting and linting) with auto-fix.
+- `bun format`: Formats code using Biome with auto-fix.
+- `bun lint`: Checks code using Biome linter with auto-fix.
 
-## Линтінг та форматування
+## Contribution
 
-Проєкт використовує Biome для лінтингу та форматування коду.
+We welcome any contributions! Please follow these steps:
 
-- Перевірка коду (лінтинг + форматування):
+1. Open an issue to discuss new features or bug fixes.
+2. Fork the repository.
+3. Create a new branch for your changes (`git checkout -b feature/AmazingFeature` or `bugfix/FixSomething`).
+4. Make your changes and commit them (`git commit -m 'Add some AmazingFeature'`).
+5. Push your changes to your fork (`git push origin feature/AmazingFeature`).
+6. Open a Pull Request to the main repository.
 
-```bash
-bun check
-```
+Please ensure your code follows the project's coding standards and passes all checks (types, linting).
 
-- Форматування коду:
+## License
 
-```bash
-bun format
-```
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-- Лінтинг коду:
+**What this license allows:**
 
-```bash
-bun lint
-```
+- Commercial use
+- Modification
+- Distribution
+- Private use
+- Sublicensing
 
-Ці команди застосовують правила Biome до всього проєкту.
+**Limitations:**
 
-## Скрипти
+- No liability
+- No warranty
 
-Основні скрипти, доступні з кореневого package.json:
-
-- `bun dev`: Запускає всі пакети в режимі розробки.
-- `bun build`: Збирає всі пакети для продакшену.
-- `bun preview`: Запускає попередній перегляд збірок (якщо підтримується пакетами).
-- `bun check-types`: Виконує перевірку типів TypeScript для всіх пакетів.
-- `bun check`: Запускає Biome для перевірки коду (форматування та лінтинг) з автоматичним виправленням.
-- `bun format`: Форматує код за допомогою Biome з автоматичним виправленням.
-- `bun lint`: Перевіряє код за допомогою Biome лінтера з автоматичним виправленням.
-
-## Внесок у проєкт
-
-Ми вітаємо будь-який внесок! Будь ласка, дотримуйтесь наступних кроків:
-
-1. Відкрийте issue для обговорення нової функціональності або виправлення помилки.
-2. Зробіть форк репозиторію.
-3. Створіть нову гілку для ваших змін ( git checkout -b feature/AmazingFeature або bugfix/FixSomething ).
-4. Зробіть ваші зміни та закомітьте їх ( git commit -m 'Add some AmazingFeature' ).
-5. Відправте зміни у ваш форк ( git push origin feature/AmazingFeature ).
-6. Відкрийте Pull Request до основного репозиторію.
-
-Будь ласка, переконайтеся, що ваш код відповідає стандартам коду проєкту та проходить всі перевірки (типи, лінтинг).
-
-## Ліцензія
-
-Цей проєкт розповсюджується під ліцензією MIT. Детальніше дивіться у файлі [LICENSE](LICENSE).
+For more information, please refer to the [full license text](LICENSE).
