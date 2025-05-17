@@ -1,6 +1,6 @@
 # mono 🚀
 
-[![Build Status](https://img.shields.io/travis/com/livegp/mono.svg)](https://github.com/livegp/mono) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Bun version](https://img.shields.io/badge/bun-%3E%3D1.2.13-orange.svg)](https://bun.sh/)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/livegp/mono) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Bun version](https://img.shields.io/badge/bun-%3E%3D1.2.13-orange.svg)](https://bun.sh/)
 
 ## Зміст
 
