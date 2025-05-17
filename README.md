@@ -1,6 +1,6 @@
 # mono 🚀
 
-🌍 **Change language to:** [`Українська (UA)`](./README.ua.md)
+🌍 **Change language to:** [Українська (UA)](./README.ua.md)
 
 ---
 
@@ -11,7 +11,6 @@
 - [About the Project](#about-the-project)
 - [Monorepo Structure](#monorepo-structure)
 - [Tech Stack](#tech-stack)
-- [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Development](#development)
 - [Building the Project](#building-the-project)
