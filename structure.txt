@@ -6,6 +6,7 @@ H:.
 |   .editorconfig
 |   .env
 |   .env.development
+|   .env.example
 |   .env.production
 |   .gitignore
 |   .hintrc
@@ -13,11 +14,14 @@ H:.
 |   biome.json
 |   bun.lock
 |   bunfig.toml
+|   docker-compose.override.yml
+|   docker-compose.prod.yml
 |   docker-compose.yml
 |   lefthook.yml
 |   LICENSE.md
 |   package.json
 |   README.md
+|   README.ua.md
 |   structure.txt
 |
 +---.github
@@ -27,14 +31,15 @@ H:.
 |   \---prompts
 +---.vscode
 |       .vscodeextensions.json
+|       mcp.json
 |       settings.json
 |
 +---apps
 |   +---backend
 |   |   |   .gitignore
 |   |   |   build.ts
-|   |   |   Dockerfile
-|   |   |   Dockerfile.tmp
+|   |   |   Dockerfile.dev
+|   |   |   Dockerfile.prod
 |   |   |   package.json
 |   |   |   README.md
 |   |   |   structure.txt
@@ -56,11 +61,12 @@ H:.
 |   \---frontend
 |       |   .env
 |       |   .env.development
+|       |   .env.example
 |       |   .env.production
 |       |   .gitignore
 |       |   404.html
-|       |   Dockerfile
-|       |   Dockerfile.tmp
+|       |   Dockerfile.dev
+|       |   Dockerfile.prod
 |       |   index.html
 |       |   package.json
 |       |   README.md
