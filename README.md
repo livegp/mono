@@ -25,7 +25,7 @@
 The monorepo is organized as follows:
 
 ```sh
-├── apps/           # Directory containing individual applications
+├── `apps/`           # Directory containing individual applications
 │   ├── frontend/   # Frontend application built with React and Vite
 │   └── backend/    # Backend application built with ElysiaJS
 ├── packages/       # Directory for shared libraries and configurations
@@ -34,15 +34,6 @@ The monorepo is organized as follows:
 │       ├── ts/     # Base TypeScript configuration (@mono/ts-config)
 │       └── vite/   # Base Vite configuration (@mono/vite-config)
 ```
-
-├── `apps/`           # Directory containing individual applications
-│   ├── `frontend/`   # Frontend application built with React and Vite
-│   └── `backend/`    # Backend application built with ElysiaJS
-├── `packages/`       # Directory for shared libraries and configurations
-│   ├── `ui/`         # Shared UI components package (React)
-│   └── `configs/`    # Shared configurations package
-│       ├── `ts/`     # Base TypeScript configuration (@mono/ts-config)
-│       └── `vite/`   # Base Vite configuration (@mono/vite-config)
 
 ## Tech Stack
 
