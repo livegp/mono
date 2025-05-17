@@ -1,4 +1,4 @@
-# Build Outputs
+# Build and Output
 **/.next/
 **/.output/
 **/build/
@@ -11,27 +11,35 @@
 **/logs/
 **/temp/
 **/tmp/
+*.log
 .eslintcache
 .node_repl_history
 .stylelintcache
 .tsbuildinfo
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 
 # Dependencies
 **/node_modules/
 .pnp
 .pnp.js
+bun.lockb
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
 
 # Docker related
 **/.docker/
+
+# Documentation and Assets
+**/helm-charts/
+CHANGELOG.md
+LICENSE
+Makefile
+README.md
 
 # IDE and Config
 **/.idea/
 **/.vscode/
 !.vscode/extensions.json
-!.vscode/settings.json
 *.njsproj
 *.ntvs*
 *.sln
@@ -58,15 +66,24 @@ ehthumbs_vista.db
 *.pid.lock
 *.seed
 
-# svelte
-**/.svelte-kit/
-
 # Testing and Coverage
 **/.nyc_output/
+**/__tests__/
 **/coverage/
+**/test/
+**/tests/
+*.spec.*
+*.test.*
+coverage*
 
 # Turbo
 **/.turbo/
 
 # Vercel
 **/.vercel/
+
+# Version Control
+**/.git/
+**/.github/
+.gitattributes
+.gitignore
