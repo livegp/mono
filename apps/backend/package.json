@@ -9,8 +9,8 @@
   "scripts": {
     "dev": "NODE_ENV=development bun --watch src/index.ts",
     "build": "bun build.ts",
-    "check-types": "tsc --noEmit",
-    "preview": "bun dist/index.js"
+    "preview": "bun dist/index.js",
+    "check-types": "tsc --noEmit"
   },
   "dependencies": {
     "@mono/ts-config": "workspace:*",

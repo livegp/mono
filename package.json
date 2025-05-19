@@ -2,16 +2,12 @@
   "name": "mono",
   "version": "0.0.1",
   "license": "MIT",
-  "devDependencies": {
-    "@biomejs/biome": "^2.0.0-beta.4",
-    "lefthook": "^1.11.13",
-    "typescript": "^5.8.3"
-  },
-  "engines": {
-    "bun": ">=1.2.13"
-  },
-  "packageManager": "bun@1.2.13",
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "packages/configs/*"
+  ],
   "scripts": {
     "dev": "bun run --filter '*' dev",
     "build": "bun run --filter '*' build",
@@ -21,9 +17,14 @@
     "format": "biome format --write --unsafe",
     "lint": "biome lint --write --unsafe"
   },
-  "workspaces": [
-    "apps/*",
-    "packages/*",
-    "packages/configs/*"
-  ]
+  "devDependencies": {
+    "@biomejs/biome": "^2.0.0-beta.5",
+    "lefthook": "^1.11.13",
+    "typescript": "^5.8.3",
+    "turbo": "^2.5.3"
+  },
+  "engines": {
+    "bun": ">=1.2.13"
+  },
+  "packageManager": "bun@1.2.13"
 }
