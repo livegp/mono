@@ -1,9 +1,5 @@
 # Build Outputs
-**/.next/
-**/.output/
-**/build/
 **/dist/
-**/out/
 
 # Cache and Logs
 **/.cache/
@@ -11,33 +7,15 @@
 **/logs/
 **/temp/
 **/tmp/
-.eslintcache
-.node_repl_history
-.stylelintcache
 .tsbuildinfo
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 
 # Dependencies
 **/node_modules/
-.pnp
-.pnp.js
-
-# Docker related
-**/.docker/
 
 # IDE and Config
-**/.idea/
 **/.vscode/
 !.vscode/extensions.json
 !.vscode/settings.json
-*.njsproj
-*.ntvs*
-*.sln
-*.suo
-*.swp
-*.swo
 
 # Local env files
 .env*
@@ -52,21 +30,5 @@ ehthumbs.db
 ehthumbs_vista.db
 *.pem
 
-# Runtime data
-**/pids/
-*.pid
-*.pid.lock
-*.seed
-
-# svelte
-**/.svelte-kit/
-
-# Testing and Coverage
-**/.nyc_output/
-**/coverage/
-
 # Turbo
 **/.turbo/
-
-# Vercel
-**/.vercel/
