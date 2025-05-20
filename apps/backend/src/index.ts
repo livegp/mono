@@ -1,15 +1,12 @@
-import { Elysia, t } from "elysia";
 import { cors } from "@elysiajs/cors";
 import { opentelemetry } from '@elysiajs/opentelemetry'
 import { swagger } from "@elysiajs/swagger";
-
+import { Elysia } from "elysia";
 import { elysiaHelmet } from "elysiajs-helmet";
 
-import { swaggerConfig } from "./config/swagger";
 import { helmetConfig } from "./config/helmet";
+import { swaggerConfig } from "./config/swagger";
 import { greetRouter } from './routes/greet'
-
-const PORT = process.env.PORT || 3000;
 
 const app = new Elysia()
   .use(opentelemetry())
@@ -20,14 +17,14 @@ const app = new Elysia()
   .onError(({ code, error, set }) => {
     console.error(`Error [${code}]:`, error);
     set.status = code === 'NOT_FOUND' ? 404 : 500;
-    return { 
-      success: false, 
-      error: process.env.NODE_ENV === 'production' 
-        ? 'Internal Server Error' 
-        : error.message 
+    return {
+      success: false,
+      error: process.env.NODE_ENV === 'production'
+        ? 'Internal Server Error'
+        : error.message
     };
   })
-  .listen(PORT);
+  .listen(Number(process.env['VITE_API_PORT']));
 
 const serverUrl = app.server?.url;
 if (serverUrl) {
