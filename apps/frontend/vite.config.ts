@@ -15,6 +15,7 @@ import Sitemap from 'vite-plugin-sitemap'
 import { svgSpritemap } from 'vite-plugin-svg-spritemap'
 import { webfontDownload } from 'vite-plugin-webfont-dl'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import { Schema, ValidateEnv } from '@julr/vite-plugin-validate-env'
 
 export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), 'VITE_')
@@ -134,6 +135,16 @@ export default defineConfig(({ command, mode }) => {
       webfontDownload([
         'https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap'
       ]),
+      ValidateEnv({
+        validator: 'builtin',
+        schema: {
+          VITE_WEB_PORT: Schema.number(),
+          VITE_WEB_URL: Schema.string(),
+          VITE_API_PORT: Schema.number(),
+          VITE_API_URL: Schema.string(),
+          VITE_CORS_ORIGIN: Schema.string()
+        }
+      }),
     ],
   };
 
