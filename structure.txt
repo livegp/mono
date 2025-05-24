@@ -4,13 +4,8 @@ Volume serial number is 7EDE-397E
 H:.
 |   .dockerignore
 |   .editorconfig
-|   .env
-|   .env.development
-|   .env.example
-|   .env.production
 |   .gitignore
-|   .hintrc
-|   .nojekyll
+|   .quokka
 |   biome.json
 |   bun.lock
 |   bunfig.toml
@@ -36,13 +31,15 @@ H:.
 |
 +---apps
 |   +---backend
+|   |   |   .env
+|   |   |   .env.development
+|   |   |   .env.production
 |   |   |   .gitignore
 |   |   |   build.ts
 |   |   |   Dockerfile.dev
 |   |   |   Dockerfile.prod
 |   |   |   package.json
 |   |   |   README.md
-|   |   |   structure.txt
 |   |   |   tsconfig.json
 |   |   |
 |   |   \---src
@@ -56,12 +53,69 @@ H:.
 |   |       |       greet.ts
 |   |       |
 |   |       \---schemas
+|   |               env.ts
 |   |               greet.ts
+|   |
+|   +---docs
+|   |   |   .gitignore
+|   |   |   index.html
+|   |   |   package.json
+|   |   |   README.md
+|   |   |   tsconfig.app.json
+|   |   |   tsconfig.json
+|   |   |   tsconfig.node.json
+|   |   |   vite.config.ts
+|   |   |
+|   |   +---.storybook
+|   |   |       main.ts
+|   |   |       preview.ts
+|   |   |
+|   |   +---public
+|   |   |       vite.svg
+|   |   |
+|   |   \---src
+|   |       |   App.css
+|   |       |   App.tsx
+|   |       |   index.css
+|   |       |   main.tsx
+|   |       |   vite-env.d.ts
+|   |       |
+|   |       +---assets
+|   |       |       react.svg
+|   |       |
+|   |       \---stories
+|   |           |   button.css
+|   |           |   Button.stories.ts
+|   |           |   Button.tsx
+|   |           |   Configure.mdx
+|   |           |   header.css
+|   |           |   Header.stories.ts
+|   |           |   Header.tsx
+|   |           |   page.css
+|   |           |   Page.stories.ts
+|   |           |   Page.tsx
+|   |           |
+|   |           \---assets
+|   |                   accessibility.png
+|   |                   accessibility.svg
+|   |                   addon-library.png
+|   |                   assets.png
+|   |                   avif-test-image.avif
+|   |                   context.png
+|   |                   discord.svg
+|   |                   docs.png
+|   |                   figma-plugin.png
+|   |                   github.svg
+|   |                   share.png
+|   |                   styling.png
+|   |                   testing.png
+|   |                   theming.png
+|   |                   tutorials.svg
+|   |                   youtube.svg
 |   |
 |   \---frontend
 |       |   .env
 |       |   .env.development
-|       |   .env.example
 |       |   .env.production
 |       |   .gitignore
 |       |   404.html
@@ -74,6 +128,9 @@ H:.
 |       |   tsconfig.json
 |       |   tsconfig.node.json
 |       |   vite.config.ts
+|       |
+|       +---config
+|       |       env.ts
 |       |
 |       +---public
 |       |       vite.svg
@@ -103,16 +160,17 @@ H:.
     |   +---ts
     |   |       package.json
     |   |       README.md
+    |   |       README.ua.md
     |   |       tsconfig.base.json
     |   |
     |   \---vite
     |           package.json
     |           README.md
+    |           README.ua.md
     |           vite.config.base.ts
     |
     +---types
     +---ui
-    |   |   bun.lock
     |   |   package.json
     |   |   tsconfig.app.json
     |   |   tsconfig.json
