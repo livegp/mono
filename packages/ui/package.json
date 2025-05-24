@@ -10,17 +10,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@mono/ts-config": "workspace:*",
     "@mono/vite-config": "workspace:*",
-    "@types/react": "^19.0.10",
-    "@types/react-dom": "^19.0.4",
-    "@vitejs/plugin-react-swc": "^3.8.0",
-    "globals": "^16.0.0",
-    "typescript": "~5.7.2",
-    "vite": "^6.3.1"
+    "@types/react": "^19.1.5",
+    "@types/react-dom": "^19.1.5",
+    "@vitejs/plugin-react-swc": "^3.10.0",
+    "globals": "^16.1.0",
+    "typescript": "~5.7.3",
+    "vite": "^6.3.5"
   }
 }

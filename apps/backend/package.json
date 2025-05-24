@@ -23,7 +23,7 @@
     "elysiajs-helmet": "^1.0.2"
   },
   "devDependencies": {
-    "@types/bun": "^1.2.13",
+    "@types/bun": "^1.2.14",
     "typescript": "^5.8.3"
   }
 }
