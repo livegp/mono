@@ -1,68 +1,69 @@
 # TypeScript Configurations (@mono/ts-config)
 
-Цей пакет надає централізовану та стандартизовану базову конфігурацію TypeScript, призначену для використання у проектах в межах монорепозиторію.
+🌍 **Switch language to:** [Українська (UA)](./README.ua.md)
 
-## Мета пакету
+This package provides a centralized and standardized base TypeScript configuration designed for use in projects within a monorepo.
 
-Основна мета цього пакету - спростити розробку та підтримку TypeScript проектів шляхом:
+## Purpose of the Package
 
-- **Централізації налаштувань**: Базова конфігурація TypeScript зберігається в одному місці.
-- **Уніфікації**: Забезпечення єдиного стилю конфігурації та набору правил для всіх проектів, що використовують цю базу.
-- **Зменшення Boilerplate**: Скорочення обсягу повторюваних налаштувань у кожному `tsconfig.json` окремого проекту.
-- **Спрощення оновлень**: Легке оновлення версії TypeScript та пов'язаних правил для всього монорепозиторію через оновлення цієї базової конфігурації.
-- **Застосування найкращих практик**: Впровадження перевірених часом налаштувань, які слугують основою для різних типів додатків.
+The main goal of this package is to simplify the development and maintenance of TypeScript projects by:
 
-## Доступна конфігурація
+- **Centralizing settings**: The base TypeScript configuration is stored in one place.
+- **Unification**: Ensuring a consistent configuration style and set of rules for all projects using this base.
+- **Reducing Boilerplate**: Decreasing the amount of repetitive settings in each individual project's `tsconfig.json`.
+- **Simplifying updates**: Easily updating the TypeScript version and related rules for the entire monorepo by updating this base configuration.
+- **Applying best practices**: Implementing time-tested settings that serve as a foundation for various types of applications.
 
-Пакет експортує єдину базову конфігурацію (шлях для `extends` базується на полі `exports` у `package.json` цього пакету):
+## Available Configuration
+
+The package exports a single base configuration (the path for `extends` is based on the `exports` field in this package's `package.json`):
 
 - **`tsconfig.base.json` (`@mono/ts-config`)**:
-  Базова конфігурація TypeScript. Включає суворі налаштування компілятора (`strict`, `noImplicitAny` тощо), підтримку сучасного ECMAScript (ESNext) та налаштування, що оптимізують роботу в монорепозиторії, наприклад, через `projectReferences`. Ця конфігурація слугує універсальною основою для різних типів проектів (бекенд, фронтенд, Node.js скрипти), які можуть доповнювати її специфічними для себе налаштуваннями.
+  Base TypeScript configuration. Includes strict compiler settings (`strict`, `noImplicitAny`, etc.), support for modern ECMAScript (ESNext), and settings optimized for monorepo work, for example, through `projectReferences`. This configuration serves as a universal foundation for various project types (backend, frontend, Node.js scripts), which can supplement it with their own specific settings.
 
-## Ключові особливості
+## Key Features
 
-- **Максимальна типобезпека**: Базова конфігурація за замовчуванням використовує суворі прапорці компілятора TypeScript для раннього виявлення потенційних помилок.
-- **Сучасний JavaScript/TypeScript**: Налаштована на підтримку останніх можливостей ECMAScript (ESNext) та TypeScript.
-- **Оптимізація для монорепозиторіїв**: Ефективне використання `projectReferences` для покращення швидкості інкрементальної компіляції та кращої ізоляції між проектами.
-- **Уніфікованість та консистентність**: Забезпечення єдиного підходу до базової конфігурації TypeScript у всіх частинах вашого монорепозиторію.
-- **Сумісність з популярними інструментами**: Розроблено з урахуванням інтеграції з сучасними інструментами розробки, такими як Bun, Vite, Elysia, ESLint, і може бути легко розширена для специфічних потреб.
+- **Maximum type safety**: The base configuration uses strict TypeScript compiler flags by default for early detection of potential errors.
+- **Modern JavaScript/TypeScript**: Configured to support the latest ECMAScript (ESNext) and TypeScript features.
+- **Optimization for monorepos**: Efficient use of `projectReferences` to improve incremental compilation speed and better isolation between projects.
+- **Uniformity and consistency**: Ensuring a unified approach to base TypeScript configuration across all parts of your monorepo.
+- **Compatibility with popular tools**: Developed with integration with modern development tools like Bun, Vite, Elysia, ESLint in mind, and can be easily extended for specific needs.
 
-## Використання
+## Usage
 
-Щоб використати базову конфігурацію у вашому проекті, встановіть цей пакет (`@mono/ts-config`) як залежність розробки. Потім у файлі `tsconfig.json` вашого проекту додайте поле `extends`, вказавши ім'я пакету:
+To use the base configuration in your project, install this package (`@mono/ts-config`) as a development dependency. Then, in your project's `tsconfig.json` file, add the `extends` field, specifying the package name:
 
 ```json
 {
   "extends": "@mono/ts-config",
   "compilerOptions": {
-    // Тут ви можете перевизначити або додати специфічні для вашого проекту
-    // налаштування компілятора. Наприклад:
+    // Here you can override or add project-specific
+    // compiler settings. For example:
     //
-    // Для фронтенд-проекту з React:
+    // For a frontend project with React:
     // "jsx": "react-jsx",
     // "lib": ["ESNext", "DOM", "DOM.Iterable"],
     //
-    // Для бекенд-проекту на Node.js:
-    // "module": "NodeNext", // якщо потрібна сумісність з нативними ES модулями Node.js
-    // "types": ["node", "bun-types"], // додавання типів для Node.js та Bun
+    // For a backend project on Node.js:
+    // "module": "NodeNext", // if compatibility with native ES modules of Node.js is needed
+    // "types": ["node", "bun-types"], // adding types for Node.js and Bun
     //
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     }
-    // "tsBuildInfoFile": ".cache/tsconfig.app.tsbuildinfo" // для інкрементальної збірки
+    // "tsBuildInfoFile": ".cache/tsconfig.app.tsbuildinfo" // for incremental builds
   },
   "include": [
     "src/**/*"
-    // "src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts" // більш явне перелічення
+    // "src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts" // more explicit enumeration
   ],
   "exclude": [
     "node_modules",
     "dist",
     ".cache"
-    // інші файли або директорії, які не потрібно компілювати
+    // other files or directories that should not be compiled
   ]
-  // "references": [] // Якщо ваш проект є частиною більшої системи з project references
+  // "references": [] // If your project is part of a larger system with project references
 }
-```

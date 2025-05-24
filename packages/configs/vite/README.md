@@ -1,62 +1,64 @@
 # Vite Configuration (@mono/vite-config)
 
-Цей пакет надає централізовану та стандартизовану базову конфігурацію Vite, призначену для використання у проектах в межах монорепозиторію.
+🌍 **Switch language to:** [Ukrainian (UA)](./README.ua.md)
 
-## Мета пакету
+This package provides a centralized and standardized base Vite configuration, designed for use in projects within a monorepo.
 
-Основна мета цього пакету - спростити розробку та підтримку проектів, що використовують Vite, шляхом:
+## Purpose of the Package
 
-- **Централізації налаштувань**: Базова конфігурація Vite зберігається в одному місці.
-- **Уніфікації**: Забезпечення єдиного підходу до налаштувань збірки та розробки для всіх проектів, що використовують цю базу.
-- **Зменшення Boilerplate**: Скорочення обсягу повторюваних налаштувань у кожному `vite.config.ts` окремого проекту.
-- **Спрощення оновлень**: Легке оновлення версій Vite, плагінів та пов'язаних правил для всього монорепозиторію через оновлення цієї базової конфігурації.
-- **Застосування найкращих практик**: Впровадження перевірених часом налаштувань, які слугують основою для різних типів додатків.
+The main goal of this package is to simplify the development and maintenance of projects using Vite by:
 
-## Доступна конфігурація
+- **Centralizing settings**: The base Vite configuration is stored in one place.
+- **Unification**: Ensuring a consistent approach to build and development settings for all projects using this base.
+- **Reducing Boilerplate**: Decreasing the amount of repetitive settings in each individual project's `vite.config.ts`.
+- **Simplifying updates**: Easily updating Vite versions, plugins, and related rules for the entire monorepo by updating this base configuration.
+- **Applying best practices**: Implementing time-tested settings that serve as a foundation for various types of applications.
 
-Пакет експортує єдину базову конфігурацію (шлях для імпорту базується на полі `exports` у `package.json` цього пакету, зазвичай `@mono/vite-config`):
+## Available Configuration
 
-- **`vite.config.base.ts` (експортується як `@mono/vite-config`)**:
-  Базова конфігурація Vite. Включає загальні налаштування, такі як оптимізації для розробки та збірки, налаштування сервера, обробку CSS, підтримку TypeScript, налаштування для `manualChunks` для кращого кешування вендорів, та інтеграцію з `lightningcss`. Ця конфігурація слугує універсальною основою для різних типів проектів (наприклад, React, Vue, Svelte), які можуть доповнювати її специфічними для себе плагінами та налаштуваннями.
+The package exports a single base configuration (the import path is based on the `exports` field in this package's `package.json`, usually `@mono/vite-config`):
 
-## Ключові особливості
+- **`vite.config.base.ts` (exported as `@mono/vite-config`)**:
+  Base Vite configuration. Includes general settings such as optimizations for development and build, server settings, CSS processing, TypeScript support, `manualChunks` settings for better vendor caching, and integration with `lightningcss`. This configuration serves as a universal foundation for various project types (e.g., React, Vue, Svelte), which can supplement it with their specific plugins and settings.
 
-- **Оптимізований процес розробки**: Налаштування для швидкого Hot Module Replacement (HMR) та ефективної роботи сервера розробки.
-- **Ефективна збірка для продакшену**: Оптимізація коду, розділення на чанки (`react-vendor`, `vendor`), мініфікація за допомогою `esbuild` або `lightningcss` для CSS.
-- **Підтримка сучасних стандартів**: Налаштована для роботи з TypeScript та ESNext.
-- **Розширюваність**: Легко розширюється та кастомізується. Проекти можуть імпортувати цю базову конфігурацію та об'єднувати її зі своїми специфічними налаштуваннями за допомогою `mergeConfig` від Vite.
-- **Інтеграція з монорепозиторієм**: Налаштування `fs.allow` для коректної роботи в середовищі монорепозиторію.
-- **Уніфікованість**: Забезпечення єдиного підходу до базової конфігурації Vite у всіх частинах вашого монорепозиторію.
-- **Безпека**: Включено генерацію CSP Nonce для HTML.
+## Key Features
 
-## Використання
+- **Optimized development process**: Settings for fast Hot Module Replacement (HMR) and efficient development server operation.
+- **Effective production build**: Code optimization, chunk splitting (`react-vendor`, `vendor`), minification using `esbuild` or `lightningcss` for CSS.
+- **Support for modern standards**: Configured to work with TypeScript and ESNext.
+- **Extensibility**: Easily extensible and customizable. Projects can import this base configuration and merge it with their specific settings using `mergeConfig` from Vite.
+- **Monorepo integration**: `fs.allow` settings for correct operation in a monorepo environment.
+- **Unification**: Ensuring a consistent approach to base Vite configuration across all parts of your monorepo.
+- **Security**: Includes CSP Nonce generation for HTML.
 
-Щоб використати базову конфігурацію у вашому проекті, встановіть цей пакет (`@mono/vite-config`) як залежність розробки. Потім у файлі `vite.config.ts` вашого проекту імпортуйте та використовуйте цю конфігурацію, за потреби об'єднуючи її з власними налаштуваннями:
+## Usage
+
+To use the base configuration in your project, install this package (`@mono/vite-config`) as a development dependency. Then, in your project's `vite.config.ts` file, import and use this configuration, merging it with your own settings as needed:
 
 ```typescript
 import { defineConfig, mergeConfig } from 'vite';
-import baseConfig from '@mono/vite-config'; // Імпорт базової конфігурації
+import baseConfig from '@mono/vite-config'; // Import base configuration
 
 export default defineConfig((configEnv) => {
-  // Базова конфігурація може бути функцією або об'єктом.
-  // Якщо це функція (як у наданому прикладі vite.config.base.ts), викликаємо її:
+  // The base configuration can be a function or an object.
+  // If it's a function (as in the provided vite.config.base.ts example), call it:
   const resolvedBaseConfig = typeof baseConfig === 'function' ? baseConfig(configEnv) : baseConfig;
 
   return mergeConfig(
-    resolvedBaseConfig, // Базова конфігурація з вашого пакету
+    resolvedBaseConfig, // Base configuration from your package
     {
-      // Специфічні налаштування для вашого проекту
-      // Наприклад, для React-додатку:
-      // plugins: [react()], // Не забудьте встановити @vitejs/plugin-react
+      // Specific settings for your project
+      // For example, for a React application:
+      // plugins: [react()], // Don't forget to install @vitejs/plugin-react
       server: {
-        port: 3001, // Ваш порт
+        port: 3001, // Your port
       },
       resolve: {
         alias: {
-          '@': '/src', // Приклад аліасу для вашого проекту
+          '@': '/src', // Example alias for your project
         },
       },
-      // Інші специфічні для проекту налаштування...
+      // Other project-specific settings...
     }
   );
 });
