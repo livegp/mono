@@ -1,7 +1,7 @@
 {
   "extends": "@mono/ts-config",
   "compilerOptions": {
-    "tsBuildInfoFile": ".cache/tsconfig.tsbuildinfo",
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.tsbuildinfo",
     "types": ["bun-types"],
     "outDir": "dist",
     "baseUrl": ".",
@@ -10,5 +10,5 @@
     }
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", ".cache"]
+  "exclude": ["node_modules", "dist"]
 }

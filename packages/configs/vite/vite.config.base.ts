@@ -8,7 +8,7 @@ const NONCE = crypto.randomBytes(16).toString('base64')
 const baseSettings: UserConfig = {
   root: '.',
   publicDir: 'public',
-  cacheDir: '.cache',
+  cacheDir: 'node_modules/.vite',
   build: {
     chunkSizeWarningLimit: 1000,
     cssMinify: 'lightningcss',
