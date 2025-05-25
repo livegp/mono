@@ -5,7 +5,6 @@ H:.
 |   .dockerignore
 |   .editorconfig
 |   .gitignore
-|   .quokka
 |   biome.json
 |   bun.lock
 |   bunfig.toml

@@ -1,54 +1,265 @@
-# React + TypeScript + Vite
+# @mono/frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+🌍 **Change language to:** [Українська (UA)](./README.ua.md)
 
-Currently, two official plugins are available:
+Frontend for the Mono project, built with React, Vite, and Bun. This application interacts with the `@mono/backend` API to provide a user interface.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Table of Contents
 
-## Expanding the ESLint configuration
+- [About The Project](#about-the-project)
+- [Built With](#built-with)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+  - [Development Mode](#development-mode)
+  - [Building for Production](#building-for-production)
+  - [Running Production Build](#running-production-build)
+  - [Type Checking](#type-checking)
+- [API Interaction](#api-interaction)
+- [Configuration](#configuration)
+  - [Environment Variables](#environment-variables)
+- [Vite Configuration](#vite-configuration)
+- [Docker](#docker)
+  - [Development with Docker](#development-with-docker)
+  - [Production with Docker](#production-with-docker)
+- [Project Structure](#project-structure)
+- [License](#license)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## About The Project
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+This project serves as the frontend user interface for the Mono application. It is developed using React and Vite, running on the Bun runtime. It focuses on providing a modern, responsive, and efficient user experience.
+
+Key features include:
+
+- Reactive UI components built with React.
+- Fast development and build times powered by Vite and Bun.
+- Typed API client for interaction with the backend using Eden Treaty.
+- Environment variable management with validation.
+- Comprehensive Vite plugin ecosystem for optimization, security, and developer experience.
+
+## Built With
+
+- [Bun](https://bun.sh/) - JavaScript runtime & toolkit
+- [Vite](https://vitejs.dev/) - Frontend build tool
+- [React](https://react.dev/) - JavaScript library for building user interfaces
+- [TypeScript](https://www.typescriptlang.org/) - Typed JavaScript
+- [@ap0nia/eden-react-query](https://www.npmjs.com/package/@ap0nia/eden-react-query) (Eden Treaty with React Query) - Typed API client for Elysia.js backend
+- [@tanstack/react-query](https://tanstack.com/query/latest) - Data-fetching and state management
+- [Valibot](https://valibot.dev/) - Schema validation (used for environment variables)
+- Various Vite plugins (see [Vite Configuration](#vite-configuration) section)
+
+## Getting Started
+
+Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
+
+### Prerequisites
+
+Ensure you have [Bun](https://bun.sh/docs/installation) installed on your system.
+
+### Installation
+
+1. Clone the monorepo (if you haven't already).
+2. Navigate to the frontend directory:
+
+    ```bash
+    cd apps/frontend
+    ```
+
+3. Install dependencies:
+
+    ```bash
+    bun install
+    ```
+
+## Usage
+
+### Development Mode
+
+To run the frontend development server with hot-reloading:
+
+```bash
+bun run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+This command starts the Vite development server. The application will typically be accessible at the URL specified by `VITE_WEB_URL` or `http://localhost:<VITE_WEB_PORT>`. Check the console output for the exact URL.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Building for Production
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+To build the application for production:
+
+```bash
+bun run build
 ```
+
+This command uses Vite to create an optimized build in the `dist/` directory.
+
+### Running Production Build
+
+After building the project, you can preview the production build locally:
+
+```bash
+bun run preview
+```
+
+This command uses Vite to serve the `dist/` folder. For actual production deployment, you would typically use the Docker image or serve the static files from the `dist/` directory with a production-grade static file server.
+
+### Type Checking
+
+To check for TypeScript errors without emitting JavaScript files:
+
+```bash
+bun run check-types
+```
+
+## API Interaction
+
+The frontend interacts with the `@mono/backend` API using a typed client generated by Eden Treaty, integrated with React Query via `@ap0nia/eden-react-query`.
+
+- The Eden client is initialized in `src/lib/eden.ts`.
+- It connects to the backend API, typically defined by `VITE_API_URL` and `VITE_API_PORT`.
+- An example of its usage can be found in `src/App.tsx`, where it fetches a greeting message from the `/api/greet` endpoint.
+
+## Configuration
+
+### Environment Variables
+
+The application uses environment variables for configuration. These are loaded by Vite and validated using `@julr/vite-plugin-validate-env` with a schema defined in `config/env.ts` using Valibot.
+
+Create a `.env` file in the `apps/frontend` directory. You can base it on `.env.example` if one exists, or create it from scratch.
+
+Key environment variables:
+
+- `VITE_WEB_PORT`: The port for the Vite development server (e.g., `5173`).
+- `VITE_WEB_URL`: The base URL for the web application (e.g., `http://localhost:5173`).
+- `VITE_API_PORT`: The port where the backend API is running (e.g., `3001`).
+- `VITE_API_URL`: The base URL for the backend API (e.g., `http://localhost`).
+- `VITE_CORS_ORIGIN`: Allowed origins for CORS, typically matching `VITE_WEB_URL`.
+
+Example `.env` file:
+
+```env
+VITE_WEB_PORT=5173
+VITE_WEB_URL=http://localhost:5173
+VITE_API_PORT=3001
+VITE_API_URL=http://localhost
+VITE_CORS_ORIGIN=http://localhost:5173
+```
+
+## Vite Configuration
+
+The `vite.config.ts` file configures the Vite build tool and its plugins. Key plugins used include:
+
+- `@vitejs/plugin-react-swc`: Enables React support using SWC.
+- `vite-tsconfig-paths`: Allows using TypeScript path aliases.
+- `vite-plugin-checker`: Performs TypeScript and Biome (linter/formatter) checks during development.
+- `vite-plugin-compression`: Compresses assets (e.g., gzip, brotli) for smaller bundle sizes.
+- `vite-imagetools`: Optimizes images and allows for advanced image transformations.
+- `vite-plugin-bun-csp` / `vite-plugin-csp-guard`: Helps generate Content Security Policy (CSP) headers.
+- `vite-plugin-hashed-favicons`: Generates favicons for various platforms and a web manifest file.
+- `vite-plugin-open-graph`: Adds Open Graph meta tags for better social media sharing.
+- `vite-plugin-sitemap`: Generates a `sitemap.xml` file.
+- `vite-plugin-svg-spritemap`: Creates an SVG spritemap from individual SVG files.
+- `vite-plugin-webfont-dl`: Downloads and embeds web fonts from services like Google Fonts.
+- `@julr/vite-plugin-validate-env`: Validates environment variables against a defined schema.
+- **Server Proxy:** Configures a proxy for API requests (e.g., `/api` to `VITE_API_URL:VITE_API_PORT`) during development to avoid CORS issues.
+
+## Docker
+
+This project includes Dockerfiles for containerizing the frontend application.
+
+### Development with Docker
+
+The `Dockerfile.dev` is configured for a development environment:
+
+- Uses the `oven/bun:latest` base image.
+- Copies `package.json`, `bun.lockb`, `packages/` and `apps/frontend/`.
+- Installs dependencies using `bun install`.
+- The default command is `bun run --cwd apps/frontend dev` to start the Vite development server.
+
+To build and run:
+
+```bash
+# From the monorepo root (h:\Fullstack\My\Bun\mono)
+docker build -t mono-frontend-dev -f ./apps/frontend/Dockerfile.dev .
+docker run -p 5173:5173 -v ./apps/frontend/src:/app/apps/frontend/src mono-frontend-dev
+```
+
+(Adjust port mapping and volume mounts as needed.)
+
+### Production with Docker
+
+The `Dockerfile.prod` is used to build a production-ready image for the frontend:
+
+- **Stage 1 (Builder):**
+  - Uses `oven/bun:latest`.
+  - Copies necessary files and installs dependencies.
+  - Builds the frontend application using `bun run --cwd ./apps/frontend build`. The output is in `/app/apps/frontend/dist`.
+- **Stage 2 (Runner):**
+  - Uses the slimmer `oven/bun:slim` base image.
+  - Copies the `dist` directory from the builder stage.
+  - Installs `serve` (a static file server).
+  - The default command is `bun x serve dist --listen 0.0.0.0:3000` to serve the static files.
+
+To build and run:
+
+```bash
+# From the monorepo root (h:\Fullstack\My\Bun\mono)
+docker build -t mono-frontend-prod -f ./apps/frontend/Dockerfile.prod .
+docker run -p 80:3000 mono-frontend-prod
+```
+
+(Adjust port mapping as needed. You might also need to pass environment variables if your static build relies on them at runtime, though typically they are baked in at build time for frontend apps.)
+
+## Project Structure
+
+A brief overview of the key directories and files in `apps/frontend/`:
+
+```tree
+mono/apps/frontend/
+├── .gitignore          # Specifies intentionally untracked files that Git should ignore.
+├── 404.html            # Custom 404 page, often used for SPA routing on services like GitHub Pages.
+├── Dockerfile.dev      # Docker configuration for the development environment.
+├── Dockerfile.prod     # Docker configuration for the production environment.
+├── README.md           # This file (English documentation).
+├── README.ua.md        # Ukrainian version of this file.
+├── config/
+│   └── env.ts          # Schema definition for environment variable validation (Valibot).
+├── index.html          # Main HTML entry point for the Vite application.
+├── package.json        # Project metadata, dependencies, and scripts.
+├── public/             # Static assets that are copied directly to the build output.
+│   └── vite.svg        # Example static asset.
+├── src/
+│   ├── App.css         # CSS styles for the main App component.
+│   ├── App.tsx         # Main React application component.
+│   ├── assets/         # Static assets like images, icons, fonts.
+│   │   ├── icons/      # SVG icons (e.g., for spritemaps or favicons).
+│   │   ├── img/        # Image files.
+│   │   └── react.svg   # React logo asset.
+│   ├── index.css       # Global CSS styles.
+│   ├── lib/            # Utility functions, libraries, or client configurations.
+│   │   └── eden.ts     # Eden Treaty client setup for backend API interaction.
+│   ├── main.tsx        # Main entry point for the React application (renders the root component).
+│   └── vite-env.d.ts   # TypeScript definitions for Vite-specific environment variables.
+├── tsconfig.app.json   # TypeScript configuration specific to the application code (src).
+├── tsconfig.json       # Root TypeScript configuration, often referencing other tsconfig files.
+├── tsconfig.node.json  # TypeScript configuration for Node.js-specific files (e.g., vite.config.ts).
+└── vite.config.ts      # Vite build tool configuration.
+```
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](../../LICENSE.md) file in the monorepo root for details.
+
+**What this license allows:**
+
+- Commercial use
+- Modification
+- Distribution
+- Private use
+- Sublicensing
+
+**Limitations:**
+
+- No liability
+- No warranty
