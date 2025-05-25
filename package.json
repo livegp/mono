@@ -9,21 +9,25 @@
     "packages/configs/*"
   ],
   "scripts": {
-    "dev": "bun run --filter '*' dev",
-    "build": "bun run --filter '*' build",
-    "preview": "bun run --filter '*' preview",
-    "check-types": "bun run --filter '*' check-types",
-    "check": "biome check --write --unsafe",
+    "dev:frontend": "turbo -F @mono/frontend dev",
+    "dev:backend": "turbo -F @mono/backend dev",
+    "dev:docs": "turbo -F @mono/docs dev",
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "preview": "turbo preview",
+    "check-types": "turbo check-types",
+    "lint": "biome lint --write --unsafe",
     "format": "biome format --write --unsafe",
-    "lint": "biome lint --write --unsafe"
+    "check": "biome check --write --unsafe"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.0.0-beta.5",
     "lefthook": "^1.11.13",
+    "turbo": "^2.5.3",
     "typescript": "^5.8.3"
   },
   "engines": {
-    "bun": ">=1.2.13"
+    "bun": ">=1.2.14"
   },
-  "packageManager": "bun@1.2.13"
+  "packageManager": "bun@1.2.14"
 }
