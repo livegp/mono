@@ -24,7 +24,7 @@
 
 The monorepo is organized as follows:
 
-```tree
+```plaintext
 mono/
 ├── apps/           # Directory containing individual applications
 │   ├── frontend/   # Frontend application built with React and Vite

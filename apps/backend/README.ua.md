@@ -188,7 +188,7 @@ NODE_ENV=development
 
 Короткий огляд ключових каталогів та файлів:
 
-```tree
+```plaintext
 mono/apps/backend/
 ├── Dockerfile.dev        # Docker-конфігурація для розробки (наразі вказує на фронтенд)
 ├── Dockerfile.prod       # Docker-конфігурація для продакшену

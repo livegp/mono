@@ -215,7 +215,7 @@ docker run -p 80:3000 mono-frontend-prod
 
 Короткий огляд ключових каталогів та файлів у `apps/frontend/`:
 
-```tree
+```plaintext
 mono/apps/frontend/
 ├── .gitignore          # Визначає файли, які Git навмисно не відстежує.
 ├── 404.html            # Спеціальна сторінка 404, часто використовується для маршрутизації SPA на таких сервісах, як GitHub Pages.

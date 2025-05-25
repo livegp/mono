@@ -94,7 +94,7 @@ bun run check-types
 
 ## Структура проекту
 
-```tree
+```plaintext
 mono/apps/docs/
 ├── .storybook/             # Файли конфігурації Storybook
 │   ├── main.ts             # Основна конфігурація Storybook (додатки, розташування історій)

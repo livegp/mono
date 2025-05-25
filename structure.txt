@@ -1,6 +1,4 @@
 tree /F /A > structure.txt
-Folder PATH listing for volume Job
-Volume serial number is 7EDE-397E
 H:.
 |   .dockerignore
 |   .editorconfig
@@ -17,6 +15,7 @@ H:.
 |   README.md
 |   README.ua.md
 |   structure.txt
+|   turbo.json
 |
 +---.github
 |   |   copilot-instructions.md
@@ -39,6 +38,7 @@ H:.
 |   |   |   Dockerfile.prod
 |   |   |   package.json
 |   |   |   README.md
+|   |   |   README.ua.md
 |   |   |   tsconfig.json
 |   |   |
 |   |   \---src
@@ -60,6 +60,7 @@ H:.
 |   |   |   index.html
 |   |   |   package.json
 |   |   |   README.md
+|   |   |   README.ua.md
 |   |   |   tsconfig.app.json
 |   |   |   tsconfig.json
 |   |   |   tsconfig.node.json
@@ -123,6 +124,7 @@ H:.
 |       |   index.html
 |       |   package.json
 |       |   README.md
+|       |   README.ua.md
 |       |   tsconfig.app.json
 |       |   tsconfig.json
 |       |   tsconfig.node.json

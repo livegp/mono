@@ -94,7 +94,7 @@ bun run check-types
 
 ## Project Structure
 
-```tree
+```plaintext
 mono/apps/docs/
 ├── .storybook/             # Storybook configuration files
 │   ├── main.ts             # Main Storybook configuration (addons, stories location)

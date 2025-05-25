@@ -188,7 +188,7 @@ The production Docker image uses a multi-stage build to create a small and optim
 
 A brief overview of the key directories and files:
 
-```tree
+```plaintext
 mono/apps/backend/
 ├── Dockerfile.dev        # Docker configuration for development (currently points to frontend)
 ├── Dockerfile.prod       # Docker configuration for production
