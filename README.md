@@ -25,7 +25,7 @@
 The monorepo is organized as follows:
 
 ```tree
-./
+mono/
 ├── apps/           # Directory containing individual applications
 │   ├── frontend/   # Frontend application built with React and Vite
 │   └── backend/    # Backend application built with ElysiaJS
@@ -52,18 +52,18 @@ The monorepo is organized as follows:
 
 ## Installation
 
-**Clone the repository:**
+1. **Clone the repository:**
 
-```bash
-git clone <your_repository_url>
-cd mono
-```
+    ```bash
+    git clone <your_repository_url>
+    cd mono
+    ```
 
-**Install dependencies:**
+2. **Install dependencies:**
 
-```bash
-bun install
-```
+    ```bash
+    bun install
+    ```
 
 ## Development
 
@@ -145,5 +145,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - No liability
 - No warranty
-
-For more information, please refer to the [full license text](LICENSE).
