@@ -1,6 +1,6 @@
 # @mono/backend
 
-🌍 **Change language to:** [Українська (UA)](./README.ua.md)
+🌍 [**Читати українською**](README.ua.md)
 
 Backend for the Mono project, built with Elysia.js and Bun.
 

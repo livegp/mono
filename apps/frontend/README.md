@@ -1,6 +1,6 @@
 # @mono/frontend
 
-🌍 **Change language to:** [Українська (UA)](./README.ua.md)
+🌍 [**Читати українською**](README.ua.md)
 
 Frontend for the Mono project, built with React, Vite, and Bun. This application interacts with the `@mono/backend` API to provide a user interface.
 

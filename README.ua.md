@@ -1,6 +1,6 @@
 # mono 🚀
 
-🌍 **Змінити мову на:** [English (EN)](./README.md)
+🌍 [**Read in English**](README.md)
 
 [![Version](https://img.shields.io/github/package-json/v/livegp/mono)](https://github.com/livegp/mono) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Bun Version](https://img.shields.io/badge/bun-%3E%3D1.2.13-orange)](https://bun.sh/)
 
