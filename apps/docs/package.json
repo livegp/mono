@@ -18,6 +18,8 @@
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
+    "@mono/ts-config": "workspace:*",
+    "@mono/vite-config": "workspace:*",
     "@storybook/addon-docs": "^9.0.0-rc.4",
     "@storybook/blocks": "^8.6.14",
     "@storybook/react": "^9.0.0-rc.4",

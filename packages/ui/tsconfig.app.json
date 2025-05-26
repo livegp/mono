@@ -1,7 +1,7 @@
 {
   "extends": "@mono/ts-config",
   "compilerOptions": {
-    "tsBuildInfoFile": ".cache/tsconfig.app.tsbuildinfo",
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "jsx": "react-jsx",
     "jsxImportSource": "react",
@@ -13,5 +13,5 @@
     }
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", ".cache"]
+  "exclude": ["node_modules", "dist"]
 }
