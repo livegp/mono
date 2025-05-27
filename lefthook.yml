@@ -1,15 +1,18 @@
-# EXAMPLE USAGE:
-
 #   Refer for explanation to following link:
 #   https://lefthook.dev/configuration/
 
-# pre-commit:
-#   commands:
-#     check:
-#       glob: "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}"
-#       run: |
-#         bunx @biomejs/biome check \
-#           --write \
-#           --no-errors-on-unmatched \
-#           --files-ignore-unknown=true {staged_files}
-#       stage_fixed: true
+pre-commit:
+  commands:
+    check:
+      glob: "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}"
+      run: |
+        bunx @biomejs/biome check \
+          --write \
+          --no-errors-on-unmatched \
+          --files-ignore-unknown=true {staged_files}
+      stage_fixed: true
+
+pre-push:
+  commands:
+    type-check:
+      run: bun run check-types
