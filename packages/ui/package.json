@@ -3,9 +3,14 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
-  "main": "./index.tsx",
-  "types": "./index.tsx",
+  "main": "./src/index.ts",
+  "types": "./src/index.tsx",
+  "style": "./src/styles/globals.css",
   "license": "MIT",
+  "exports": {
+    ".": "./src/index.js",
+    "./styles": "./src/styles/globals.css"
+  },
   "scripts": {
     "dev": "bunx -b vite",
     "build": "bunx -b vite build",
@@ -14,7 +19,8 @@
   },
   "dependencies": {
     "react": "catalog:",
-    "react-dom": "catalog:"
+    "react-dom": "catalog:",
+    "tailwindcss": "^4.1.8"
   },
   "devDependencies": {
     "@mono/ts-config": "workspace:*",

@@ -16,6 +16,7 @@ import { svgSpritemap } from 'vite-plugin-svg-spritemap'
 import { webfontDownload } from 'vite-plugin-webfont-dl'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import { ValidateEnv } from '@julr/vite-plugin-validate-env'
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), 'VITE_')
@@ -135,6 +136,7 @@ export default defineConfig(({ command, mode }) => {
       webfontDownload([
         'https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap'
       ]),
+      tailwindcss(),
       ValidateEnv({
         configFile: 'config/env',
       }),

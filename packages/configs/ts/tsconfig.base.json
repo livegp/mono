@@ -108,6 +108,7 @@
   },
   "exclude": [
     "**/node_modules/**",
-    "**/dist/**"
+    "**/dist/**",
+    "**/.turbo/**"
   ] /* Exclude files from the program. */
 }
