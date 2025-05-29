@@ -4,12 +4,14 @@
   "private": true,
   "type": "module",
   "main": "./src/index.ts",
-  "types": "./src/index.tsx",
-  "style": "./src/styles/globals.css",
+  "types": "./src/index.ts",
   "license": "MIT",
   "exports": {
-    ".": "./src/index.js",
-    "./styles": "./src/styles/globals.css"
+    ".": "./src/index.ts",
+    "./styles": "./src/styles/globals.css",
+    "./components/*": "./src/components/*",
+    "./lib/*": "./src/lib/*",
+    "./hooks/*": "./src/hooks/*"
   },
   "scripts": {
     "dev": "bunx -b vite",
@@ -18,8 +20,10 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
+    "clsx": "^2.1.1",
     "react": "catalog:",
     "react-dom": "catalog:",
+    "tailwind-merge": "^3.3.0",
     "tailwindcss": "^4.1.8"
   },
   "devDependencies": {

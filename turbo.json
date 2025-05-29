@@ -8,7 +8,7 @@
       "cache": false
     },
     "build": {
-      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "inputs": ["$TURBO_DEFAULT$"],
       "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     },
@@ -17,6 +17,7 @@
       "cache": false
     },
     "check-types": {},
-    "lint": {}
+    "lint": {},
+    "clean": {}
   }
 }

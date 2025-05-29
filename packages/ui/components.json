@@ -11,11 +11,11 @@
   },
   "iconLibrary": "lucide",
   "aliases": {
-    "components": "@/components",
-    "utils": "@/lib/utils",
-    "hooks": "@/hooks",
-    "lib": "@/lib",
-    "ui": "@/components"
+    "components": "@mono/ui/components",
+    "utils": "@mono/ui/lib/utils",
+    "hooks": "@mono/ui/hooks",
+    "lib": "@mono/ui/lib",
+    "ui": "@mono/ui/components"
   }
 }
 

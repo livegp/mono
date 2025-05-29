@@ -1,7 +1,7 @@
 {
   "extends": "@mono/ts-config",
   "compilerOptions": {
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "tsBuildInfoFile": "node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "jsx": "react-jsx",
     "jsxImportSource": "react",
@@ -9,9 +9,9 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@mono/ui": ["src/*"]
     }
   },
-  "include": ["./**/*"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", ".turbo"]
 }
