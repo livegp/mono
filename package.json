@@ -31,7 +31,7 @@
     "lint": "biome lint --write --unsafe",
     "format": "biome format --write --unsafe",
     "check": "biome check --write --unsafe",
-    "clean": "turbo clean && rm -rf node_modules",
+    "clean": "turbo clean && rm -rf .turbo",
     "reset": "bun run clean && bun install"
   },
   "devDependencies": {
