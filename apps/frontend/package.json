@@ -9,7 +9,9 @@
     "dev": "bunx -b vite",
     "build": "bunx -b vite build",
     "preview": "bunx -b vite preview",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "clean": "rm -rf .turbo"
+
   },
   "dependencies": {
     "@ap0nia/eden-react-query": "^1.6.1",
