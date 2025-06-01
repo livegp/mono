@@ -20,8 +20,8 @@ Backend for the Mono project, built with Elysia.js and Bun.
 - [Configuration](#configuration)
   - [Environment Variables](#environment-variables)
 - [Docker](#docker)
-  - [Development with Docker](#development-with-docker)
-  - [Production with Docker](#production-with-docker)
+  - [Building the Image](#building-the-image)
+  - [Running the Container](#running-the-container)
 - [Project Structure](#project-structure)
 - [License](#license)
 
@@ -141,48 +141,62 @@ NODE_ENV=development
 
 ## Docker
 
-This project includes Dockerfiles for containerization.
+This project uses a single optimized Dockerfile that can build both development and production images based on the `NODE_ENV` build argument.
 
-### Development with Docker
+### Building the Image
 
-The `Dockerfile.dev` is configured to run the frontend application (as per its CMD). To adapt it for backend development or use a separate backend Docker setup, you might need to adjust it or use `docker-compose.yml` if it's configured for backend services.
-
-*Note: The provided `Dockerfile.dev` in `apps/backend` seems to be misconfigured or intended for a different purpose as its `CMD` tries to run `apps/frontend`.*
-If you intend to run the backend in development using Docker, you would typically use a command like:
+**For Production:**
 
 ```bash
-# (Assuming docker-compose.yml is set up for the backend service)
-# docker-compose up backend_service_name
+# From the backend directory (h:\Fullstack\My\Bun\mono\apps\backend)
+docker build -t @mono/backend:latest .
 ```
 
-Or build and run the dev Docker image directly (after correcting `Dockerfile.dev` if needed for backend):
+**For Development:**
 
 ```bash
-# Example if Dockerfile.dev was for backend:
-# docker build -t mono-backend-dev -f Dockerfile.dev ../../
-# docker run -p <HOST_PORT>:<VITE_API_PORT> -v $(pwd)/src:/app/apps/backend/src mono-backend-dev
+# From the backend directory (h:\Fullstack\My\Bun\mono\apps\backend)
+docker build -t @mono/backend:dev --build-arg NODE_ENV=development .
 ```
 
-### Production with Docker
+**For CI/CD (with metadata):**
 
-The `Dockerfile.prod` is used to build a production-ready image for the backend.
+```bash
+docker build -t @mono/backend:$(git rev-parse --short HEAD) \
+  --build-arg BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
+  --build-arg GIT_COMMIT=$(git rev-parse HEAD) \
+  --build-arg GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD) \
+  .
+```
 
-1. **Build the image:**
-    From the monorepo root (`h:\Fullstack\My\Bun\mono`):
+### Running the Container
 
-    ```bash
-    docker build -t mono-backend-prod -f ./apps/backend/Dockerfile.prod .
-    ```
+**Production:**
 
-2. **Run the container:**
+```bash
+docker run -d -p 3000:3000 --name backend-prod @mono/backend:latest
+```
 
-    ```bash
-    docker run -p <HOST_PORT>:<VITE_API_PORT> --env-file ./apps/backend/.env.production mono-backend-prod
-    ```
+**Development (with volume mounts for live reload):**
 
-    (Ensure you have a `.env.production` file or pass environment variables accordingly.)
+```bash
+docker run -d -p 3000:3000 \
+  -v ./src:/app/src \
+  -v ./package.json:/app/package.json \
+  -v ./bun.lockb:/app/bun.lockb \
+  --name backend-dev @mono/backend:dev
+```
 
-The production Docker image uses a multi-stage build to create a small and optimized runtime image.
+**With custom environment variables:**
+
+```bash
+docker run -d -p 3000:3000 \
+  -e NODE_ENV=production \
+  -e PORT=3000 \
+  --name backend @mono/backend:latest
+```
+
+The Dockerfile uses a multi-stage build with optimizations for both development and production environments, including proper caching, minimal dependencies, and security best practices.
 
 ## Project Structure
 
@@ -190,8 +204,7 @@ A brief overview of the key directories and files:
 
 ```plaintext
 mono/apps/backend/
-├── Dockerfile.dev        # Docker configuration for development (currently points to frontend)
-├── Dockerfile.prod       # Docker configuration for production
+├── Dockerfile            # Docker configuration
 ├── README.md             # This file
 ├── README.ua.md          # Ukrainian version of this file
 ├── build.ts              # Bun build script

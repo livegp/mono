@@ -21,8 +21,8 @@ Frontend for the Mono project, built with React, Vite, and Bun. This application
   - [Environment Variables](#environment-variables)
 - [Vite Configuration](#vite-configuration)
 - [Docker](#docker)
-  - [Development with Docker](#development-with-docker)
-  - [Production with Docker](#production-with-docker)
+  - [Building the Image](#building-the-image)
+  - [Running the Container](#running-the-container)
 - [Project Structure](#project-structure)
 - [License](#license)
 
@@ -166,85 +166,100 @@ The `vite.config.ts` file configures the Vite build tool and its plugins. Key pl
 
 ## Docker
 
-This project includes Dockerfiles for containerizing the frontend application.
+This project uses a single optimized Dockerfile that can build both development and production images based on the `NODE_ENV` build argument.
 
-### Development with Docker
+### Building the Image
 
-The `Dockerfile.dev` is configured for a development environment:
-
-- Uses the `oven/bun:latest` base image.
-- Copies `package.json`, `bun.lockb`, `packages/` and `apps/frontend/`.
-- Installs dependencies using `bun install`.
-- The default command is `bun run --cwd apps/frontend dev` to start the Vite development server.
-
-To build and run:
+**For Production:**
 
 ```bash
-# From the monorepo root (h:\Fullstack\My\Bun\mono)
-docker build -t mono-frontend-dev -f ./apps/frontend/Dockerfile.dev .
-docker run -p 5173:5173 -v ./apps/frontend/src:/app/apps/frontend/src mono-frontend-dev
+# From the frontend directory (h:\Fullstack\My\Bun\mono\apps\frontend)
+docker build -t @mono/frontend:latest .
 ```
 
-(Adjust port mapping and volume mounts as needed.)
-
-### Production with Docker
-
-The `Dockerfile.prod` is used to build a production-ready image for the frontend:
-
-- **Stage 1 (Builder):**
-  - Uses `oven/bun:latest`.
-  - Copies necessary files and installs dependencies.
-  - Builds the frontend application using `bun run --cwd ./apps/frontend build`. The output is in `/app/apps/frontend/dist`.
-- **Stage 2 (Runner):**
-  - Uses the slimmer `oven/bun:slim` base image.
-  - Copies the `dist` directory from the builder stage.
-  - Installs `serve` (a static file server).
-  - The default command is `bun x serve dist --listen 0.0.0.0:3000` to serve the static files.
-
-To build and run:
+**For Development:**
 
 ```bash
-# From the monorepo root (h:\Fullstack\My\Bun\mono)
-docker build -t mono-frontend-prod -f ./apps/frontend/Dockerfile.prod .
-docker run -p 80:3000 mono-frontend-prod
+# From the frontend directory (h:\Fullstack\My\Bun\mono\apps\frontend)
+docker build -t @mono/frontend:dev --build-arg NODE_ENV=development .
 ```
 
-(Adjust port mapping as needed. You might also need to pass environment variables if your static build relies on them at runtime, though typically they are baked in at build time for frontend apps.)
+**For CI/CD (with metadata):**
+
+```bash
+docker build -t @mono/frontend:$(git rev-parse --short HEAD) \
+  --build-arg BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
+  --build-arg GIT_COMMIT=$(git rev-parse HEAD) \
+  --build-arg GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD) \
+  .
+```
+
+### Running the Container
+
+**Production:**
+
+```bash
+docker run -d -p 5173:5173 --name frontend-prod @mono/frontend:latest
+```
+
+**Development (with volume mounts for live reload):**
+
+```bash
+docker run -d -p 5173:5173 \
+  -v ./src:/app/src \
+  -v ./public:/app/public \
+  -v ./index.html:/app/index.html \
+  -v ./vite.config.ts:/app/vite.config.ts \
+  -v ./tsconfig.json:/app/tsconfig.json \
+  -v ./package.json:/app/package.json \
+  -v ./bun.lockb:/app/bun.lockb \
+  --name frontend-dev @mono/frontend:dev
+```
+
+**With custom environment variables:**
+
+```bash
+docker run -d -p 5173:5173 \
+  -e NODE_ENV=production \
+  -e PORT=5173 \
+  --name frontend @mono/frontend:latest
+```
+
+The Dockerfile uses a multi-stage build with optimizations for both development and production environments, including proper caching, minimal dependencies, and security best practices.
 
 ## Project Structure
 
-A brief overview of the key directories and files in `apps/frontend/`:
+A brief overview of the key directories and files:
 
 ```plaintext
 mono/apps/frontend/
-├── .gitignore          # Specifies intentionally untracked files that Git should ignore.
-├── 404.html            # Custom 404 page, often used for SPA routing on services like GitHub Pages.
-├── Dockerfile.dev      # Docker configuration for the development environment.
-├── Dockerfile.prod     # Docker configuration for the production environment.
-├── README.md           # This file (English documentation).
-├── README.ua.md        # Ukrainian version of this file.
+├── 404.html            # Custom 404 page for SPA routing
+├── Dockerfile          # Docker configuration
+├── README.md           # This file
+├── README.ua.md        # Ukrainian version of this file
 ├── config/
-│   └── env.ts          # Schema definition for environment variable validation (Valibot).
-├── index.html          # Main HTML entry point for the Vite application.
-├── package.json        # Project metadata, dependencies, and scripts.
-├── public/             # Static assets that are copied directly to the build output.
-│   └── vite.svg        # Example static asset.
+│   └── env.ts          # Schema definition for environment variable validation (Valibot)
+├── index.html          # Main HTML entry point for the Vite application
+├── package.json        # Project metadata, dependencies, and scripts
+├── public/             # Static assets that are copied directly to the build output
+│   └── vite.svg        # Example static asset
 ├── src/
-│   ├── App.css         # CSS styles for the main App component.
-│   ├── App.tsx         # Main React application component.
-│   ├── assets/         # Static assets like images, icons, fonts.
-│   │   ├── icons/      # SVG icons (e.g., for spritemaps or favicons).
-│   │   ├── img/        # Image files.
-│   │   └── react.svg   # React logo asset.
-│   ├── index.css       # Global CSS styles.
-│   ├── lib/            # Utility functions, libraries, or client configurations.
-│   │   └── eden.ts     # Eden Treaty client setup for backend API interaction.
-│   ├── main.tsx        # Main entry point for the React application (renders the root component).
-│   └── vite-env.d.ts   # TypeScript definitions for Vite-specific environment variables.
-├── tsconfig.app.json   # TypeScript configuration specific to the application code (src).
-├── tsconfig.json       # Root TypeScript configuration, often referencing other tsconfig files.
-├── tsconfig.node.json  # TypeScript configuration for Node.js-specific files (e.g., vite.config.ts).
-└── vite.config.ts      # Vite build tool configuration.
+│   ├── App.css         # CSS styles for the main App component
+│   ├── App.tsx         # Main React application component
+│   ├── assets/         # Static assets like images, icons, fonts
+│   │   ├── icons/      # SVG icons (e.g., for spritemaps or favicons)
+│   │   ├── img/        # Image files
+│   │   └── react.svg   # React logo asset
+│   ├── index.css       # Global CSS styles
+│   ├── lib/            # Utility functions, libraries, or client configurations
+│   │   └── eden.ts     # Eden Treaty client setup for backend API interaction
+│   ├── main.tsx        # Main entry point for the React application
+│   └── vite-env.d.ts   # TypeScript definitions for Vite-specific environment variables
+├── tsconfig.app.json   # TypeScript configuration specific to the application code (src)
+├── tsconfig.json       # Root TypeScript configuration, often referencing other tsconfig files
+├── tsconfig.node.json  # TypeScript configuration for Node.js specific files (e.g., vite.config.ts)
+├── vite.config.ts      # Vite configuration file
+└── dist/               # Output directory for production builds (generated)
 ```
 
 ## License

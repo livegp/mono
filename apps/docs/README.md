@@ -1,17 +1,48 @@
-
 # @mono/docs
 
 🌍 [**Читати українською**](README.ua.md)
 
+Documentation hub for the Mono project, built with React, TypeScript, Vite, and Storybook. This application provides a comprehensive guide to the components and functionalities within the Mono ecosystem.
+
+## Table of Contents
+
+- [About The Project](#about-the-project)
+- [Built With](#built-with)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+  - [Development Server](#development-server)
+  - [Storybook Development Server](#storybook-development-server)
+  - [Building for Production](#building-for-production)
+  - [Preview Production Build](#preview-production-build)
+  - [Linting and Type Checking](#linting-and-type-checking)
+- [Docker](#docker)
+  - [Building the Image](#building-the-image)
+  - [Running the Container](#running-the-container)
+- [Project Structure](#project-structure)
+- [Storybook Configuration](#storybook-configuration)
+- [License](#license)
+
+## About The Project
+
 This project serves as the documentation hub for the Mono monorepo, built with React, TypeScript, Vite, and Storybook. It provides a comprehensive guide to the components and functionalities within the Mono ecosystem.
 
-## Technologies Used
+Key features include:
 
-- **React 19:** A JavaScript library for building user interfaces.
-- **TypeScript:** A typed superset of JavaScript that compiles to plain JavaScript.
-- **Vite:** A fast build tool and development server.
-- **Storybook:** An open-source tool for building UI components and pages in isolation.
-- **Bun:** Used for running scripts (via `bunx`).
+- Interactive component documentation with Storybook.
+- Fast development and build times powered by Vite and Bun.
+- Comprehensive UI component library documentation.
+- Isolated component development environment.
+- MDX support for rich documentation pages.
+
+## Built With
+
+- [Bun](https://bun.sh/) - JavaScript runtime & toolkit
+- [Vite](https://vitejs.dev/) - Frontend build tool
+- [React](https://react.dev/) - JavaScript library for building user interfaces
+- [TypeScript](https://www.typescriptlang.org/) - Typed JavaScript
+- [Storybook](https://storybook.js.org/) - Tool for building UI components and pages in isolation
 
 ## Getting Started
 
@@ -48,7 +79,7 @@ bun run dev
 
 This will typically start the server on `http://localhost:5173` (or the next available port).
 
-### Storybook
+### Storybook Development Server
 
 To start the Storybook development server:
 
@@ -56,52 +87,132 @@ To start the Storybook development server:
 bun run storybook
 ```
 
-This will typically start Storybook on `http://localhost:6006`.
+This will start Storybook on `http://localhost:6006` (or the next available port). Storybook provides an isolated environment to develop and test UI components.
 
-### Build
+### Building for Production
 
-To build the application for production:
+To build the main application for production:
 
 ```bash
 bun run build
 ```
 
-The production-ready files will be placed in the `dist` directory.
+The built files will be output to the `dist/` directory.
 
-To build Storybook for deployment:
+To build Storybook for production:
 
 ```bash
 bun run build-storybook
 ```
 
-The static Storybook files will be placed in the `storybook-static` directory.
+The built Storybook will be output to the `storybook-static/` directory.
 
 ### Preview Production Build
 
-To preview the production build locally (after running `bun run build`):
+To preview the production build locally:
 
 ```bash
 bun run preview
 ```
 
-### Type Checking
+This serves the built files from the `dist/` directory.
 
-To perform a TypeScript type check:
+### Linting and Type Checking
+
+To run the linter:
 
 ```bash
-bun run check-types
+bun run lint
 ```
+
+To run TypeScript type checking:
+
+```bash
+bun run type-check
+```
+
+## Docker
+
+This project uses a single optimized Dockerfile that can build both development and production images based on the `NODE_ENV` build argument.
+
+### Building the Image
+
+**For Production:**
+
+```bash
+# From the docs directory (h:\Fullstack\My\Bun\mono\apps\docs)
+docker build -t @mono/docs:latest .
+```
+
+**For Development:**
+
+```bash
+# From the docs directory (h:\Fullstack\My\Bun\mono\apps\docs)
+docker build -t @mono/docs:dev --build-arg NODE_ENV=development .
+```
+
+**For CI/CD (with metadata):**
+
+```bash
+docker build -t @mono/docs:$(git rev-parse --short HEAD) \
+  --build-arg BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
+  --build-arg GIT_COMMIT=$(git rev-parse HEAD) \
+  --build-arg GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD) \
+  .
+```
+
+### Running the Container
+
+**Production:**
+
+```bash
+docker run -d -p 6006:6006 --name docs-prod @mono/docs:latest
+```
+
+**Development (with volume mounts for live reload):**
+
+```bash
+docker run -d -p 6006:6006 \
+  -v ./src:/app/src \
+  -v ./public:/app/public \
+  -v ./.storybook:/app/.storybook \
+  -v ./package.json:/app/package.json \
+  -v ./bun.lockb:/app/bun.lockb \
+  --name docs-dev @mono/docs:dev
+```
+
+**With custom environment variables:**
+
+```bash
+docker run -d -p 6006:6006 \
+  -e NODE_ENV=production \
+  -e PORT=6006 \
+  --name docs @mono/docs:latest
+```
+
+The Dockerfile uses a multi-stage build with optimizations for both development and production environments, including proper caching, minimal dependencies, and security best practices.
 
 ## Project Structure
 
+A brief overview of the key directories and files:
+
 ```plaintext
 mono/apps/docs/
-├── .storybook/             # Storybook configuration files
-│   ├── main.ts             # Main Storybook configuration (addons, stories location)
+├── .storybook/             # Storybook configuration directory
+│   ├── main.ts             # Main Storybook configuration (stories location, addons, framework)
 │   └── preview.ts          # Storybook preview configuration (global decorators, parameters)
+├── Dockerfile              # Docker configuration
+├── README.md               # This file
+├── README.ua.md            # Ukrainian version of this file
+├── index.html              # Main HTML file for the Vite application
+├── package.json            # Project metadata, dependencies, and scripts
 ├── public/                 # Static assets (e.g., vite.svg)
 ├── src/
+│   ├── App.css             # Styles for the main App component
+│   ├── App.tsx             # Main React application component
 │   ├── assets/             # Static assets used by components (e.g., react.svg)
+│   ├── index.css           # Global styles
+│   ├── main.tsx            # Entry point of the React application
 │   ├── stories/            # Storybook stories and related component files
 │   │   ├── Button.stories.ts # Stories for the Button component
 │   │   ├── Button.tsx        # Button component implementation
@@ -111,37 +222,35 @@ mono/apps/docs/
 │   │   ├── Page.stories.ts   # Stories for the Page component
 │   │   ├── Page.tsx          # Page component implementation
 │   │   └── ...               # Other stories and assets
-│   ├── App.css             # Styles for the main App component
-│   ├── App.tsx             # Main React application component
-│   ├── index.css           # Global styles
-│   ├── main.tsx            # Entry point of the React application
 │   └── vite-env.d.ts       # TypeScript definitions for Vite environment variables
-├── .gitignore              # Specifies intentionally untracked files that Git should ignore
-├── README.md               # This file (English documentation)
-├── README.ua.md            # Ukrainian version of the documentation
-├── index.html              # Main HTML file for the Vite application
-├── package.json            # Project metadata, dependencies, and scripts
 ├── tsconfig.app.json       # TypeScript configuration for the application code (src)
 ├── tsconfig.json           # Root TypeScript configuration, references other tsconfig files
 ├── tsconfig.node.json      # TypeScript configuration for Node.js specific files (e.g., vite.config.ts)
-└── vite.config.ts          # Vite configuration file
+├── vite.config.ts          # Vite configuration file
+└── storybook-static/       # Output directory for Storybook builds (generated)
 ```
 
 ### Key Files and Directories
 
-- **`package.json`**: Defines project scripts (`dev`, `build`, `storybook`, etc.) and dependencies (React, Vite, Storybook, TypeScript).
-- **`vite.config.ts`**: Configures Vite, primarily enabling the React plugin.
-- **`src/main.tsx`**: The entry point for the React application, where the root component (`App`) is rendered.
-- **`src/App.tsx`**: The main application component.
-- **`.storybook/main.ts`**: Configures Storybook, specifying where to find stories and which addons to use (e.g., `@storybook/addon-docs`).
-- **`src/stories/`**: Contains all Storybook stories (`*.stories.ts` or `*.stories.tsx`) and the components they document. MDX files (`*.mdx`) can also be used for documentation pages.
+- **`.storybook/`**: Contains Storybook configuration files.
+  - **`main.ts`**: Main configuration file that defines where stories are located, which addons to use, and the framework.
+  - **`preview.ts`**: Configuration for the Storybook preview, including global decorators and parameters.
+- **`src/stories/`**: Contains all the Storybook stories and related component files.
+  - **`*.stories.ts`**: Story files that define how components should be displayed in Storybook.
+  - **`*.tsx`**: Component implementations.
+  - **`Configure.mdx`**: MDX file for documentation pages within Storybook.
+- **`vite.config.ts`**: Vite configuration file that sets up the build tool and development server.
+- **`package.json`**: Contains project metadata, dependencies, and scripts for running various tasks.
 
-## Storybook Configuration (`.storybook/main.ts`)
+## Storybook Configuration
 
-The Storybook configuration specifies:
+The Storybook configuration is located in the `.storybook/` directory:
 
-- **Stories Location**: `../src/**/*.mdx` and `../src/**/*.stories.@(js|jsx|mjs|ts|tsx)` tells Storybook to look for stories and MDX documentation files within the `src` directory.
-- **Addons**: Includes `@storybook/addon-onboarding` and `@storybook/addon-docs` for enhanced documentation capabilities.
-- **Framework**: Uses `@storybook/react-vite` to integrate Storybook with a Vite-based React project.
+- **`main.ts`**: Defines the stories location, addons, and framework configuration
+- **`preview.ts`**: Sets up global decorators, parameters, and preview settings
 
-This setup allows for efficient development and documentation of UI components in isolation, leveraging the speed of Vite and the power of Storybook.
+Storybook provides an isolated environment for developing and testing UI components. It automatically discovers story files matching the pattern `**/*.stories.@(js|jsx|ts|tsx|mdx)` in the `src` directory.
+
+## License
+
+This project is part of the Mono monorepo. See the main repository for license information.

@@ -21,8 +21,8 @@
   - [Змінні середовища](#змінні-середовища)
 - [Конфігурація Vite](#конфігурація-vite)
 - [Docker](#docker)
-  - [Розробка з Docker](#розробка-з-docker)
-  - [Продакшен з Docker](#продакшен-з-docker)
+  - [Збірка образу](#збірка-образу)
+  - [Запуск контейнера](#запуск-контейнера)
 - [Структура проєкту](#структура-проєкту)
 - [Ліцензія](#ліцензія)
 
@@ -166,50 +166,65 @@ VITE_CORS_ORIGIN=http://localhost:5173
 
 ## Docker
 
-Цей проєкт містить Dockerfiles для контейнеризації фронтенд-застосунку.
+Цей проєкт включає Dockerfile для контейнеризації застосунку.
 
-### Розробка з Docker
+### Збірка образу
 
-`Dockerfile.dev` налаштований для середовища розробки:
-
-- Використовує базовий образ `oven/bun:latest`.
-- Копіює `package.json`, `bun.lockb`, `packages/` та `apps/frontend/`.
-- Встановлює залежності за допомогою `bun install`.
-- Команда за замовчуванням `bun run --cwd apps/frontend dev` для запуску сервера розробки Vite.
-
-Щоб зібрати та запустити:
+**Для продакшену:**
 
 ```bash
-# З кореня монорепозиторію (h:\Fullstack\My\Bun\mono)
-docker build -t mono-frontend-dev -f ./apps/frontend/Dockerfile.dev .
-docker run -p 5173:5173 -v ./apps/frontend/src:/app/apps/frontend/src mono-frontend-dev
+# З каталогу frontend (h:\Fullstack\My\Bun\mono\apps\frontend)
+docker build -t @mono/frontend:latest .
 ```
 
-(За потреби налаштуйте відображення портів та монтування томів.)
-
-### Продакшен з Docker
-
-`Dockerfile.prod` використовується для створення готового до продакшену образу для фронтенду:
-
-- **Етап 1 (Builder):**
-  - Використовує `oven/bun:latest`.
-  - Копіює необхідні файли та встановлює залежності.
-  - Збирає фронтенд-застосунок за допомогою `bun run --cwd ./apps/frontend build`. Результат знаходиться в `/app/apps/frontend/dist`.
-- **Етап 2 (Runner):**
-  - Використовує менший базовий образ `oven/bun:slim`.
-  - Копіює каталог `dist` з етапу збірки.
-  - Встановлює `serve` (сервер статичних файлів).
-  - Команда за замовчуванням `bun x serve dist --listen 0.0.0.0:3000` для обслуговування статичних файлів.
-
-Щоб зібрати та запустити:
+**Для розробки:**
 
 ```bash
-# З кореня монорепозиторію (h:\Fullstack\My\Bun\mono)
-docker build -t mono-frontend-prod -f ./apps/frontend/Dockerfile.prod .
-docker run -p 80:3000 mono-frontend-prod
+# З каталогу frontend (h:\Fullstack\My\Bun\mono\apps\frontend)
+docker build -t @mono/frontend:dev --build-arg NODE_ENV=development .
 ```
 
-(За потреби налаштуйте відображення портів. Вам також може знадобитися передати змінні середовища, якщо ваша статична збірка залежить від них під час виконання, хоча зазвичай вони вбудовуються під час збірки для фронтенд-застосунків.)
+**Для CI/CD (з метаданими):**
+
+```bash
+docker build -t @mono/frontend:$(git rev-parse --short HEAD) \
+  --build-arg BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
+  --build-arg GIT_COMMIT=$(git rev-parse HEAD) \
+  --build-arg GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD) \
+  .
+```
+
+### Запуск контейнера
+
+**Продакшен:**
+
+```bash
+docker run -d -p 4173:4173 --name frontend-prod @mono/frontend:latest
+```
+
+**Розробка (з монтуванням томів для живого перезавантаження):**
+
+```bash
+docker run -d -p 5173:5173 \
+  -v ./src:/app/src \
+  -v ./public:/app/public \
+  -v ./index.html:/app/index.html \
+  -v ./vite.config.ts:/app/vite.config.ts \
+  -v ./package.json:/app/package.json \
+  -v ./bun.lockb:/app/bun.lockb \
+  --name frontend-dev @mono/frontend:dev
+```
+
+**З користувацькими змінними середовища:**
+
+```bash
+docker run -d -p 4173:4173 \
+  -e NODE_ENV=production \
+  -e PORT=4173 \
+  --name frontend @mono/frontend:latest
+```
+
+Dockerfile використовує багатоетапну збірку з оптимізаціями для середовищ розробки та продакшену, включаючи належне кешування, мінімальні залежності та найкращі практики безпеки.
 
 ## Структура проєкту
 

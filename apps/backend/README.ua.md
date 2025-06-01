@@ -20,8 +20,8 @@
 - [Конфігурація](#конфігурація)
   - [Змінні середовища](#змінні-середовища)
 - [Docker](#docker)
-  - [Розробка з Docker](#розробка-з-docker)
-  - [Продакшен з Docker](#продакшен-з-docker)
+  - [Збірка образу](#збірка-образу)
+  - [Запуск контейнера](#запуск-контейнера)
 - [Структура проєкту](#структура-проєкту)
 - [Ліцензія](#ліцензія)
 
@@ -141,48 +141,62 @@ NODE_ENV=development
 
 ## Docker
 
-Цей проєкт містить Dockerfiles для контейнеризації.
+Цей проєкт включає Dockerfile для контейнеризації застосунку.
 
-### Розробка з Docker
+### Збірка образу
 
-`Dockerfile.dev` налаштований для запуску фронтенд-застосунку (згідно з його CMD). Щоб адаптувати його для розробки бекенду або використовувати окрему Docker-конфігурацію для бекенду, вам може знадобитися змінити його або використовувати `docker-compose.yml`, якщо він налаштований для сервісів бекенду.
-
-*Примітка: Наданий `Dockerfile.dev` у `apps/backend`, схоже, неправильно налаштований або призначений для іншої мети, оскільки його `CMD` намагається запустити `apps/frontend`.*
-Якщо ви маєте намір запускати бекенд у режимі розробки за допомогою Docker, ви зазвичай використовуєте команду на кшталт:
+**Для продакшену:**
 
 ```bash
-# (Припускаючи, що docker-compose.yml налаштований для сервісу бекенду)
-# docker-compose up backend_service_name
+# З каталогу backend (h:\Fullstack\My\Bun\mono\apps\backend)
+docker build -t @mono/backend:latest .
 ```
 
-Або зібрати та запустити dev Docker-образ напряму (після виправлення `Dockerfile.dev`, якщо потрібно для бекенду):
+**Для розробки:**
 
 ```bash
-# Приклад, якби Dockerfile.dev був для бекенду:
-# docker build -t mono-backend-dev -f Dockerfile.dev ../../
-# docker run -p <HOST_PORT>:<VITE_API_PORT> -v $(pwd)/src:/app/apps/backend/src mono-backend-dev
+# З каталогу backend (h:\Fullstack\My\Bun\mono\apps\backend)
+docker build -t @mono/backend:dev --build-arg NODE_ENV=development .
 ```
 
-### Продакшен з Docker
+**Для CI/CD (з метаданими):**
 
-`Dockerfile.prod` використовується для створення готового до продакшену образу для бекенду.
+```bash
+docker build -t @mono/backend:$(git rev-parse --short HEAD) \
+  --build-arg BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
+  --build-arg GIT_COMMIT=$(git rev-parse HEAD) \
+  --build-arg GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD) \
+  .
+```
 
-1. **Зібрати образ:**
-    З кореня монорепозиторію (`h:\Fullstack\My\Bun\mono`):
+### Запуск контейнера
 
-    ```bash
-    docker build -t mono-backend-prod -f ./apps/backend/Dockerfile.prod .
-    ```
+**Продакшен:**
 
-2. **Запустити контейнер:**
+```bash
+docker run -d -p 3000:3000 --name backend-prod @mono/backend:latest
+```
 
-    ```bash
-    docker run -p <HOST_PORT>:<VITE_API_PORT> --env-file ./apps/backend/.env.production mono-backend-prod
-    ```
+**Розробка (з монтуванням томів для живого перезавантаження):**
 
-    (Переконайтеся, що у вас є файл `.env.production` або передайте змінні середовища відповідним чином.)
+```bash
+docker run -d -p 3000:3000 \
+  -v ./src:/app/src \
+  -v ./package.json:/app/package.json \
+  -v ./bun.lockb:/app/bun.lockb \
+  --name backend-dev @mono/backend:dev
+```
 
-Продакшен Docker-образ використовує багатоетапну збірку для створення малого та оптимізованого образу для виконання.
+**З користувацькими змінними середовища:**
+
+```bash
+docker run -d -p 3000:3000 \
+  -e NODE_ENV=production \
+  -e PORT=3000 \
+  --name backend @mono/backend:latest
+```
+
+Dockerfile використовує багатоетапну збірку з оптимізаціями для середовищ розробки та продакшену, включаючи належне кешування, мінімальні залежності та найкращі практики безпеки.
 
 ## Структура проєкту
 
