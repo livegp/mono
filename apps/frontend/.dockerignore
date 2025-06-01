@@ -2,20 +2,62 @@
 node_modules/
 .pnp
 .pnp.js
+bun.lock
 
 # Build outputs
 dist/
 build/
 .turbo/
+*.tsbuildinfo
+
+# Development files
+src/**/*.test.ts
+src/**/*.test.tsx
+src/**/*.spec.ts
+src/**/*.spec.tsx
+__tests__
+__mocks__
+storybook-static/
 
 # Logs
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log*
 bun-debug.log*
-bun-error.log*
 logs
 *.log
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git files
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+README*
+docs/
+
+# Testing
+coverage/
+.nyc_output
+test-results/
 
 # Temporary files
 .tmp/
@@ -23,46 +65,20 @@ logs
 *.tmp
 *.temp
 
-# Environment variables
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Documentation
-*.md
-README*
-
-# Git
-.git
-.gitignore
-.gitattributes
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# OS
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# Docker
+# Docker files
 Dockerfile*
 .dockerignore
 
-# Testing
-coverage/
-.nyc_output
+# CI/CD
+.github
+.gitlab-ci.yml
+.travis.yml
 
-# Vite specific
+# Package manager files
+yarn.lock
+package-lock.json
+
+# Static analysis
+.eslintcache
 .vite/
 vite.config.ts.timestamp-*

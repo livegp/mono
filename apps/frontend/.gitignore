@@ -1,6 +1,52 @@
-**/node_modules/
-**/dist/
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Build outputs (exclude from context, but keep for copying between stages)
+# dist
+# build
+# storybook-static
+
+# Development
+.turbo
+*.tsbuildinfo
+
+# Logs
+*.log
+logs
+npm-debug.log*
+yarn-debug.log*
+bun-debug.log*
+
+# Environment
 .env*
 !.env.example
-*.tsbuildinfo
-*.log
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore
+
+# Documentation (keep for production builds)
+# README.md
+# README.ua.md
+
+# Testing
+coverage
+.nyc_output
+
+# Temporary
+.tmp
+.temp
+*.tmp
+*.temp

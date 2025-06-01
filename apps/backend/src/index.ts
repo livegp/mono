@@ -1,4 +1,4 @@
-import { cors } from "@elysiajs/cors";
+import { cors } from '@elysiajs/cors'
 import { opentelemetry } from '@elysiajs/opentelemetry'
 import { swagger } from "@elysiajs/swagger";
 import { env } from "@yolk-oss/elysia-env";
@@ -16,6 +16,13 @@ const app = new Elysia()
   .use(cors())
   .use(elysiaHelmet(helmetConfig))
   .use(swagger(swaggerConfig))
+  // Health check endpoint
+  .get('/api/health', () => ({
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    environment: process.env.NODE_ENV || 'development'
+  }))
   .use(greetRouter)
   .onError(({ code, error, set }) => {
     console.error(`Error [${code}]:`, error);

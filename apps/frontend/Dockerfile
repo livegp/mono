@@ -1,62 +1,96 @@
-# Аргументи збірки
+# syntax=docker/dockerfile:1
+
+# Build arguments
 ARG BUN_VERSION=alpine
 ARG NODE_ENV=production
 ARG PORT=3000
 ARG USER_ID=1001
 ARG GROUP_ID=1001
 
-# Базовий етап
+# Base stage
 FROM oven/bun:${BUN_VERSION} AS base
+
+# Metadata labels
+LABEL org.opencontainers.image.title="Frontend Application"
+LABEL org.opencontainers.image.description="React-based frontend application with Vite"
+LABEL org.opencontainers.image.version="1.0.0"
+LABEL org.opencontainers.image.authors="Development Team"
+LABEL org.opencontainers.image.vendor="Your Organization"
+LABEL org.opencontainers.image.licenses="MIT"
+LABEL org.opencontainers.image.url="https://github.com/your-org/your-repo"
+LABEL org.opencontainers.image.source="https://github.com/your-org/your-repo"
+LABEL org.opencontainers.image.documentation="https://github.com/your-org/your-repo#readme"
+LABEL org.opencontainers.image.created="${BUILD_DATE}"
+LABEL org.opencontainers.image.revision="${GIT_COMMIT}"
+LABEL maintainer="your-email@example.com"
+LABEL security.non-root="true"
+LABEL security.user="frontenduser"
+LABEL security.group="frontendgroup"
+LABEL security.scan-policy="required"
+LABEL app.name="frontend"
+LABEL app.component="web-ui"
+LABEL app.part-of="monorepo"
+LABEL app.version="1.0.0"
+LABEL app.environment="${NODE_ENV}"
+
 WORKDIR /app
 
-# Етап встановлення залежностей
-FROM base AS install
+# Dependencies stage
+FROM base AS deps
 
-# Копіювання файлів залежностей з кореня монорепо
-COPY ../../package.json ../../bun.lock* ../../
-COPY ../../packages ../../packages
-COPY package.json ./
+COPY ../../package.json ../../bun.lock* ./
+COPY ../../packages/*/package.json ./packages/
+COPY package.json ./apps/frontend/
 
-# Встановлення залежностей
-RUN bun install --frozen-lockfile
+RUN if [ "$NODE_ENV" = "development" ]; then \
+        bun install --frozen-lockfile; \
+    else \
+        bun install --frozen-lockfile --production; \
+    fi
 
-# Встановлення продакшн залежностей окремо
-RUN mkdir -p /temp/prod
-COPY package.json /temp/prod/
-COPY ../../bun.lock* /temp/prod/
-RUN cd /temp/prod && bun install --frozen-lockfile --production
-
-# Етап збірки
-FROM install AS builder
-
-COPY . .
-RUN bun run build
-
-# Продакшн етап
+# Production stage
 FROM base AS production
 
-# Створюємо non-root користувача для безпеки
+RUN apk add --no-cache --virtual .build-deps curl && \
+    apk add --no-cache curl && \
+    apk del .build-deps
+
 RUN addgroup -g ${GROUP_ID} -S frontendgroup && \
-    adduser -u ${USER_ID} -S frontenduser -G frontendgroup
+    adduser -u ${USER_ID} -S frontenduser -G frontendgroup \
+    -h /app -s /sbin/nologin
 
-# Копіювання продакшн залежностей (потрібні для preview)
-COPY --from=install /temp/prod/node_modules ./node_modules
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/packages ./packages
+COPY --chown=frontenduser:frontendgroup . ./apps/frontend
+WORKDIR /app/apps/frontend
 
-# Копіювання зібраних файлів та конфігурації
-COPY --from=builder --chown=frontenduser:frontendgroup /app/dist ./dist
-COPY --from=builder --chown=frontenduser:frontendgroup /app/package.json ./
-COPY --from=builder --chown=frontenduser:frontendgroup /app/vite.config.ts ./
+# Build for production
+RUN if [ "$NODE_ENV" = "production" ]; then \
+        bun run build; \
+    fi
 
-# Змінюємо власника файлів
-RUN chown -R frontenduser:frontendgroup /app
+# Set secure permissions
+RUN chown -R frontenduser:frontendgroup /app && \
+    chmod -R 755 /app && \
+    chmod -R 644 /app/node_modules && \
+    find /app -type d -exec chmod 755 {} \; && \
+    find /app -type f -exec chmod 644 {} \; && \
+    chmod 444 /app/apps/frontend/package.json && \
+    if [ -f "/app/apps/frontend/vite.config.ts" ]; then \
+        chmod 444 /app/apps/frontend/vite.config.ts; \
+    fi
+
 USER frontenduser
-
-# Відкриття порту
 EXPOSE ${PORT}
 
-# Змінні середовища
 ENV NODE_ENV=${NODE_ENV}
 ENV PORT=${PORT}
 
-# Команда запуску
-CMD ["bun", "run", "preview"]
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD curl -f http://localhost:${PORT}/ || exit 1
+
+CMD if [ "$NODE_ENV" = "development" ]; then \
+        bun run dev; \
+    else \
+        bun run preview; \
+    fi
