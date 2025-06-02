@@ -1,5 +1,7 @@
 # syntax=docker/dockerfile:1
 
+# Multi-stage Dockerfile for Frontend Application with Turbo Prune
+
 # Build arguments
 ARG BUN_VERSION=alpine
 ARG NODE_ENV=production
@@ -33,14 +35,21 @@ LABEL app.part-of="monorepo"
 LABEL app.version="1.0.0"
 LABEL app.environment="${NODE_ENV}"
 
+# Install turbo globally
+RUN bun add -g turbo
 WORKDIR /app
+
+# Prune stage - creates minimal workspace
+FROM base AS pruner
+COPY . .
+RUN turbo prune @mono/frontend --docker
 
 # Dependencies stage
 FROM base AS deps
 
-COPY ../../package.json ../../bun.lock* ./
-COPY ../../packages/*/package.json ./packages/
-COPY package.json ./apps/frontend/
+# Copy only necessary files from pruned workspace
+COPY --from=pruner /app/out/json/ .
+COPY --from=pruner /app/out/bun-lock.json ./bun.lock
 
 RUN if [ "$NODE_ENV" = "development" ]; then \
         bun install --frozen-lockfile; \
@@ -49,6 +58,12 @@ RUN if [ "$NODE_ENV" = "development" ]; then \
     fi
 
 # Production stage
+# Build stage
+FROM base AS builder
+COPY --from=pruner /app/out/full/ .
+COPY --from=deps /app/node_modules ./node_modules
+RUN turbo build --filter=@mono/frontend
+
 FROM base AS production
 
 RUN apk add --no-cache --virtual .build-deps curl && \
@@ -59,15 +74,13 @@ RUN addgroup -g ${GROUP_ID} -S frontendgroup && \
     adduser -u ${USER_ID} -S frontenduser -G frontendgroup \
     -h /app -s /sbin/nologin
 
+# Copy built application and dependencies
+COPY --from=builder /app/apps/frontend/dist ./dist
+COPY --from=builder /app/apps/frontend/package.json ./package.json
 COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/packages ./packages
-COPY --chown=frontenduser:frontendgroup . ./apps/frontend
-WORKDIR /app/apps/frontend
 
-# Build for production
-RUN if [ "$NODE_ENV" = "production" ]; then \
-        bun run build; \
-    fi
+# Set working directory to app root
+WORKDIR /app
 
 # Set secure permissions
 RUN chown -R frontenduser:frontendgroup /app && \
@@ -75,10 +88,7 @@ RUN chown -R frontenduser:frontendgroup /app && \
     chmod -R 644 /app/node_modules && \
     find /app -type d -exec chmod 755 {} \; && \
     find /app -type f -exec chmod 644 {} \; && \
-    chmod 444 /app/apps/frontend/package.json && \
-    if [ -f "/app/apps/frontend/vite.config.ts" ]; then \
-        chmod 444 /app/apps/frontend/vite.config.ts; \
-    fi
+    chmod 444 /app/package.json
 
 USER frontenduser
 EXPOSE ${PORT}

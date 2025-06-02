@@ -1,5 +1,7 @@
 # syntax=docker/dockerfile:1
 
+# Multi-stage Dockerfile for Docs Application with Turbo Prune
+
 # Build arguments
 ARG BUN_VERSION=alpine
 ARG NODE_ENV=production
@@ -33,14 +35,21 @@ LABEL app.part-of="monorepo"
 LABEL app.version="1.0.0"
 LABEL app.environment="${NODE_ENV}"
 
+# Install turbo globally
+RUN bun add -g turbo
 WORKDIR /app
+
+# Prune stage - creates minimal workspace
+FROM base AS pruner
+COPY . .
+RUN turbo prune @mono/docs --docker
 
 # Dependencies stage
 FROM base AS deps
 
-COPY ../../package.json ../../bun.lock* ./
-COPY ../../packages/*/package.json ./packages/
-COPY package.json ./apps/docs/
+# Copy only necessary files from pruned workspace
+COPY --from=pruner /app/out/json/ .
+COPY --from=pruner /app/out/bun-lock.json ./bun.lock
 
 RUN if [ "$NODE_ENV" = "development" ]; then \
         bun install --frozen-lockfile; \
@@ -49,6 +58,12 @@ RUN if [ "$NODE_ENV" = "development" ]; then \
     fi
 
 # Production stage
+# Build stage
+FROM base AS builder
+COPY --from=pruner /app/out/full/ .
+COPY --from=deps /app/node_modules ./node_modules
+RUN turbo build --filter=@mono/docs
+
 FROM base AS production
 
 RUN apk add --no-cache --virtual .build-deps curl && \
@@ -59,15 +74,13 @@ RUN addgroup -g ${GROUP_ID} -S docsgroup && \
     adduser -u ${USER_ID} -S docsuser -G docsgroup \
     -h /app -s /sbin/nologin
 
+# Copy built application and dependencies
+COPY --from=builder /app/apps/docs/storybook-static ./storybook-static
+COPY --from=builder /app/apps/docs/package.json ./package.json
 COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/packages ./packages
-COPY --chown=docsuser:docsgroup . ./apps/docs
-WORKDIR /app/apps/docs
 
-# Build for production
-RUN if [ "$NODE_ENV" = "production" ]; then \
-        bun run build; \
-    fi
+# Set working directory to app root
+WORKDIR /app
 
 # Set secure permissions
 RUN chown -R docsuser:docsgroup /app && \
@@ -75,7 +88,7 @@ RUN chown -R docsuser:docsgroup /app && \
     chmod -R 644 /app/node_modules && \
     find /app -type d -exec chmod 755 {} \; && \
     find /app -type f -exec chmod 644 {} \; && \
-    chmod 444 /app/apps/docs/package.json
+    chmod 444 /app/package.json
 
 USER docsuser
 EXPOSE ${PORT}

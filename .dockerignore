@@ -1,52 +1,91 @@
 # Dependencies
 node_modules
-.pnp
-.pnp.js
+**/node_modules
 
-# Build outputs (exclude from context, but keep for copying between stages)
-# dist
-# build
-# storybook-static
+# Build outputs
+dist
+build
+.next
+storybook-static
+**/.turbo
 
-# Development
-.turbo
-*.tsbuildinfo
-
-# Logs
-*.log
-logs
-npm-debug.log*
-yarn-debug.log*
-bun-debug.log*
-
-# Environment
+# Development files
+.git
+.gitignore
 .env*
 !.env.example
 
-# IDE
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+bun-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage
+*.lcov
+
+# IDE files
 .vscode
 .idea
 *.swp
 *.swo
+*~
 
-# OS
+# OS generated files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
 
-# Git
-.git
-.gitignore
+# Test files (not needed in Docker)
+**/*.test.*
+**/*.spec.*
+**/__tests__
+**/__mocks__
 
-# Documentation (keep for production builds)
-# README.md
-# README.ua.md
+# Documentation
+*.md
+!README.md
+docs
 
-# Testing
-coverage
-.nyc_output
+# Temporary files
+tmp
+temp
 
-# Temporary
-.tmp
-.temp
-*.tmp
-*.temp
+# Package manager files
+.npm
+.yarn
+.pnp
+.pnp.js
+yarn.lock
+package-lock.json
+
+# Turbo
+.turbo
+
+# Biome
+.biome
+
+# Lefthook
+.lefthook
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

@@ -8,9 +8,9 @@
       "cache": false
     },
     "build": {
-      "inputs": ["$TURBO_DEFAULT$"],
+      "inputs": ["$TURBO_DEFAULT$", "!**/*.test.*", "!**/*.spec.*"],
       "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
+      "outputs": ["dist/**", "build/**", ".next/**", "storybook-static/**"]
     },
     "preview": {
       "dependsOn": ["^build"],

@@ -141,28 +141,31 @@ NODE_ENV=development
 
 ## Docker
 
-This project uses a single optimized Dockerfile that can build both development and production images based on the `NODE_ENV` build argument.
+This project uses an optimized multi-stage Dockerfile with **Turbo Prune** for efficient monorepo builds. The Dockerfile creates minimal workspaces containing only necessary dependencies for faster builds and smaller images.
 
 ### Building the Image
+
+**Important:** All Docker builds must be run from the **monorepo root directory** (`h:\Fullstack\My\Bun\mono`) to enable Turbo Prune functionality.
 
 **For Production:**
 
 ```bash
-# From the backend directory (h:\Fullstack\My\Bun\mono\apps\backend)
-docker build -t @mono/backend:latest .
+# From the monorepo root (h:\Fullstack\My\Bun\mono)
+docker build -f apps/backend/Dockerfile -t @mono/backend:latest .
 ```
 
 **For Development:**
 
 ```bash
-# From the backend directory (h:\Fullstack\My\Bun\mono\apps\backend)
-docker build -t @mono/backend:dev --build-arg NODE_ENV=development .
+# From the monorepo root (h:\Fullstack\My\Bun\mono)
+docker build -f apps/backend/Dockerfile -t @mono/backend:dev --build-arg NODE_ENV=development .
 ```
 
 **For CI/CD (with metadata):**
 
 ```bash
-docker build -t @mono/backend:$(git rev-parse --short HEAD) \
+# From the monorepo root (h:\Fullstack\My\Bun\mono)
+docker build -f apps/backend/Dockerfile -t @mono/backend:$(git rev-parse --short HEAD) \
   --build-arg BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
   --build-arg GIT_COMMIT=$(git rev-parse HEAD) \
   --build-arg GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD) \
@@ -196,7 +199,23 @@ docker run -d -p 3000:3000 \
   --name backend @mono/backend:latest
 ```
 
-The Dockerfile uses a multi-stage build with optimizations for both development and production environments, including proper caching, minimal dependencies, and security best practices.
+### Docker Architecture
+
+The Dockerfile uses a **4-stage build process** optimized for Turborepo monorepos:
+
+1. **Pruner Stage**: Uses `turbo prune @mono/backend --docker` to create a minimal workspace with only necessary dependencies
+2. **Dependencies Stage**: Installs dependencies from the pruned workspace for optimal caching
+3. **Builder Stage**: Builds the application using `turbo build --filter=@mono/backend`
+4. **Production Stage**: Creates the final runtime image with minimal footprint
+
+**Benefits of Turbo Prune:**
+
+- ⚡ **Faster builds** - Only processes relevant files
+- 🗜️ **Smaller images** - Excludes unnecessary packages and files
+- 🚀 **Better caching** - More granular layer invalidation
+- 🎯 **Precise dependencies** - Only includes what's actually needed
+
+The build process includes proper caching, minimal dependencies, and security best practices with non-root user execution.
 
 ## Project Structure
 

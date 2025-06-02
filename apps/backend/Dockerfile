@@ -1,5 +1,7 @@
 # syntax=docker/dockerfile:1
 
+# Multi-stage Dockerfile for Backend API Service with Turbo Prune
+
 # Build arguments
 ARG BUN_VERSION=alpine
 ARG NODE_ENV=production
@@ -33,15 +35,21 @@ LABEL app.part-of="monorepo"
 LABEL app.version="1.0.0"
 LABEL app.environment="${NODE_ENV}"
 
+# Install turbo globally
+RUN bun add -g turbo
 WORKDIR /app
+
+# Prune stage - creates minimal workspace
+FROM base AS pruner
+COPY . .
+RUN turbo prune @mono/backend --docker
 
 # Dependencies stage
 FROM base AS deps
 
-# Copy package files for better caching
-COPY ../../package.json ../../bun.lock* ./
-COPY ../../packages/*/package.json ./packages/
-COPY package.json ./apps/backend/
+# Copy only necessary files from pruned workspace
+COPY --from=pruner /app/out/json/ .
+COPY --from=pruner /app/out/bun-lock.json ./bun.lock
 
 # Install dependencies based on NODE_ENV
 RUN if [ "$NODE_ENV" = "development" ]; then \
@@ -49,6 +57,12 @@ RUN if [ "$NODE_ENV" = "development" ]; then \
     else \
         bun install --frozen-lockfile --production; \
     fi
+
+# Build stage
+FROM base AS builder
+COPY --from=pruner /app/out/full/ .
+COPY --from=deps /app/node_modules ./node_modules
+RUN turbo build --filter=@mono/backend
 
 # Production stage
 FROM base AS production
@@ -63,18 +77,13 @@ RUN addgroup -g ${GROUP_ID} -S backendgroup && \
     adduser -u ${USER_ID} -S backenduser -G backendgroup \
     -h /app -s /sbin/nologin
 
-# Copy dependencies
+# Copy built application and dependencies
+COPY --from=builder /app/apps/backend/dist ./dist
+COPY --from=builder /app/apps/backend/package.json ./package.json
 COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/packages ./packages
 
-# Copy source code
-COPY --chown=backenduser:backendgroup . ./apps/backend
-WORKDIR /app/apps/backend
-
-# Build if production
-RUN if [ "$NODE_ENV" = "production" ]; then \
-        bun run build; \
-    fi
+# Set working directory to app root
+WORKDIR /app
 
 # Set secure file permissions
 RUN chown -R backenduser:backendgroup /app && \
@@ -82,7 +91,7 @@ RUN chown -R backenduser:backendgroup /app && \
     chmod -R 644 /app/node_modules && \
     find /app -type d -exec chmod 755 {} \; && \
     find /app -type f -exec chmod 644 {} \; && \
-    chmod 444 /app/apps/backend/package.json
+    chmod 444 /app/package.json
 
 USER backenduser
 EXPOSE ${PORT}
