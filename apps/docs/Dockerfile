@@ -1,15 +1,22 @@
 # syntax=docker/dockerfile:1
 
-# Multi-stage Dockerfile for Docs Application with Turbo Prune
+# ============================================================================
+# Multi-stage Dockerfile for Frontend Application with Turbo Prune
+# ============================================================================
+
+# use the official Bun image
+# see all versions at https://hub.docker.com/r/oven/bun/tags
 
 # Build arguments
-ARG BUN_VERSION=1.0.25-alpine
+ARG BUN_VERSION=1.2.15-alpine
 ARG NODE_ENV=production
 ARG PORT=6006
 ARG USER_ID=1001
 ARG GROUP_ID=1001
 
-# Base stage
+# ============================================================================
+# STAGE 1: BASE - Common foundation for all stages
+# ============================================================================
 FROM oven/bun:${BUN_VERSION} AS base
 
 # Metadata labels
@@ -22,12 +29,16 @@ LABEL app.name="docs"
 RUN bun add -g turbo
 WORKDIR /app
 
-# Prune stage - creates minimal workspace
+# ============================================================================
+# STAGE 2: PRUNER - Create minimal workspace using Turbo
+# ============================================================================
 FROM base AS pruner
 COPY . .
 RUN turbo prune @mono/docs --docker
 
-# Dependencies stage
+# ============================================================================
+# STAGE 3: DEPENDENCIES - Install only required dependencies
+# ============================================================================
 FROM base AS deps
 
 # Copy only necessary files from pruned workspace
@@ -40,13 +51,16 @@ RUN if [ "$NODE_ENV" = "development" ]; then \
         bun install --frozen-lockfile --production; \
     fi
 
-# Build stage
+# ============================================================================
+# STAGE 4: BUILDER - Compile and build the application
+# ============================================================================
 FROM base AS builder
 COPY --from=pruner /app/out/full/ .
-COPY --from=deps /app/node_modules ./node_modules
-RUN turbo build --filter=@mono/docs
+RUN turbo run build --filter=@mono/docs
 
-# Production stage
+# ============================================================================
+# STAGE 5: PRODUCTION - Final optimized runtime image
+# ============================================================================
 FROM base AS production
 
 # Install curl and create non-root user
@@ -55,17 +69,16 @@ RUN apk add --no-cache curl && \
     adduser -u ${USER_ID} -S docsuser -G docsgroup \
     -h /app -s /sbin/nologin
 
-# Copy built application and dependencies
-COPY --from=builder /app/apps/docs/storybook-static ./storybook-static
-COPY --from=builder /app/apps/docs/package.json ./package.json
-COPY --from=deps /app/node_modules ./node_modules
+# Copy built application and dependencies with correct ownership
+COPY --from=builder --chown=docsuser:docsgroup /app/apps/docs/storybook-static ./storybook-static
+COPY --from=builder --chown=docsuser:docsgroup /app/apps/docs/package.json ./package.json
+COPY --from=deps --chown=docsuser:docsgroup /app/node_modules ./node_modules
 
 # Set working directory to app root
 WORKDIR /app
 
 # Set secure permissions
-RUN chown -R docsuser:docsgroup /app && \
-    find /app -type d -exec chmod 755 {} + && \
+RUN find /app -type d -exec chmod 755 {} + && \
     find /app -type f -exec chmod 644 {} + && \
     chmod 444 /app/package.json
 
@@ -79,7 +92,7 @@ HEALTHCHECK --interval=60s --timeout=5s --start-period=30s --retries=2 \
     CMD curl -f http://localhost:${PORT}/ || exit 1
 
 CMD if [ "$NODE_ENV" = "development" ]; then \
-        bun run dev; \
+        turbo run dev; \
     else \
-        bun run preview; \
+        turbo run preview; \
     fi
