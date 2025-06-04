@@ -7,12 +7,13 @@
 # use the official Bun image
 # see all versions at https://hub.docker.com/r/oven/bun/tags
 
-# Build arguments
+# Build arguments - Global scope for all stages
 ARG BUN_VERSION=1.2.15-alpine
 ARG NODE_ENV=production
 ARG PORT=3000
 ARG USER_ID=1001
 ARG GROUP_ID=1001
+ARG PROJECT
 
 # ============================================================================
 # STAGE 1: BASE - Common foundation for all stages
@@ -20,10 +21,10 @@ ARG GROUP_ID=1001
 FROM oven/bun:${BUN_VERSION} AS base
 
 # Metadata labels
-LABEL org.opencontainers.image.title="Backend API Service"
+LABEL org.opencontainers.image.title="Monorepo Application"
 LABEL org.opencontainers.image.version="1.0.0"
 LABEL security.non-root="true"
-LABEL app.name="backend"
+LABEL app.name="${PROJECT}"
 
 # Install turbo globally
 RUN bun add -g turbo
@@ -34,7 +35,7 @@ WORKDIR /app
 # ============================================================================
 FROM base AS pruner
 COPY . .
-RUN turbo prune @mono/backend --docker
+RUN turbo prune @mono/${PROJECT} --docker
 
 # ============================================================================
 # STAGE 3: DEPENDENCIES - Install only required dependencies
@@ -57,7 +58,7 @@ RUN if [ "$NODE_ENV" = "development" ]; then \
 # ============================================================================
 FROM base AS builder
 COPY --from=pruner /app/out/full/ .
-RUN turbo run build --filter=@mono/backend
+RUN turbo run build --filter=@mono/${PROJECT}
 
 # ============================================================================
 # STAGE 5: PRODUCTION - Final optimized runtime image
@@ -66,14 +67,14 @@ FROM base AS production
 
 # Install curl and create non-root user with minimal privileges
 RUN apk add --no-cache curl && \
-    addgroup -g ${GROUP_ID} -S backendgroup && \
-    adduser -u ${USER_ID} -S backenduser -G backendgroup \
+    addgroup -g ${GROUP_ID} -S ${PROJECT}group && \
+    adduser -u ${USER_ID} -S ${PROJECT}user -G ${PROJECT}group \
     -h /app -s /sbin/nologin
 
 # Copy built application and dependencies with correct ownership
-COPY --from=builder --chown=backenduser:backendgroup /app/apps/backend/dist ./dist
-COPY --from=builder --chown=backenduser:backendgroup /app/apps/backend/package.json ./package.json
-COPY --from=deps --chown=backenduser:backendgroup /app/node_modules ./node_modules
+COPY --from=builder --chown=${PROJECT}user:${PROJECT}group /app/apps/${PROJECT}/dist ./dist
+COPY --from=builder --chown=${PROJECT}user:${PROJECT}group /app/apps/${PROJECT}/package.json ./package.json
+COPY --from=deps --chown=${PROJECT}user:${PROJECT}group /app/node_modules ./node_modules
 
 # Set working directory to app root
 WORKDIR /app
@@ -83,7 +84,7 @@ RUN find /app -type d -exec chmod 755 {} + && \
     find /app -type f -exec chmod 644 {} + && \
     chmod 444 /app/package.json
 
-USER backenduser
+USER ${PROJECT}user
 EXPOSE ${PORT}
 
 ENV NODE_ENV=${NODE_ENV}
@@ -97,8 +98,8 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
 
 # Dynamic command based on environment
 CMD if [ "$NODE_ENV" = "development" ]; then \
-        turbo run dev; \
+        turbo run dev --filter=@mono/${PROJECT}; \
     else \
-        turbo run preview; \
+        turbo run preview --filter=@mono/${PROJECT}; \
     fi
 
