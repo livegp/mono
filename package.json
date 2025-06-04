@@ -35,13 +35,13 @@
     "reset": "bun run clean && bun install"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.0.0-beta.5",
+    "@biomejs/biome": "^2.0.0-beta.6",
     "lefthook": "^1.11.13",
     "turbo": "^2.5.4",
     "typescript": "catalog:"
   },
   "engines": {
-    "bun": ">=1.2.14"
+    "bun": ">=1.2.15"
   },
-  "packageManager": "bun@1.2.14"
+  "packageManager": "bun@1.2.15"
 }

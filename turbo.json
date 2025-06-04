@@ -12,7 +12,7 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", "build/**", ".next/**", "storybook-static/**"]
     },
-    "preview": {
+    "start": {
       "dependsOn": ["^build"],
       "cache": false
     },
