@@ -170,62 +170,33 @@ VITE_CORS_ORIGIN=http://localhost:5173
 
 ### Збірка образу
 
-**Важливо:** Всі збірки Docker повинні виконуватися з **кореневого каталогу монорепозиторію** (`h:\Fullstack\My\Bun\mono`) для забезпечення функціональності Turbo Prune.
-
-**Для продакшену:**
-
 ```bash
-# З кореневого каталогу монорепозиторію (h:\Fullstack\My\Bun\mono)
-docker build -f apps/frontend/Dockerfile -t @mono/frontend:latest .
-```
+# З кореневого каталогу монорепозиторію
+docker build --build-arg PROJECT=frontend -t mono-frontend .
 
-**Для розробки:**
-
-```bash
-# З кореневого каталогу монорепозиторію (h:\Fullstack\My\Bun\mono)
-docker build -f apps/frontend/Dockerfile -t @mono/frontend:dev --build-arg NODE_ENV=development .
-```
-
-**Для CI/CD (з метаданими):**
-
-```bash
-# З кореневого каталогу монорепозиторію (h:\Fullstack\My\Bun\mono)
-docker build -f apps/frontend/Dockerfile -t @mono/frontend:$(git rev-parse --short HEAD) \
-  --build-arg BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
-  --build-arg GIT_COMMIT=$(git rev-parse HEAD) \
-  --build-arg GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD) \
-  .
+# Або з використанням docker-compose
+docker-compose build frontend
 ```
 
 ### Запуск контейнера
 
-**Продакшен:**
-
 ```bash
-docker run -d -p 4173:4173 --name frontend-prod @mono/frontend:latest
+# Запуск окремого контейнера
+docker run -p 4173:4173 mono-frontend
+
+# Або з використанням docker-compose
+docker-compose up frontend
 ```
 
-**Розробка (з монтуванням томів для живого перезавантаження):**
+### Особливості Docker-конфігурації
 
-```bash
-docker run -d -p 5173:5173 \
-  -v ./src:/app/src \
-  -v ./public:/app/public \
-  -v ./index.html:/app/index.html \
-  -v ./vite.config.ts:/app/vite.config.ts \
-  -v ./package.json:/app/package.json \
-  -v ./bun.lockb:/app/bun.lockb \
-  --name frontend-dev @mono/frontend:dev
-```
-
-**З користувацькими змінними середовища:**
-
-```bash
-docker run -d -p 4173:4173 \
-  -e NODE_ENV=production \
-  -e PORT=4173 \
-  --name frontend @mono/frontend:latest
-```
+- **Багатоетапна збірка**: BASE → BUILDER → INSTALLER → RUNNER
+- **Turbo Prune**: Створює мінімальний workspace лише з необхідними залежностями
+- **Безпека**: Запуск від непривілейованого користувача
+- **Health Check**: Автоматична перевірка стану сервера на порту 4173
+- **Оптимізація**: Кешування залежностей для швидших повторних збірок
+- **Статичні файли**: Обслуговування зібраних статичних файлів для продакшену
+- **Готовність до продакшену**: Оптимізовано для продакшн-розгортання
 
 ### Архітектура Docker
 

@@ -145,59 +145,32 @@ NODE_ENV=development
 
 ### Збірка образу
 
-**Важливо:** Всі збірки Docker повинні виконуватися з **кореневого каталогу монорепозиторію** (`h:\Fullstack\My\Bun\mono`) для забезпечення функціональності Turbo Prune.
-
-**Для продакшену:**
-
 ```bash
-# З кореневого каталогу монорепозиторію (h:\Fullstack\My\Bun\mono)
-docker build -f apps/backend/Dockerfile -t @mono/backend:latest .
-```
+# З кореневого каталогу монорепозиторію
+docker build --build-arg PROJECT=backend -t mono-backend .
 
-**Для розробки:**
-
-```bash
-# З кореневого каталогу монорепозиторію (h:\Fullstack\My\Bun\mono)
-docker build -f apps/backend/Dockerfile -t @mono/backend:dev --build-arg NODE_ENV=development .
-```
-
-**Для CI/CD (з метаданими):**
-
-```bash
-# З кореневого каталогу монорепозиторію (h:\Fullstack\My\Bun\mono)
-docker build -f apps/backend/Dockerfile -t @mono/backend:$(git rev-parse --short HEAD) \
-  --build-arg BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
-  --build-arg GIT_COMMIT=$(git rev-parse HEAD) \
-  --build-arg GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD) \
-  .
+# Або з використанням docker-compose
+docker-compose build backend
 ```
 
 ### Запуск контейнера
 
-**Продакшен:**
-
 ```bash
-docker run -d -p 3000:3000 --name backend-prod @mono/backend:latest
+# Запуск окремого контейнера
+docker run -p 3000:3000 mono-backend
+
+# Або з використанням docker-compose
+docker-compose up backend
 ```
 
-**Розробка (з монтуванням томів для живого перезавантаження):**
+### Особливості Docker-конфігурації
 
-```bash
-docker run -d -p 3000:3000 \
-  -v ./src:/app/src \
-  -v ./package.json:/app/package.json \
-  -v ./bun.lockb:/app/bun.lockb \
-  --name backend-dev @mono/backend:dev
-```
-
-**З користувацькими змінними середовища:**
-
-```bash
-docker run -d -p 3000:3000 \
-  -e NODE_ENV=production \
-  -e PORT=3000 \
-  --name backend @mono/backend:latest
-```
+- **Багатоетапна збірка**: BASE → BUILDER → INSTALLER → RUNNER
+- **Turbo Prune**: Створює мінімальний workspace лише з необхідними залежностями
+- **Безпека**: Запуск від непривілейованого користувача
+- **Health Check**: Автоматична перевірка стану сервера на порту 3000
+- **Оптимізація**: Кешування залежностей для швидших повторних збірок
+- **Готовність до продакшену**: Оптимізовано для продакшн-розгортання
 
 ### Архітектура Docker
 

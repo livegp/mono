@@ -137,61 +137,33 @@ This project uses an optimized multi-stage Dockerfile with **Turbo Prune** for e
 
 ### Building the Image
 
-**Important:** All Docker builds must be run from the **monorepo root directory** (`h:\Fullstack\My\Bun\mono`) to enable Turbo Prune functionality.
-
-**For Production:**
-
 ```bash
-# From the monorepo root (h:\Fullstack\My\Bun\mono)
-docker build -f apps/docs/Dockerfile -t @mono/docs:latest .
-```
+# From the monorepo root
+docker build --build-arg PROJECT=docs -t mono-docs .
 
-**For Development:**
-
-```bash
-# From the monorepo root (h:\Fullstack\My\Bun\mono)
-docker build -f apps/docs/Dockerfile -t @mono/docs:dev --build-arg NODE_ENV=development .
-```
-
-**For CI/CD (with metadata):**
-
-```bash
-# From the monorepo root (h:\Fullstack\My\Bun\mono)
-docker build -f apps/docs/Dockerfile -t @mono/docs:$(git rev-parse --short HEAD) \
-  --build-arg BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
-  --build-arg GIT_COMMIT=$(git rev-parse HEAD) \
-  --build-arg GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD) \
-  .
+# Or using docker-compose
+docker-compose build docs
 ```
 
 ### Running the Container
 
-**Production:**
-
 ```bash
-docker run -d -p 6006:6006 --name docs-prod @mono/docs:latest
+# Run standalone container
+docker run -p 6006:6006 mono-docs
+
+# Or using docker-compose
+docker-compose up docs
 ```
 
-**Development (with volume mounts for live reload):**
+### Docker Configuration Features
 
-```bash
-docker run -d -p 6006:6006 \
-  -v ./src:/app/src \
-  -v ./public:/app/public \
-  -v ./.storybook:/app/.storybook \
-  -v ./package.json:/app/package.json \
-  -v ./bun.lockb:/app/bun.lockb \
-  --name docs-dev @mono/docs:dev
-```
-
-**With custom environment variables:**
-
-```bash
-docker run -d -p 6006:6006 \
-  -e NODE_ENV=production \
-  -e PORT=6006 \
-  --name docs @mono/docs:latest
-```
+- **Multi-stage build**: BASE → BUILDER → INSTALLER → RUNNER
+- **Turbo Prune**: Creates minimal workspace with only necessary dependencies
+- **Security**: Runs as non-privileged user
+- **Health Check**: Automatic Storybook server health monitoring on port 6006
+- **Optimization**: Dependency caching for faster rebuilds
+- **Storybook**: Serves built component documentation
+- **Production ready**: Optimized for production deployment
 
 ### Docker Architecture
 
