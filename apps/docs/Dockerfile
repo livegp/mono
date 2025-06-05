@@ -1,15 +1,7 @@
 # syntax=docker/dockerfile:1
 
-# ============================================================================
-# Multi-stage Dockerfile for Frontend Application with Turbo Prune
-# ============================================================================
-
-# use the official Bun image
-# see all versions at https://hub.docker.com/r/oven/bun/tags
-
 # Build arguments - Global scope for all stages
-ARG BUN_VERSION=1.2.15-alpine
-ARG NODE_ENV=production
+ARG BUN_VERSION=1.2.15-alpine # see all versions at https://hub.docker.com/r/oven/bun/tags
 ARG PORT=6006
 ARG USER_ID=1001
 ARG GROUP_ID=1001
@@ -21,70 +13,52 @@ ARG PROJECT
 FROM oven/bun:${BUN_VERSION} AS base
 
 # Metadata labels
-LABEL org.opencontainers.image.title="Monorepo Application"
-LABEL org.opencontainers.image.version="1.0.0"
-LABEL security.non-root="true"
 LABEL app.name="${PROJECT}"
+LABEL version="1.0.0"
+LABEL security.non-root="true"
 
-# Install turbo globally
-RUN bun add -g turbo
+# Install dependencies and clean cache
+RUN apk update && \
+    apk add --no-cache curl
+
+# ============================================================================
+# STAGE 2: BUILDER - Create minimal workspace using Turbo
+# ============================================================================
+FROM base AS builder
 WORKDIR /app
-
-# ============================================================================
-# STAGE 2: PRUNER - Create minimal workspace using Turbo
-# ============================================================================
-FROM base AS pruner
+RUN bun add -g turbo
 COPY . .
 RUN turbo prune @mono/${PROJECT} --docker
 
 # ============================================================================
-# STAGE 3: DEPENDENCIES - Install only required dependencies
+# STAGE 3: INSTALLER - Install dependencies and build
 # ============================================================================
-FROM base AS deps
+FROM base AS installer
+WORKDIR /app
 
-# Copy only necessary files from pruned workspace
-COPY --from=pruner /app/out/json/ .
-COPY --from=pruner /app/out/bun-lock.json ./bun.lock
+# First install the dependencies (as they change less often)
+COPY --from=builder /app/out/json/ .
+COPY --from=builder /app/out/bun-lock.json ./bun.lock
+RUN bun install --frozen-lockfile
 
-RUN if [ "$NODE_ENV" = "development" ]; then \
-        bun install --frozen-lockfile; \
-    else \
-        bun install --frozen-lockfile --production; \
-    fi
-
-# ============================================================================
-# STAGE 4: BUILDER - Compile and build the application
-# ============================================================================
-FROM base AS builder
-COPY --from=pruner /app/out/full/ .
+# Build the project
+COPY --from=builder /app/out/full/ .
 RUN turbo run build --filter=@mono/${PROJECT}
 
 # ============================================================================
-# STAGE 5: PRODUCTION - Final optimized runtime image
+# STAGE 4: RUNNER - Final production image
 # ============================================================================
-FROM base AS production
+FROM base AS runner
+WORKDIR /app
 
-# Install curl and create non-root user
-RUN apk add --no-cache curl && \
-    addgroup -g ${GROUP_ID} -S ${PROJECT}group && \
+# Don't run production as root
+RUN addgroup -g ${GROUP_ID} -S ${PROJECT}group && \
     adduser -u ${USER_ID} -S ${PROJECT}user -G ${PROJECT}group \
     -h /app -s /sbin/nologin
 
-# Copy built application and dependencies with correct ownership
-# Handle different build outputs based on project type
-RUN if [ "${PROJECT}" = "docs" ]; then \
-        mkdir -p /app/storybook-static; \
-    else \
-        mkdir -p /app/dist; \
-    fi
-
-COPY --from=builder --chown=${PROJECT}user:${PROJECT}group /app/apps/${PROJECT}/storybook-static* ./
-COPY --from=builder --chown=${PROJECT}user:${PROJECT}group /app/apps/${PROJECT}/dist* ./
-COPY --from=builder --chown=${PROJECT}user:${PROJECT}group /app/apps/${PROJECT}/package.json ./package.json
-COPY --from=deps --chown=${PROJECT}user:${PROJECT}group /app/node_modules ./node_modules
-
-# Set working directory to app root
-WORKDIR /app
+# Copy built storybook for production serving
+COPY --from=installer --chown=${PROJECT}user:${PROJECT}group /app/apps/${PROJECT}/storybook-static ./storybook-static
+COPY --from=installer --chown=${PROJECT}user:${PROJECT}group /app/apps/${PROJECT}/package.json ./package.json
 
 # Set secure permissions
 RUN find /app -type d -exec chmod 755 {} + && \
@@ -94,14 +68,12 @@ RUN find /app -type d -exec chmod 755 {} + && \
 USER ${PROJECT}user
 EXPOSE ${PORT}
 
-ENV NODE_ENV=${NODE_ENV}
+ENV NODE_ENV=production
 ENV PORT=${PORT}
 
+# Health check for production server
 HEALTHCHECK --interval=60s --timeout=5s --start-period=30s --retries=2 \
     CMD curl -f http://localhost:${PORT}/ || exit 1
 
-CMD if [ "$NODE_ENV" = "development" ]; then \
-        turbo run dev --filter=@mono/${PROJECT}; \
-    else \
-        turbo run preview --filter=@mono/${PROJECT}; \
-    fi
+# Start production server
+CMD ["bun", "run", "start"]
