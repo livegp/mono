@@ -12,6 +12,7 @@
 - [Installation](#installation)
 - [Development](#development)
 - [Building the Project](#building-the-project)
+- [Docker](#docker-)
 - [Type Checking](#type-checking)
 - [Contribution](#contribution)
 - [License](#license)
@@ -96,6 +97,126 @@ To build a specific package:
 
 ```bash
 bun --filter @mono/frontend build # Build only frontend
+```
+
+## Docker 🐳
+
+This project uses a simple Docker Compose configuration with all services defined in a single `docker-compose.yml` file for simplicity and ease of use.
+
+### File Structure
+
+```tree
+├── docker-compose.yml          # Main Docker Compose file with all configurations
+└── .env                        # Environment variables
+```
+
+### Launch Commands
+
+#### Basic Commands
+
+```bash
+# Start all services
+docker-compose up -d
+
+# Start specific service
+docker-compose up -d backend
+docker-compose up -d frontend
+docker-compose up -d docs
+```
+
+#### Useful Commands
+
+```bash
+# View logs
+docker-compose logs -f backend
+docker-compose logs -f frontend
+docker-compose logs -f docs
+
+# Rebuild images
+docker-compose build
+docker-compose build backend
+
+# Stop services
+docker-compose down
+
+# Stop with volume removal
+docker-compose down -v
+
+# Configuration check
+docker-compose config
+
+# View active services
+docker-compose ps
+
+# Service scaling
+docker-compose up -d --scale backend=3
+```
+
+### Configuration
+
+All environment variables are located in the `.env` file:
+
+```env
+BUN_VERSION=1.2.15-alpine
+NODE_ENV=production
+BACKEND_PORT=3000
+FRONTEND_PORT=4173
+DOCS_PORT=6006
+USER_ID=1001
+GROUP_ID=1001
+COMPOSE_PROJECT_NAME=mono
+```
+
+### Services
+
+The project includes the following services:
+
+- **backend**: ElysiaJS backend application (port 3000)
+- **frontend**: React frontend application (port 4173)
+- **docs**: Storybook documentation (port 6006)
+
+All services include:
+- Health checks for monitoring
+- Automatic restart policies
+- Logging configuration
+- Shared network connectivity
+
+### Adding a New Service
+
+To add a new service, edit the `docker-compose.yml` file and add a new service definition:
+
+```yaml
+services:
+  # ... existing services ...
+
+  newservice:
+    build:
+      context: .
+      dockerfile: ./apps/newservice/Dockerfile
+      args:
+        <<: *common-variables
+        PROJECT: newservice
+        PORT: ${NEWSERVICE_PORT:-8000}
+    container_name: mono-newservice
+    ports:
+      - "${NEWSERVICE_PORT:-8000}:${NEWSERVICE_PORT:-8000}"
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - PORT=${NEWSERVICE_PORT:-8000}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${NEWSERVICE_PORT:-8000}/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - mono-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 ```
 
 ## Type Checking

@@ -1,0 +1,111 @@
+# Використання змінних з .env файлу
+x-common-variables: &common-variables
+  BUN_VERSION: ${BUN_VERSION:-1.2.15-alpine}
+  USER_ID: ${USER_ID:-1001}
+  GROUP_ID: ${GROUP_ID:-1001}
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: ./apps/backend/Dockerfile
+      args:
+        <<: *common-variables
+        PROJECT: backend
+        PORT: ${BACKEND_PORT:-3000}
+    container_name: mono-backend
+    ports:
+      - "${BACKEND_PORT:-3000}:${BACKEND_PORT:-3000}"
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - PORT=${BACKEND_PORT:-3000}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${BACKEND_PORT:-3000}/health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 60s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - mono-network
+    # Додавання логування
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./apps/frontend/Dockerfile
+      args:
+        <<: *common-variables
+        PROJECT: frontend
+        PORT: ${FRONTEND_PORT:-4173}
+    container_name: mono-frontend
+    ports:
+      - "${FRONTEND_PORT:-4173}:${FRONTEND_PORT:-4173}"
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - PORT=${FRONTEND_PORT:-4173}
+      # Додавання API URL для frontend
+      - VITE_API_URL=http://backend:${BACKEND_PORT:-3000}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${FRONTEND_PORT:-4173}/"]
+      interval: 30s
+      timeout: 3s
+      start_period: 15s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - mono-network
+    depends_on:
+      backend:
+        condition: service_healthy
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  docs:
+    build:
+      context: .
+      dockerfile: ./apps/docs/Dockerfile
+      args:
+        <<: *common-variables
+        PROJECT: docs
+        PORT: ${DOCS_PORT:-6006}
+    container_name: mono-docs
+    ports:
+      - "${DOCS_PORT:-6006}:${DOCS_PORT:-6006}"
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - PORT=${DOCS_PORT:-6006}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${DOCS_PORT:-6006}/"]
+      interval: 60s
+      timeout: 5s
+      start_period: 30s
+      retries: 2
+    restart: unless-stopped
+    networks:
+      - mono-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  mono-network:
+    driver: bridge
+    name: mono-network
+
+# Оптимізовані volumes для кешування
+volumes:
+  node_modules_cache:
+    name: mono-node-modules-cache
+  turbo_cache:
+    name: mono-turbo-cache
