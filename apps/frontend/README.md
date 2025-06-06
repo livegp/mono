@@ -190,7 +190,7 @@ docker-compose up frontend
 
 ### Docker Configuration Features
 
-- **Multi-stage build**: BASE → BUILDER → INSTALLER → RUNNER
+- **Multi-stage build**: BASE → PRUNE → INSTALLER → RUNNER
 - **Turbo Prune**: Creates minimal workspace with only necessary dependencies
 - **Security**: Runs as non-privileged user
 - **Health Check**: Automatic server health monitoring on port 4173
@@ -202,10 +202,9 @@ docker-compose up frontend
 
 The Dockerfile uses a **4-stage build process** optimized for Turborepo monorepos:
 
-1. **Pruner Stage**: Uses `turbo prune @mono/frontend --docker` to create a minimal workspace with only necessary dependencies
-2. **Dependencies Stage**: Installs dependencies from the pruned workspace for optimal caching
-3. **Builder Stage**: Builds the application using `turbo build --filter=@mono/frontend`
-4. **Production Stage**: Creates the final runtime image with minimal footprint
+1. **Prune Stage**: Uses `turbo prune @mono/frontend --docker` to create a minimal workspace with only necessary dependencies
+2. **Installer Stage**: Installs dependencies from the pruned workspace and builds the application using `turbo build --filter=@mono/frontend`
+3. **Runner Stage**: Creates the final runtime image with minimal footprint
 
 **Benefits of Turbo Prune:**
 

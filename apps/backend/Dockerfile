@@ -22,9 +22,9 @@ RUN apk update && \
     apk add --no-cache curl
 
 # ============================================================================
-# STAGE 2: BUILDER - Create minimal workspace using Turbo
+# STAGE 2: PRUNE - Create minimal workspace using Turbo
 # ============================================================================
-FROM base AS builder
+FROM base AS prune
 WORKDIR /app
 RUN bun add -g turbo
 COPY . .
@@ -37,12 +37,12 @@ FROM base AS installer
 WORKDIR /app
 
 # First install the dependencies (as they change less often)
-COPY --from=builder /app/out/json/ .
-COPY --from=builder /app/out/bun-lock.json ./bun.lock
+COPY --from=prune /app/out/json/ .
+COPY --from=prune /app/out/bun-lock.json ./bun.lock
 RUN bun install --frozen-lockfile
 
 # Build the project
-COPY --from=builder /app/out/full/ .
+COPY --from=prune /app/out/full/ .
 RUN turbo run build --filter=@mono/${PROJECT}
 
 # ============================================================================
