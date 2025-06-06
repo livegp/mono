@@ -103,13 +103,6 @@ bun --filter @mono/frontend build # Build only frontend
 
 This project uses a simple Docker Compose configuration with all services defined in a single `docker-compose.yml` file for simplicity and ease of use.
 
-### File Structure
-
-```tree
-├── docker-compose.yml          # Main Docker Compose file with all configurations
-└── .env                        # Environment variables
-```
-
 ### Launch Commands
 
 #### Basic Commands
