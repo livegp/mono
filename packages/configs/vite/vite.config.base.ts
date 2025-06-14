@@ -1,4 +1,6 @@
+import browserslist from 'browserslist';
 import crypto from 'crypto'
+import { browserslistToTargets } from 'lightningcss';
 import { defineConfig, searchForWorkspaceRoot } from 'vite'
 
 import type { UserConfig, ConfigEnv } from 'vite'
@@ -48,6 +50,9 @@ const baseSettings: UserConfig = {
       scopeBehaviour: 'local',
     },
     transformer: 'lightningcss',
+    lightningcss: {
+      targets: browserslistToTargets(browserslist('>= 0.25%'))
+    },
   },
   server: {
     strictPort: false,
