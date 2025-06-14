@@ -1,0 +1,2 @@
+depcheck:
+  ignoreMatches: ["lefthook", "npm-check"]
