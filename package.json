@@ -1,25 +1,18 @@
 {
   "name": "mono",
   "version": "0.0.1",
-  "license": "MIT",
-  "private": true,
-  "workspaces": {
-    "packages": [
-      "apps/*",
-      "packages/*",
-      "packages/configs/*"
-    ],
-    "catalog": {
-      "@types/bun": "^1.2.14",
-      "@types/node": "^22.15.23",
-      "@types/react": "^19.1.6",
-      "@types/react-dom": "^19.1.5",
-      "react": "^19.1.0",
-      "react-dom": "^19.1.0",
-      "typescript": "^5.8.3",
-      "vite": "^6.3.5"
-    }
+  "devDependencies": {
+    "@biomejs/biome": "^2.0.6",
+    "lefthook": "^1.11.14",
+    "turbo": "^2.5.4",
+    "typescript": "catalog:"
   },
+  "engines": {
+    "bun": ">=1.2.17"
+  },
+  "license": "MIT",
+  "packageManager": "bun@1.2.17",
+  "private": true,
   "scripts": {
     "dev:frontend": "turbo -F @mono/frontend dev",
     "dev:backend": "turbo -F @mono/backend dev",
@@ -34,17 +27,21 @@
     "clean": "turbo clean && rm -rf .turbo",
     "reset": "bun run clean && bun install"
   },
-  "devDependencies": {
-    "@biomejs/biome": "^2.0.0-beta.6",
-    "lefthook": "^1.11.13",
-    "turbo": "^2.5.4",
-    "typescript": "catalog:"
-  },
-  "engines": {
-    "bun": ">=1.2.15"
-  },
-  "packageManager": "bun@1.2.15",
-  "dependencies": {
-    "npm-check": "^6.0.1"
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*",
+      "packages/configs/*"
+    ],
+    "catalog": {
+      "@types/bun": "^1.2.17",
+      "@types/node": "^24.0.10",
+      "@types/react": "^19.1.8",
+      "@types/react-dom": "^19.1.6",
+      "react": "^19.1.0",
+      "react-dom": "^19.1.0",
+      "typescript": "^5.8.3",
+      "vite": "^7.0.0"
+    }
   }
 }
