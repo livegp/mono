@@ -24,7 +24,7 @@
     "vite-plugin-pwa": "^1.0.1"
   },
   "devDependencies": {
-    "@julr/vite-plugin-validate-env": "^2.1.0",
+    "@julr/vite-plugin-validate-env": "^2.2.0",
     "@mono/ts-config": "workspace:*",
     "@mono/vite-config": "workspace:*",
     "@types/node": "catalog:",

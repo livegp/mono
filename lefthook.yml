@@ -2,6 +2,17 @@
 #   https://lefthook.dev/configuration/
 
 # pre-commit:
+#   jobs:
+#     - run: bunx ultracite format
+#       glob:
+#         - "*.js"
+#         - "*.jsx"
+#         - "*.ts"
+#         - "*.tsx"
+#         - "*.json"
+#         - "*.jsonc"
+#         - "*.css"
+#       stage_fixed: true
 #   commands:
 #     check:
 #       glob: "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}"
