@@ -1,0 +1,30 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base",
+    ":monorepo"
+  ],
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    },
+    {
+      "matchPaths": ["apps/**", "packages/**"],
+      "groupName": "monorepo packages"
+    },
+    {
+      "matchPackagePatterns": ["^@types/"],
+      "groupName": "definitelyTyped"
+    }
+  ],
+  "schedule": [
+    "before 4am on Monday"
+  ],
+  "timezone": "Europe/Kiev",
+  "labels": ["dependencies"],
+  "rangeStrategy": "bump",
+  "semanticCommits": "enabled",
+  "dependencyDashboard": true,
+  "platformAutomerge": true
+}
