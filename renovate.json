@@ -21,5 +21,9 @@
   "rangeStrategy": "bump",
   "semanticCommits": "enabled",
   "dependencyDashboard": true,
-  "platformAutomerge": true
+  "platformAutomerge": true,
+  "lockFileMaintenance": {
+    "enabled": true,
+    "automerge": true
+  }
 }
