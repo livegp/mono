@@ -25,6 +25,7 @@ saveTextLockfile = true
 auto = "auto"
 frozenLockfile = false
 dryRun = false
+linker = "isolated"
 # globalDir = "~/.bun/install/global"
 # globalBinDir = "~/.bun/bin"
 # registry = "https://registry.npmjs.org"
