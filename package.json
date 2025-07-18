@@ -2,12 +2,12 @@
   "name": "mono",
   "version": "0.0.1",
   "devDependencies": {
-    "@mono/ts-config": "workspace:*",
     "@biomejs/biome": "2.1.2",
+    "@mono/ts-config": "workspace:*",
     "lefthook": "^1.12.2",
     "turbo": "^2.5.5",
     "typescript": "catalog:",
-    "ultracite": "5.0.39"
+    "ultracite": "5.0.46"
   },
   "engines": {
     "bun": ">=1.2.17"

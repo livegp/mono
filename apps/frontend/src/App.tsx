@@ -20,7 +20,7 @@ function App() {
         if (error) {
           const errorMessage =
             typeof error === 'object' && error !== null
-              ? (error as any).error || JSON.stringify(error)
+              ? (error as { error?: string }).error || JSON.stringify(error)
               : String(error);
           setError(errorMessage);
         } else {
