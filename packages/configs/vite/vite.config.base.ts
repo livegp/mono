@@ -1,11 +1,10 @@
+import crypto from 'node:crypto';
 import browserslist from 'browserslist';
-import crypto from 'crypto'
 import { browserslistToTargets } from 'lightningcss';
-import { defineConfig, searchForWorkspaceRoot } from 'vite'
+import type { ConfigEnv, UserConfig } from 'vite';
+import { defineConfig, searchForWorkspaceRoot } from 'vite';
 
-import type { UserConfig, ConfigEnv } from 'vite'
-
-const NONCE = crypto.randomBytes(16).toString('base64')
+const NONCE = crypto.randomBytes(16).toString('base64');
 
 const baseSettings: UserConfig = {
   root: '.',
@@ -21,7 +20,11 @@ const baseSettings: UserConfig = {
       output: {
         manualChunks(id: string) {
           if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom') || id.includes('scheduler')) {
+            if (
+              id.includes('react') ||
+              id.includes('react-dom') ||
+              id.includes('scheduler')
+            ) {
               return 'react-vendor';
             }
             // if (id.includes('@tanstack')) {
@@ -29,14 +32,14 @@ const baseSettings: UserConfig = {
             // }
             return 'vendor';
           }
-          return undefined;
+          return;
         },
       },
     },
     target: 'esnext',
     assetsInlineLimit: 4096,
     modulePreload: {
-      polyfill: true
+      polyfill: true,
     },
     reportCompressedSize: true,
   },
@@ -51,14 +54,14 @@ const baseSettings: UserConfig = {
     },
     transformer: 'lightningcss',
     lightningcss: {
-      targets: browserslistToTargets(browserslist('>= 0.25%'))
+      targets: browserslistToTargets(browserslist('>= 0.25%')),
     },
   },
   server: {
     strictPort: false,
     fs: {
       strict: true,
-      allow: [searchForWorkspaceRoot(process.cwd())]
+      allow: [searchForWorkspaceRoot(process.cwd())],
     },
   },
   preview: {
@@ -72,18 +75,18 @@ const baseSettings: UserConfig = {
   },
   esbuild: {
     target: 'esnext',
-  }
+  },
 };
 
 export default defineConfig((env: ConfigEnv) => {
-  const isDev = env.mode === 'development'
+  const isDev = env.mode === 'development';
 
   return {
     ...baseSettings,
     build: {
       ...baseSettings.build,
       sourcemap: isDev,
-      minify: isDev ? false : 'esbuild' as const,
-    }
-  }
-})
+      minify: isDev ? false : ('esbuild' as const),
+    },
+  };
+});

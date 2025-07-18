@@ -1,7 +1,7 @@
-import { t } from 'elysia'
+import { t } from 'elysia';
 
 export const greetParams = t.Object({
-  name: t.String()
-})
+  name: t.String(),
+});
 
-export type GreetParams = typeof greetParams.static
+export type GreetParams = typeof greetParams.static;
