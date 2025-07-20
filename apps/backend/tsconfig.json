@@ -2,7 +2,7 @@
   "extends": "@mono/ts-config",
   "compilerOptions": {
     "tsBuildInfoFile": "node_modules/.tmp/tsconfig.tsbuildinfo",
-    "types": ["bun-types"],
+    "types": ["bun"],
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
