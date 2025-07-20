@@ -1,10 +1,10 @@
-import reactLogo from '@/assets/react.svg';
 import { treaty } from '@elysiajs/eden';
-import viteLogo from '/vite.svg';
 import { useEffect, useState } from 'react';
+import reactLogo from '@/assets/react.svg';
+import viteLogo from '/vite.svg';
 
 import type { App as BackendApp } from '../../backend/src/index';
-import '@/App.css';
+import '@app.css';
 
 const app = treaty<BackendApp>('localhost:4000');
 
@@ -16,12 +16,15 @@ function App() {
   useEffect(() => {
     async function fetchGreeting() {
       try {
-        const { data, error } = await app.api.greet({ name: 'Vite' }).get();
-        if (error) {
+        const { data, error: apiError } = await app.api
+          .greet({ name: 'Vite' })
+          .get();
+        if (apiError) {
           const errorMessage =
-            typeof error === 'object' && error !== null
-              ? (error as { error?: string }).error || JSON.stringify(error)
-              : String(error);
+            typeof apiError === 'object' && apiError !== null
+              ? (apiError as { error?: string }).error ||
+                JSON.stringify(apiError)
+              : String(apiError);
           setError(errorMessage);
         } else {
           setGreeting(data.message);
@@ -39,16 +42,23 @@ function App() {
     <>
       <div>
         <a href="https://vite.dev" rel="noopener" target="_blank">
-          <img alt="Vite logo" className="logo" src={viteLogo} />
+          <picture>
+            <img alt="Vite logo" className="logo" src={viteLogo} />
+          </picture>
         </a>
         <a href="https://react.dev" rel="noopener" target="_blank">
-          <img alt="React logo" className="logo react" src={reactLogo} />
+          <picture>
+            <img alt="React logo" className="logo react" src={reactLogo} />
+          </picture>
         </a>
       </div>
       <h1>Vite + React</h1>
       <h2>{error ? `Error: ${error}` : (greeting ?? 'Loading...')}</h2>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)} type="button">
+        <button
+          onClick={() => setCount((prevCount) => prevCount + 1)}
+          type="button"
+        >
           count is {count}
         </button>
         <p>

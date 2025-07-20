@@ -1,6 +1,6 @@
 import { Elysia } from 'elysia';
 
-import { greetParams, GreetParams, type } from '../schemas/greet';
+import { type GreetParams, greetParams } from '../schemas/greet';
 
 export const greetRouter = new Elysia().get(
   '/api/greet/:name',
