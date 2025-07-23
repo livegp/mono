@@ -7,5 +7,10 @@
   "license": "MIT",
   "exports": {
     ".": "./vite.config.base.ts"
+  },
+  "dependencies": {
+    "browserslist": "^4.25.1",
+    "lightningcss": "^1.30.1",
+    "vite": "^7.0.5"
   }
 }

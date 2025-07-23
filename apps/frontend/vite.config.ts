@@ -1,10 +1,10 @@
 import { ValidateEnv } from '@julr/vite-plugin-validate-env';
-
 import baseViteConfig from '@mono/vite-config';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react-swc';
 import { visualizer } from 'rollup-plugin-visualizer';
-import type { UserConfig } from 'vite';
+
+import type { PluginOption, UserConfig } from 'vite';
 import { defineConfig, loadEnv, mergeConfig } from 'vite';
 import { imagetools } from 'vite-imagetools';
 import { generateCspPlugin } from 'vite-plugin-bun-csp';
@@ -20,11 +20,11 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), 'VITE_');
-  const WEB_PORT = Number(env.VITE_WEB_PORT);
-  const WEB_URL = env.VITE_WEB_URL || `http://localhost:${WEB_PORT}`;
-  const API_PORT = Number(env.VITE_API_PORT);
-  const API_URL = env.VITE_API_URL;
-  const CORS_ORIGIN = env.VITE_CORS_ORIGIN;
+  const WEB_PORT = Number(env['VITE_WEB_PORT']);
+  const WEB_URL = env['VITE_WEB_URL'] || `http://localhost:${WEB_PORT}`;
+  const API_PORT = Number(env['VITE_API_PORT']);
+  const API_URL = env['VITE_API_URL'];
+  const CORS_ORIGIN = env['VITE_CORS_ORIGIN'];
 
   const appFrontendConfig: UserConfig = {
     define: {
@@ -134,7 +134,7 @@ export default defineConfig(({ command, mode }) => {
       ValidateEnv({
         configFile: 'config/env',
       }),
-    ],
+    ] as PluginOption[],
   };
 
   const resolvedBaseConfig = baseViteConfig({ command, mode });
