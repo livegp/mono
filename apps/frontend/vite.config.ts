@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/complexity/useLiteralKeys: Dynamic env variable access required */
 import { ValidateEnv } from '@julr/vite-plugin-validate-env';
 import baseViteConfig from '@mono/vite-config';
 import tailwindcss from '@tailwindcss/vite';

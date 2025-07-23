@@ -1,4 +1,5 @@
-/** biome-ignore-all lint/correctness/noUndeclaredVariables: <explanation> */
+import Bun from 'bun';
+
 Bun.build({
   // root: '.',
   entrypoints: ['./src/index.ts'],

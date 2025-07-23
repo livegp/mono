@@ -1,5 +1,5 @@
-/** biome-ignore-all lint/suspicious/noConsole: <explanation> */
-/** biome-ignore-all lint/complexity/useLiteralKeys: <explanation> */
+/** biome-ignore-all lint/complexity/useLiteralKeys: Dynamic env variable access required */
+/** biome-ignore-all lint/suspicious/noConsole: Development logging required */
 import { cors } from '@elysiajs/cors';
 import { opentelemetry } from '@elysiajs/opentelemetry';
 import { swagger } from '@elysiajs/swagger';
