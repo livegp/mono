@@ -38,7 +38,7 @@
     "vite": "catalog:",
     "vite-imagetools": "^7.1.0",
     "vite-plugin-bun-csp": "^2.1.0",
-    "vite-plugin-checker": "^0.10.0",
+    "vite-plugin-checker": "^0.10.1",
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-csp-guard": "^2.1.1",
     "vite-plugin-hashed-favicons": "^2.0.3",
