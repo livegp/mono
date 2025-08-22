@@ -40,7 +40,7 @@
     "vite-plugin-bun-csp": "^2.1.0",
     "vite-plugin-checker": "^0.10.2",
     "vite-plugin-compression": "^0.5.1",
-    "vite-plugin-csp-guard": "^2.2.0",
+    "vite-plugin-csp-guard": "^3.0.0",
     "vite-plugin-hashed-favicons": "^2.0.3",
     "vite-plugin-mkcert": "^1.17.8",
     "vite-plugin-open-graph": "^2.0.6",
