@@ -15,7 +15,7 @@
   "dependencies": {
     "@ap0nia/eden-react-query": "^1.6.1",
     "@tailwindcss/vite": "^4.1.12",
-    "@tanstack/react-query": "^5.85.5",
+    "@tanstack/react-query": "^5.85.6",
     "react": "catalog:",
     "react-dom": "catalog:",
     "react-helmet-async": "^2.0.5",
@@ -41,7 +41,7 @@
     "vite-plugin-checker": "^0.10.3",
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-csp-guard": "^3.0.0",
-    "vite-plugin-hashed-favicons": "^2.0.3",
+    "vite-plugin-hashed-favicons": "^2.0.4",
     "vite-plugin-mkcert": "^1.17.8",
     "vite-plugin-open-graph": "^2.0.6",
     "vite-plugin-react-click-to-component": "^4.0.0",
