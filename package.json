@@ -2,7 +2,7 @@
   "name": "mono",
   "version": "0.0.1",
   "devDependencies": {
-    "@biomejs/biome": "2.2.5",
+    "@biomejs/biome": "2.2.6",
     "@mono/ts-config": "workspace:*",
     "lefthook": "^1.13.6",
     "turbo": "^2.5.8",
