@@ -15,7 +15,7 @@
   "dependencies": {
     "@ap0nia/eden-react-query": "^1.6.1",
     "@tailwindcss/vite": "^4.1.17",
-    "@tanstack/react-query": "^5.90.9",
+    "@tanstack/react-query": "^5.90.10",
     "react": "catalog:",
     "react-dom": "catalog:",
     "react-helmet-async": "^2.0.5",
