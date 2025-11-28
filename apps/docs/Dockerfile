@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # Build arguments - Global scope for all stages
-ARG BUN_VERSION=1.3.2-alpine # see all versions at https://hub.docker.com/r/oven/bun/tags
+ARG BUN_VERSION=1.3.3-alpine # see all versions at https://hub.docker.com/r/oven/bun/tags
 ARG PORT=6006
 ARG USER_ID=1001
 ARG GROUP_ID=1001
