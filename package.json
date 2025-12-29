@@ -4,7 +4,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.3.10",
     "@mono/ts-config": "workspace:*",
-    "lefthook": "^2.0.12",
+    "lefthook": "^2.0.13",
     "turbo": "^2.7.2",
     "typescript": "catalog:",
     "ultracite": "6.5.0"
