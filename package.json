@@ -7,7 +7,7 @@
     "lefthook": "^2.0.13",
     "turbo": "^2.7.2",
     "typescript": "catalog:",
-    "ultracite": "6.5.1"
+    "ultracite": "7.0.3"
   },
   "engines": {
     "bun": ">=1.2.17"
