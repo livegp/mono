@@ -66,12 +66,6 @@ export default defineConfig(({ command, mode }) => {
           quality: '75',
         }),
       }),
-      visualizer({
-        filename: 'dist/stats.html',
-        open: false,
-        brotliSize: true,
-        sourcemap: mode === 'development',
-      }),
       generateCspPlugin({
         algorithm: 'sha256',
         policy: {
@@ -134,6 +128,12 @@ export default defineConfig(({ command, mode }) => {
       tailwindcss(),
       ValidateEnv({
         configFile: 'config/env',
+      }),
+      visualizer({
+        filename: 'dist/stats.html',
+        open: false,
+        brotliSize: true,
+        sourcemap: mode === 'development',
       }),
     ] as PluginOption[],
   };
