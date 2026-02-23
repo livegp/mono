@@ -33,7 +33,7 @@
     "@vitejs/plugin-react-swc": "^4.2.3",
     "globals": "^17.3.0",
     "lightningcss": "^1.31.1",
-    "rollup-plugin-visualizer": "^6.0.5",
+    "rollup-plugin-visualizer": "^7.0.0",
     "typescript": "catalog:",
     "vite": "catalog:",
     "vite-imagetools": "^9.0.2",
