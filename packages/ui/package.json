@@ -24,8 +24,8 @@
     "clsx": "^2.1.1",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "tailwind-merge": "^3.4.0",
-    "tailwindcss": "^4.1.18"
+    "tailwind-merge": "^3.5.0",
+    "tailwindcss": "^4.2.1"
   },
   "devDependencies": {
     "@mono/ts-config": "workspace:*",
