@@ -1,10 +1,10 @@
 {
   "name": "@mono/backend",
   "version": "0.0.1",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "description": "backend for Mono",
-  "license": "MIT",
   "module": "index.ts",
   "scripts": {
     "dev": "NODE_ENV=development bun --watch src/index.ts",

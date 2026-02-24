@@ -1,10 +1,10 @@
 {
   "name": "@mono/frontend",
   "version": "0.0.1",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "description": "frontend for Mono",
-  "license": "MIT",
   "scripts": {
     "dev": "bunx -b vite",
     "build": "bunx -b vite build",

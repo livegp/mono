@@ -1,10 +1,10 @@
 {
   "name": "@mono/docs",
   "version": "0.0.1",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "description": "documentation for Mono",
-  "license": "MIT",
   "scripts": {
     "dev": "storybook dev -p 6006",
     "build": "storybook build",
@@ -21,7 +21,6 @@
     "@mono/ts-config": "workspace:*",
     "@mono/vite-config": "workspace:*",
     "@storybook/addon-docs": "^10.2.11",
-
     "@storybook/react": "^10.2.11",
     "@storybook/react-vite": "^10.2.11",
     "@storybook/test": "^8.6.15",
