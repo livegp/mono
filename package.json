@@ -15,7 +15,6 @@
     "dev:docs": "turbo run -F @mono/docs dev",
     "dev": "turbo run dev",
     "build": "turbo run build",
-    "preview": "turbo run preview",
     "check-types": "turbo run check-types",
     "clean": "turbo clean && rm -rf .turbo",
     "check": "ultracite check",

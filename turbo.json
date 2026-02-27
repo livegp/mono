@@ -8,20 +8,22 @@
       "cache": false
     },
     "build": {
+      "cache": true,
       "inputs": ["$TURBO_DEFAULT$", "!**/*.test.*", "!**/*.spec.*"],
       "outputs": ["dist/**", "build/**", ".next/**", "storybook-static/**"],
       "dependsOn": ["^build"]
     },
-    "start": {
-      "dependsOn": ["^build"],
-      "cache": false
-    },
     "check-types": {
+      "cache": true,
       "dependsOn": ["^check-types"]
     },
     "clean": {
+      "cache": false,
       "dependsOn": ["^clean"]
     },
-    "lint": {}
+    "lint": {
+      "cache": true,
+      "dependsOn": ["^lint"]
+    }
   }
 }

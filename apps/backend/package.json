@@ -9,7 +9,6 @@
   "scripts": {
     "dev": "NODE_ENV=development bun --watch src/index.ts",
     "build": "bun build.ts",
-    "start": "bun dist/index.js",
     "check-types": "tsc --noEmit",
     "clean": "rm -rf .turbo"
   },

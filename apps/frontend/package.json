@@ -8,7 +8,6 @@
   "scripts": {
     "dev": "bunx -b vite",
     "build": "bunx -b vite build",
-    "start": "bunx -b vite preview",
     "check-types": "tsc --noEmit",
     "clean": "rm -rf .turbo"
   },
