@@ -6,44 +6,45 @@
   "type": "module",
   "description": "Mono is a monorepo for all Mono projects",
   "packageManager": "bun@1.3.9",
-  "engines": {"bun": ">=1.3.9"},
-  "scripts": {
-    "dev:frontend": "turbo -F @mono/frontend dev",
-    "dev:backend": "turbo -F @mono/backend dev",
-    "dev:docs": "turbo -F @mono/docs dev",
-    "dev": "turbo dev",
-    "build": "turbo build",
-    "preview": "turbo preview",
-    "check-types": "turbo check-types",
-    "lint": "biome lint --write --unsafe",
-    "format": "biome format --write --unsafe",
-    "check": "biome check --write --unsafe",
-    "clean": "turbo clean && rm -rf .turbo",
-    "reset": "bun run clean && bun install"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "2.4.4",
-    "@mono/ts-config": "workspace:*",
-    "lefthook": "^2.1.1",
-    "turbo": "^2.8.10",
-    "typescript": "5.9.3",
-    "ultracite": "7.2.3"
-  },
-  "workspaces": {
-    "packages": [
-      "apps/*",
-      "packages/*",
-      "packages/configs/*"
-    ],
-    "catalog": {
-      "@types/bun": "^1.3.9",
-      "@types/node": "^25.3.0",
-      "@types/react": "^19.2.14",
-      "@types/react-dom": "^19.2.3",
-      "react": "^19.2.4",
-      "react-dom": "^19.2.4",
-      "typescript": "^5.9.3",
-      "vite": "^7.3.1"
-    }
+  "engines": {
+  "bun": ">=1.3.9"
+},
+"scripts": {
+  "dev:frontend": "turbo run -F @mono/frontend dev",
+  "dev:backend": "turbo run -F @mono/backend dev",
+  "dev:docs": "turbo run -F @mono/docs dev",
+  "dev": "turbo run dev",
+  "build": "turbo run build",
+  "preview": "turbo run preview",
+  "check-types": "turbo run check-types",
+  "clean": "turbo clean && rm -rf .turbo",
+  "check": "ultracite check",
+  "fix": "ultracite fix",
+  "reset": "bun run clean && bun install"
+},
+"devDependencies": {
+  "@biomejs/biome": "2.4.4",
+  "@mono/ts-config": "workspace:*",
+  "lefthook": "^2.1.1",
+  "turbo": "^2.8.11",
+  "typescript": "5.9.3",
+  "ultracite": "7.2.4"
+},
+"workspaces": {
+  "packages": [
+    "apps/*",
+    "packages/*",
+    "packages/configs/*"
+  ],
+  "catalog": {
+    "@types/bun": "^1.3.9",
+    "@types/node": "^25.3.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1"
   }
+}
 }
