@@ -6,6 +6,6 @@
   "description": "tsconfigs for Mono",
   "license": "MIT",
   "exports": {
-    ".": "./tsconfig.base.json"
+    "./base": "./tsconfig.base.json"
   }
 }
