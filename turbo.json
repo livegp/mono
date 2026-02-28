@@ -2,7 +2,7 @@
   "$schema": "./node_modules/turbo/schema.json",
   "ui": "tui",
   "globalDependencies": ["**/.env", "**/.env.*"],
-  "globalEnv": ["NODE_ENV"],
+  "globalEnv": ["NODE_ENV", "VITE_*"],
   "tasks": {
     "dev": {
       "persistent": true,
@@ -11,42 +11,12 @@
     "build": {
       "cache": true,
       "inputs": ["$TURBO_DEFAULT$", "!**/*.test.*", "!**/*.spec.*"],
+      "outputs": ["dist/**", "storybook-static/**"],
       "dependsOn": ["^build"]
-    },
-    "@mono/backend#build": {
-      "cache": true,
-      "inputs": ["$TURBO_DEFAULT$", "!**/*.test.*", "!**/*.spec.*"],
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
-    },
-    "@mono/frontend#build": {
-      "cache": true,
-      "inputs": ["$TURBO_DEFAULT$", "!**/*.test.*", "!**/*.spec.*"],
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**"],
-      "env": ["VITE_*"]
-    },
-    "@mono/ui#build": {
-      "cache": true,
-      "inputs": ["$TURBO_DEFAULT$", "!**/*.test.*", "!**/*.spec.*"],
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**"],
-      "env": ["VITE_*"]
-    },
-    "@mono/docs#build": {
-      "cache": true,
-      "inputs": ["$TURBO_DEFAULT$", "!**/*.test.*", "!**/*.spec.*"],
-      "dependsOn": ["^build"],
-      "outputs": ["storybook-static/**"],
-      "env": ["VITE_*"]
     },
     "check-types": {
       "cache": true,
       "dependsOn": ["^check-types"]
-    },
-    "clean": {
-      "cache": false,
-      "dependsOn": ["^clean"]
     },
     "lint": {
       "cache": true,
@@ -55,6 +25,10 @@
     "lint:fix": {
       "cache": false,
       "dependsOn": ["^lint:fix"]
+    },
+    "clean": {
+      "cache": false,
+      "dependsOn": ["^clean"]
     }
   }
 }

@@ -9,7 +9,7 @@
       "!**/build",
       "!**/public",
       "!**/.turbo",
-      "!**/storybook-static",
-    ],
-  },
+      "!**/storybook-static"
+    ]
+  }
 }
