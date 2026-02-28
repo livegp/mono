@@ -13,12 +13,24 @@ function App() {
       <div>
         <a href="https://vite.dev" rel="noopener" target="_blank">
           <picture>
-            <img alt="Vite logo" className="logo" height={96} src={viteLogo} width={96} />
+            <img
+              alt="Vite logo"
+              className="logo"
+              height={96}
+              src={viteLogo}
+              width={96}
+            />
           </picture>
         </a>
         <a href="https://react.dev" rel="noopener" target="_blank">
           <picture>
-            <img alt="React logo" className="logo react" height={96} src={reactLogo} width={96} />
+            <img
+              alt="React logo"
+              className="logo react"
+              height={96}
+              src={reactLogo}
+              width={96}
+            />
           </picture>
         </a>
       </div>
