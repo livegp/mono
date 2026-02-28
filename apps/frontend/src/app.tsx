@@ -1,12 +1,12 @@
-import { treaty } from '@elysiajs/eden';
-import { useEffect, useState } from 'react';
-import reactLogo from '@/assets/react.svg';
-import viteLogo from '/vite.svg';
+import { treaty } from "@elysiajs/eden";
+import { useEffect, useState } from "react";
+import reactLogo from "@/assets/react.svg";
+import viteLogo from "/vite.svg";
 
-import type { App as BackendApp } from '../../backend/src/index';
-import '@app.css';
+import type { App as BackendApp } from "../../backend/src/index";
+import "@app.css";
 
-const app = treaty<BackendApp>('localhost:4000');
+const app = treaty<BackendApp>("localhost:4000");
 
 function App() {
   const [count, setCount] = useState(0);
@@ -17,11 +17,11 @@ function App() {
     async function fetchGreeting() {
       try {
         const { data, error: apiError } = await app.api
-          .greet({ name: 'Vite' })
+          .greet({ name: "Vite" })
           .get();
         if (apiError) {
           const errorMessage =
-            typeof apiError === 'object' && apiError !== null
+            typeof apiError === "object" && apiError !== null
               ? (apiError as { error?: string }).error ||
                 JSON.stringify(apiError)
               : String(apiError);
@@ -31,7 +31,7 @@ function App() {
         }
       } catch (e) {
         const errorMessage =
-          e instanceof Error ? e.message : 'Failed to fetch greeting';
+          e instanceof Error ? e.message : "Failed to fetch greeting";
         setError(errorMessage);
       }
     }
@@ -43,17 +43,29 @@ function App() {
       <div>
         <a href="https://vite.dev" rel="noopener" target="_blank">
           <picture>
-            <img alt="Vite logo" className="logo" src={viteLogo} />
+            <img
+              alt="Vite logo"
+              className="logo"
+              height={96}
+              src={viteLogo}
+              width={96}
+            />
           </picture>
         </a>
         <a href="https://react.dev" rel="noopener" target="_blank">
           <picture>
-            <img alt="React logo" className="logo react" src={reactLogo} />
+            <img
+              alt="React logo"
+              className="logo react"
+              height={96}
+              src={reactLogo}
+              width={96}
+            />
           </picture>
         </a>
       </div>
       <h1>Vite + React</h1>
-      <h2>{error ? `Error: ${error}` : (greeting ?? 'Loading...')}</h2>
+      <h2>{error ? `Error: ${error}` : (greeting ?? "Loading...")}</h2>
       <div className="card">
         <button
           onClick={() => setCount((prevCount) => prevCount + 1)}
