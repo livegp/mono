@@ -9,8 +9,7 @@
     "check-types": "echo \"No TypeScript files to type-check in @mono/ts-config\"",
     "lint": "bunx ultracite check",
     "lint:fix": "bunx ultracite fix",
-    "clean": "rm -rf .turbo dist",
-    "reset": "bun --cwd ../../.. run reset"
+    "clean": "rm -rf .turbo dist"
   },
   "exports": {
     "./base": "./tsconfig.base.json"

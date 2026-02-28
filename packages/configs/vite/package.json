@@ -9,8 +9,7 @@
     "check-types": "tsc --noEmit --moduleResolution bundler --module ESNext --target ESNext --skipLibCheck vite.config.base.ts",
     "lint": "bunx ultracite check",
     "lint:fix": "bunx ultracite fix",
-    "clean": "rm -rf .turbo dist",
-    "reset": "bun --cwd ../../.. run reset"
+    "clean": "rm -rf .turbo dist"
   },
   "exports": {
     "./base": "./vite.config.base.ts"
