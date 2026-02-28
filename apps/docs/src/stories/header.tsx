@@ -1,16 +1,16 @@
-import { Button } from './button';
+import { Button } from "./button";
 
-import './header.css';
+import "./header.css";
 
 type User = {
   name: string;
 };
 
 export interface HeaderProps {
-  user?: User | undefined;
+  onCreateAccount?: () => void;
   onLogin?: () => void;
   onLogout?: () => void;
-  onCreateAccount?: () => void;
+  user?: User | undefined;
 }
 
 export const Header = ({
