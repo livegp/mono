@@ -15,11 +15,11 @@
     "dev:docs": "turbo run -F @mono/docs dev",
     "dev": "turbo run dev",
     "build": "turbo run build",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
     "check-types": "turbo run check-types",
-    "clean": "turbo clean && rm -rf .turbo",
-    "check": "ultracite check",
-    "fix": "ultracite fix",
-    "reset": "bun run clean && bun install"
+    "clean": "turbo run clean && turbo clean && rm -rf .turbo",
+    "reset": "bun run clean && rm -rf node_modules bun.lock && bun install"
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.4",

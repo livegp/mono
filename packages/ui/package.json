@@ -17,8 +17,11 @@
   "scripts": {
     "dev": "bunx -b vite",
     "build": "bunx -b vite build",
+    "lint": "bunx ultracite check",
+    "lint:fix": "bunx ultracite fix",
     "check-types": "tsc --noEmit",
-    "clean": "rm -rf .turbo"
+    "clean": "rm -rf .turbo dist",
+    "reset": "bun --cwd ../.. run reset"
   },
   "dependencies": {
     "clsx": "^2.1.1",

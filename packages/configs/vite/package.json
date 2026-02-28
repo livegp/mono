@@ -5,8 +5,15 @@
   "type": "module",
   "description": "viteconfig for Mono",
   "license": "MIT",
+  "scripts": {
+    "check-types": "tsc --noEmit --moduleResolution bundler --module ESNext --target ESNext --skipLibCheck vite.config.base.ts",
+    "lint": "bunx ultracite check",
+    "lint:fix": "bunx ultracite fix",
+    "clean": "rm -rf .turbo dist",
+    "reset": "bun --cwd ../../.. run reset"
+  },
   "exports": {
-    ".": "./vite.config.base.ts"
+    "./base": "./vite.config.base.ts"
   },
   "dependencies": {
     "browserslist": "^4.28.1",

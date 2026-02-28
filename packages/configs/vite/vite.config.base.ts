@@ -1,42 +1,42 @@
-import crypto from 'node:crypto';
-import browserslist from 'browserslist';
-import { browserslistToTargets } from 'lightningcss';
-import type { ConfigEnv, UserConfig } from 'vite';
-import { defineConfig, searchForWorkspaceRoot } from 'vite';
+import crypto from "node:crypto";
+import browserslist from "browserslist";
+import { browserslistToTargets } from "lightningcss";
+import type { ConfigEnv, UserConfig } from "vite";
+import { defineConfig, searchForWorkspaceRoot } from "vite";
 
-const NONCE = crypto.randomBytes(16).toString('base64');
+const NONCE = crypto.randomBytes(16).toString("base64");
 
 const baseSettings: UserConfig = {
-  root: '.',
-  publicDir: 'public',
-  cacheDir: 'node_modules/.vite',
+  root: ".",
+  publicDir: "public",
+  cacheDir: "node_modules/.vite",
   build: {
     chunkSizeWarningLimit: 1000,
-    cssMinify: 'lightningcss',
+    cssMinify: "lightningcss",
     emptyOutDir: true,
     manifest: true,
-    outDir: 'dist',
+    outDir: "dist",
     rollupOptions: {
       output: {
         manualChunks(id: string) {
-          if (id.includes('node_modules')) {
+          if (id.includes("node_modules")) {
             if (
-              id.includes('react') ||
-              id.includes('react-dom') ||
-              id.includes('scheduler')
+              id.includes("react") ||
+              id.includes("react-dom") ||
+              id.includes("scheduler")
             ) {
-              return 'react-vendor';
+              return "react-vendor";
             }
             // if (id.includes('@tanstack')) {
             //   return 'tanstack-vendor';
             // }
-            return 'vendor';
+            return "vendor";
           }
           return;
         },
       },
     },
-    target: 'esnext',
+    target: "esnext",
     assetsInlineLimit: 4096,
     modulePreload: {
       polyfill: true,
@@ -49,12 +49,12 @@ const baseSettings: UserConfig = {
   css: {
     devSourcemap: true,
     modules: {
-      localsConvention: 'camelCase',
-      scopeBehaviour: 'local',
+      localsConvention: "camelCase",
+      scopeBehaviour: "local",
     },
-    transformer: 'lightningcss',
+    transformer: "lightningcss",
     lightningcss: {
-      targets: browserslistToTargets(browserslist('>= 0.25%')),
+      targets: browserslistToTargets(browserslist(">= 0.25%")),
     },
   },
   server: {
@@ -70,23 +70,23 @@ const baseSettings: UserConfig = {
     cors: true,
   },
   optimizeDeps: {
-    include: ['react', 'react-dom'],
-    exclude: ['@mono/ui'],
+    include: ["react", "react-dom"],
+    exclude: ["@mono/ui"],
   },
   esbuild: {
-    target: 'esnext',
+    target: "esnext",
   },
 };
 
 export default defineConfig((env: ConfigEnv) => {
-  const isDev = env.mode === 'development';
+  const isDev = env.mode === "development";
 
   return {
     ...baseSettings,
     build: {
       ...baseSettings.build,
       sourcemap: isDev,
-      minify: isDev ? false : ('esbuild' as const),
+      minify: isDev ? false : ("esbuild" as const),
     },
   };
 });
