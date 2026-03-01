@@ -1,8 +1,6 @@
 
 # preload = ["./preload.ts"]
-jsx = "react"
-jsxFactory = "h"
-jsxFragment = "Fragment"
+jsx = "react-jsx"
 jsxImportSource = "react"
 smol = true
 # logLevel = "debug" # "debug" | "warn" | "error"
