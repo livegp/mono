@@ -47,4 +47,4 @@ save = true
 [run]
 shell = "bun"
 bun = true
-silent = true
+silent = false
