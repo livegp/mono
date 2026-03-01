@@ -31,22 +31,28 @@ COPY . .
 RUN turbo prune @mono/${PROJECT} --docker
 
 # ============================================================================
-# STAGE 3: INSTALLER - Install dependencies and build
+# STAGE 3: BUILD - Install dependencies and build
 # ============================================================================
-FROM base AS installer
+FROM base AS build
 WORKDIR /app
 
-# First install the dependencies (as they change less often)
 COPY --from=prune /app/out/json/ .
 COPY --from=prune /app/out/bun-lock.json ./bun.lock
 RUN bun install --frozen-lockfile
-
-# Build the project
 COPY --from=prune /app/out/full/ .
 RUN turbo run build --filter=@mono/${PROJECT}
 
 # ============================================================================
-# STAGE 4: RUNNER - Final production image
+# STAGE 4: PROD-DEPS - Install production dependencies
+# ============================================================================
+FROM base AS prod-deps
+WORKDIR /app
+COPY --from=prune /app/out/json/ .
+COPY --from=prune /app/out/bun-lock.json ./bun.lock
+RUN bun install --production --frozen-lockfile
+
+# ============================================================================
+# STAGE 5: RUNNER - Final production image
 # ============================================================================
 FROM base AS runner
 WORKDIR /app
@@ -57,9 +63,9 @@ RUN addgroup -g ${GROUP_ID} -S ${PROJECT}group && \
     -h /app -s /sbin/nologin
 
 # Copy built application for production serving
-COPY --from=installer --chown=${PROJECT}user:${PROJECT}group /app/apps/${PROJECT}/dist ./dist
-COPY --from=installer --chown=${PROJECT}user:${PROJECT}group /app/apps/${PROJECT}/package.json ./package.json
-COPY --from=installer --chown=${PROJECT}user:${PROJECT}group /app/node_modules ./node_modules
+COPY --from=build --chown=${PROJECT}user:${PROJECT}group /app/apps/${PROJECT}/dist ./dist
+COPY --from=build --chown=${PROJECT}user:${PROJECT}group /app/apps/${PROJECT}/package.json ./package.json
+COPY --from=prod-deps --chown=${PROJECT}user:${PROJECT}group /app/node_modules ./node_modules
 
 # Set secure permissions
 RUN find /app -type d -exec chmod 755 {} + && \
@@ -80,4 +86,3 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
 
 # Start production server
 CMD ["bun", "run", "start"]
-

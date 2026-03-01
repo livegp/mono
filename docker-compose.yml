@@ -20,7 +20,8 @@ services:
       - NODE_ENV=${NODE_ENV:-production}
       - PORT=${BACKEND_PORT:-3000}
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:${BACKEND_PORT:-3000}/health"]
+      test:
+        ["CMD", "curl", "-f", "http://localhost:${BACKEND_PORT:-3000}/health"]
       interval: 30s
       timeout: 10s
       start_period: 60s
@@ -50,7 +51,7 @@ services:
       - NODE_ENV=${NODE_ENV:-production}
       - PORT=${FRONTEND_PORT:-4173}
       # Додавання API URL для frontend
-      - VITE_API_URL=http://backend:${BACKEND_PORT:-3000}
+      - VITE_API_URL=http://localhost:${BACKEND_PORT:-3000}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:${FRONTEND_PORT:-4173}/"]
       interval: 30s
@@ -69,43 +70,7 @@ services:
         max-size: "10m"
         max-file: "3"
 
-  docs:
-    build:
-      context: .
-      dockerfile: ./apps/docs/Dockerfile
-      args:
-        <<: *common-variables
-        PROJECT: docs
-        PORT: ${DOCS_PORT:-6006}
-    container_name: mono-docs
-    ports:
-      - "${DOCS_PORT:-6006}:${DOCS_PORT:-6006}"
-    environment:
-      - NODE_ENV=${NODE_ENV:-production}
-      - PORT=${DOCS_PORT:-6006}
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:${DOCS_PORT:-6006}/"]
-      interval: 60s
-      timeout: 5s
-      start_period: 30s
-      retries: 2
-    restart: unless-stopped
-    networks:
-      - mono-network
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
-
 networks:
   mono-network:
     driver: bridge
     name: mono-network
-
-# Оптимізовані volumes для кешування
-volumes:
-  node_modules_cache:
-    name: mono-node-modules-cache
-  turbo_cache:
-    name: mono-turbo-cache

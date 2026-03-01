@@ -2,7 +2,7 @@
 # preload = ["./preload.ts"]
 jsx = "react-jsx"
 jsxImportSource = "react"
-smol = true
+smol = false
 # logLevel = "debug" # "debug" | "warn" | "error"
 
 [define]
