@@ -12,12 +12,7 @@
     "clean": "rm -rf .turbo dist"
   },
   "exports": {
-    ".": "./tsconfig.base.json",
     "./base": "./tsconfig.base.json",
-    "./strict": "./tsconfig.strict.json",
-    "./env-browser": "./tsconfig.env-browser.json",
-    "./env-bun": "./tsconfig.env-bun.json",
-    "./runtime-vite": "./tsconfig.runtime-vite.json",
     "./preset-react-app": "./tsconfig.preset-react-app.json",
     "./preset-react-lib": "./tsconfig.preset-react-lib.json",
     "./preset-backend-bun": "./tsconfig.preset-backend-bun.json",

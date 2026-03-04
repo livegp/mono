@@ -1,8 +1,5 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Preset Tooling Bun",
-  "extends": ["./tsconfig.strict.json", "./tsconfig.env-bun.json"],
-  "compilerOptions": {
-    "noEmit": true
-  }
+  "extends": ["./tsconfig.strict.json", "./tsconfig.env-bun.json"]
 }

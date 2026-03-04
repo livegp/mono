@@ -4,7 +4,6 @@
   "extends": ["./tsconfig.strict.json", "./tsconfig.env-browser.json"],
   "compilerOptions": {
     "jsx": "react-jsx",
-    "jsxImportSource": "react",
-    "noEmit": true
+    "jsxImportSource": "react"
   }
 }
