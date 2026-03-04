@@ -1,0 +1,8 @@
+{
+  "extends": "@mono/ts-config/preset-tooling-bun",
+  "compilerOptions": {
+    "types": ["bun"],
+    "tsBuildInfoFile": "node_modules/.tmp/tsconfig.scripts.tsbuildinfo"
+  },
+  "include": ["build.ts"]
+}

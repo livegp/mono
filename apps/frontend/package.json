@@ -28,7 +28,6 @@
     "@julr/vite-plugin-validate-env": "^2.2.0",
     "@mono/ts-config": "workspace:*",
     "@mono/vite-config": "workspace:*",
-    "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "@vitejs/plugin-react-swc": "^4.2.3",

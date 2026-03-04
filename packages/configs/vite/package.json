@@ -6,7 +6,7 @@
   "description": "viteconfig for Mono",
   "license": "MIT",
   "scripts": {
-    "check-types": "tsc --noEmit --moduleResolution bundler --module ESNext --target ESNext --skipLibCheck vite.config.base.ts",
+    "check-types": "tsc --noEmit -p tsconfig.json",
     "lint": "bunx ultracite check",
     "lint:fix": "bunx ultracite fix",
     "clean": "rm -rf .turbo dist"
@@ -18,5 +18,9 @@
     "browserslist": "^4.28.1",
     "lightningcss": "^1.31.1",
     "vite": "^7.3.1"
+  },
+  "devDependencies": {
+    "@types/bun": "catalog:",
+    "typescript": "catalog:"
   }
 }

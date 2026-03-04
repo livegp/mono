@@ -1,10 +1,10 @@
 {
   "name": "@mono/ts-config",
   "version": "0.0.1",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "description": "tsconfigs for Mono",
-  "license": "MIT",
   "scripts": {
     "check-types": "echo \"No TypeScript files to type-check in @mono/ts-config\"",
     "lint": "bunx ultracite check",
@@ -12,6 +12,18 @@
     "clean": "rm -rf .turbo dist"
   },
   "exports": {
-    "./base": "./tsconfig.base.json"
+    ".": "./tsconfig.base.json",
+    "./base": "./tsconfig.base.json",
+    "./strict": "./tsconfig.strict.json",
+    "./env-browser": "./tsconfig.env-browser.json",
+    "./env-bun": "./tsconfig.env-bun.json",
+    "./runtime-vite": "./tsconfig.runtime-vite.json",
+    "./preset-react-app": "./tsconfig.preset-react-app.json",
+    "./preset-react-lib": "./tsconfig.preset-react-lib.json",
+    "./preset-backend-bun": "./tsconfig.preset-backend-bun.json",
+    "./preset-tooling-bun": "./tsconfig.preset-tooling-bun.json"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

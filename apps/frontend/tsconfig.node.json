@@ -1,5 +1,5 @@
 {
-  "extends": "@mono/ts-config/base",
+  "extends": "@mono/ts-config/preset-tooling-bun",
   "compilerOptions": {
     "tsBuildInfoFile": "node_modules/.tmp/tsconfig.node.tsbuildinfo"
   },

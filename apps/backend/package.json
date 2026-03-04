@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "NODE_ENV=development bun --watch src/index.ts",
     "build": "bun build.ts",
-    "check-types": "tsc --noEmit",
+    "check-types": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.scripts.json",
     "lint": "bunx ultracite check",
     "lint:fix": "bunx ultracite fix",
     "clean": "rm -rf .turbo dist"

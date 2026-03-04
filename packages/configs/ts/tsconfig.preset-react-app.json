@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Preset React App",
+  "extends": ["./tsconfig.strict.json", "./tsconfig.runtime-vite.json"],
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "types": ["vite/client", "react", "react-dom"]
+  }
+}

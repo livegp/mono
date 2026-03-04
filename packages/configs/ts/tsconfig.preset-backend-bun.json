@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Preset Backend Bun",
+  "extends": ["./tsconfig.strict.json", "./tsconfig.env-bun.json"],
+  "compilerOptions": {
+    "noEmit": true
+  }
+}

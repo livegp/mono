@@ -12,8 +12,8 @@
     "./hooks/*": "./src/hooks/*"
   },
   "scripts": {
-    "dev": "bunx -b vite",
-    "build": "bunx -b vite build",
+    "dev": "bunx -b tsdown --watch",
+    "build": "bunx -b tsdown",
     "check-types": "tsc --noEmit",
     "lint": "bunx ultracite check",
     "lint:fix": "bunx ultracite fix",
@@ -30,6 +30,7 @@
     "@mono/ts-config": "workspace:*",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "tsdown": "^0.21.0-beta.2",
     "typescript": "catalog:"
   }
 }

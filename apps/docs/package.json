@@ -7,7 +7,7 @@
   "description": "documentation for Mono",
   "scripts": {
     "dev": "storybook dev -p 6006",
-    "build": "storybook build",
+    "build": "storybook build -o dist --docs",
     "check-types": "tsc --noEmit",
     "lint": "bunx ultracite check",
     "lint:fix": "bunx ultracite fix",
@@ -21,6 +21,7 @@
   "devDependencies": {
     "@mono/ts-config": "workspace:*",
     "@mono/vite-config": "workspace:*",
+    "@storybook/addon-links": "10.2.13",
     "@storybook/addon-docs": "^10.2.13",
     "@storybook/react": "^10.2.13",
     "@storybook/react-vite": "^10.2.13",
