@@ -12,17 +12,11 @@
     "clean": "rm -rf .turbo dist"
   },
   "exports": {
-    "./ts/base": "./ts/tsconfig.base.json",
-    "./ts/strict": "./ts/tsconfig.strict.json",
-    "./ts/env-browser": "./ts/tsconfig.env-browser.json",
-    "./ts/env-bun": "./ts/tsconfig.env-bun.json",
-    "./ts/runtime-vite": "./ts/tsconfig.runtime-vite.json",
-    "./ts/preset-react-app": "./ts/tsconfig.preset-react-app.json",
-    "./ts/preset-react-lib": "./ts/tsconfig.preset-react-lib.json",
-    "./ts/preset-backend-bun": "./ts/tsconfig.preset-backend-bun.json",
-    "./ts/preset-tooling-bun": "./ts/tsconfig.preset-tooling-bun.json",
-    "./ts/react-app": "./ts/tsconfig.preset-react-app.json",
-    "./ts/react-library": "./ts/tsconfig.preset-react-lib.json",
+    "./ts/strict": "./ts/strict.json",
+    "./ts/react-app": "./ts/react-app.json",
+    "./ts/react-lib": "./ts/react-lib.json",
+    "./ts/backend-bun": "./ts/backend-bun.json",
+    "./ts/tooling-bun": "./ts/tooling-bun.json",
     "./vite/base": "./vite/base.ts",
     "./vite/react-app": {
       "types": "./vite/react-app.d.ts",
@@ -55,3 +49,4 @@
     "access": "public"
   }
 }
+

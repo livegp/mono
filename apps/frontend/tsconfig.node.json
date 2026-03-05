@@ -1,7 +1,8 @@
 {
-  "extends": "@mono/config/ts/preset-tooling-bun",
+  "extends": "@mono/config/ts/tooling-bun",
   "compilerOptions": {
     "tsBuildInfoFile": "node_modules/.tmp/tsconfig.node.tsbuildinfo"
   },
   "include": ["vite.config.ts"]
 }
+

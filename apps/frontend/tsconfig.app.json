@@ -1,5 +1,5 @@
 {
-  "extends": "@mono/config/ts/preset-react-app",
+  "extends": "@mono/config/ts/react-app",
   "compilerOptions": {
     "tsBuildInfoFile": "node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "outDir": "dist",
@@ -12,3 +12,4 @@
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", ".turbo"]
 }
+

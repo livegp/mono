@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Strict",
-  "extends": "./tsconfig.base.json",
+  "extends": "./base.json",
   "compilerOptions": {
     "strict": true,
     "noUnusedLocals": true,
