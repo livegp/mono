@@ -17,11 +17,7 @@
     "./ts/react-lib": "./ts/react-lib.json",
     "./ts/backend-bun": "./ts/backend-bun.json",
     "./ts/tooling-bun": "./ts/tooling-bun.json",
-    "./vite/base": "./vite/base.ts",
-    "./vite/react-app": {
-      "types": "./vite/react-app.d.ts",
-      "default": "./vite/react-app.ts"
-    }
+    "./vite/base": "./vite/base.ts"
   },
   "peerDependencies": {
     "@vitejs/plugin-react": "^5.1.4",
