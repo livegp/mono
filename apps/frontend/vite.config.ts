@@ -57,7 +57,6 @@ export default defineConfig(({ command, mode }) => {
       tsconfigPaths(),
       checker({
         typescript: true,
-        biome: true,
       }),
       compression(),
       imagetools({
