@@ -1,10 +1,11 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Environment Bun",
-  "extends": "./base.json",
+  "extends": "./_base.json",
   "compilerOptions": {
     "lib": ["ESNext"],
     "types": ["bun"]
   }
 }
+
 

@@ -1,10 +1,11 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Preset React Library",
-  "extends": ["./strict.json", "./env-browser.json"],
+  "extends": ["./strict.json", "./_env-browser.json"],
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "react"
   }
 }
+
 

@@ -1,8 +1,9 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Runtime Vite",
-  "extends": "./env-browser.json",
+  "extends": "./_env-browser.json",
   "compilerOptions": {
     "types": ["vite/client"]
   }
 }
+

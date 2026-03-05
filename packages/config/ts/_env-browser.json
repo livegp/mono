@@ -1,9 +1,10 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Environment Browser",
-  "extends": "./base.json",
+  "extends": "./_base.json",
   "compilerOptions": {
     "lib": ["ESNext", "DOM", "DOM.Iterable"]
   }
 }
+
 
