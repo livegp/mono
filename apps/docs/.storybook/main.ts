@@ -1,4 +1,3 @@
-import { createStorybookViteFinal } from "@mono/config/vite/react-doc";
 import type { StorybookConfig } from "@storybook/react-vite";
 
 const config: StorybookConfig = {
@@ -8,8 +7,5 @@ const config: StorybookConfig = {
     name: "@storybook/react-vite",
     options: {},
   },
-  viteFinal: createStorybookViteFinal({
-    defineProcessEnv: false,
-  }),
 };
 export default config;
