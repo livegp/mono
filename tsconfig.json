@@ -1,3 +1,3 @@
 {
-  "extends": "@mono/ts-config/base"
+  "extends": "@mono/config/ts/strict"
 }

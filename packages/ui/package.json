@@ -27,7 +27,7 @@
     "tailwindcss": "^4.2.1"
   },
   "devDependencies": {
-    "@mono/ts-config": "workspace:*",
+    "@mono/config": "workspace:*",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "tsdown": "^0.21.0-beta.2",

@@ -26,8 +26,7 @@
   },
   "devDependencies": {
     "@julr/vite-plugin-validate-env": "^2.2.0",
-    "@mono/ts-config": "workspace:*",
-    "@mono/vite-config": "workspace:*",
+    "@mono/config": "workspace:*",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "@vitejs/plugin-react-swc": "^4.2.3",

@@ -1,6 +1,6 @@
 /** biome-ignore-all lint/complexity/useLiteralKeys: Dynamic env variable access required */
 import { ValidateEnv } from "@julr/vite-plugin-validate-env";
-import baseViteConfig from "@mono/vite-config/base";
+import baseViteConfig from "@mono/config/vite/base";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react-swc";
 import { visualizer } from "rollup-plugin-visualizer";

@@ -1,4 +1,0 @@
-{
-  "extends": "@mono/ts-config/preset-tooling-bun",
-  "include": ["vite.config.base.ts"]
-}

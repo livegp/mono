@@ -1,7 +1,4 @@
-import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
+import { createReactAppViteConfig } from "@mono/config/vite/react-app";
 
 // https://vite.dev/config/
-export default defineConfig({
-  plugins: [react()],
-});
+export default createReactAppViteConfig();

@@ -19,8 +19,7 @@
     "react-dom": "catalog:"
   },
   "devDependencies": {
-    "@mono/ts-config": "workspace:*",
-    "@mono/vite-config": "workspace:*",
+    "@mono/config": "workspace:*",
     "@storybook/addon-links": "10.2.13",
     "@storybook/addon-docs": "^10.2.13",
     "@storybook/react": "^10.2.13",

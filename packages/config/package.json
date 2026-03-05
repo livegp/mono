@@ -1,0 +1,57 @@
+{
+  "name": "@mono/config",
+  "version": "0.0.1",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "description": "shared ts and vite configs for Mono",
+  "scripts": {
+    "check-types": "echo \"No TypeScript files to type-check in @mono/config\"",
+    "lint": "bunx ultracite check",
+    "lint:fix": "bunx ultracite fix",
+    "clean": "rm -rf .turbo dist"
+  },
+  "exports": {
+    "./ts/base": "./ts/tsconfig.base.json",
+    "./ts/strict": "./ts/tsconfig.strict.json",
+    "./ts/env-browser": "./ts/tsconfig.env-browser.json",
+    "./ts/env-bun": "./ts/tsconfig.env-bun.json",
+    "./ts/runtime-vite": "./ts/tsconfig.runtime-vite.json",
+    "./ts/preset-react-app": "./ts/tsconfig.preset-react-app.json",
+    "./ts/preset-react-lib": "./ts/tsconfig.preset-react-lib.json",
+    "./ts/preset-backend-bun": "./ts/tsconfig.preset-backend-bun.json",
+    "./ts/preset-tooling-bun": "./ts/tsconfig.preset-tooling-bun.json",
+    "./ts/react-app": "./ts/tsconfig.preset-react-app.json",
+    "./ts/react-library": "./ts/tsconfig.preset-react-lib.json",
+    "./vite/base": "./vite/base.ts",
+    "./vite/react-app": {
+      "types": "./vite/react-app.d.ts",
+      "default": "./vite/react-app.ts"
+    },
+    "./vite/storybook-react": {
+      "types": "./vite/storybook-react.d.ts",
+      "default": "./vite/storybook-react.ts"
+    }
+  },
+  "peerDependencies": {
+    "@storybook/react-vite": "^10.2.13",
+    "@vitejs/plugin-react": "^5.1.4",
+    "vite": "^7.3.1"
+  },
+  "peerDependenciesMeta": {
+    "@storybook/react-vite": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "browserslist": "^4.28.1",
+    "lightningcss": "^1.31.1"
+  },
+  "devDependencies": {
+    "@types/bun": "catalog:",
+    "typescript": "catalog:"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

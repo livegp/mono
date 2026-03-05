@@ -32,9 +32,9 @@ mono/
 │   └── backend/    # Backend application built with ElysiaJS
 ├── packages/       # Directory for shared libraries and configurations
 │   ├── ui/         # Shared UI components package (React)
-│   └── configs/    # Shared configurations package
-│       ├── ts/     # Base TypeScript configuration (@mono/ts-config)
-│       └── vite/   # Bas Vite configuration (@mono/vite-config)
+│   └── config/     # Shared configuration package (@mono/config)
+│       ├── ts/     # Base TypeScript configuration (@mono/config/ts)
+│       └── vite/   # Base Vite configuration (@mono/config/vite)
 ```
 
 ## Tech Stack
@@ -259,3 +259,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - No liability
 - No warranty
+
