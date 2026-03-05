@@ -27,9 +27,6 @@ const baseSettings: UserConfig = {
             ) {
               return "react-vendor";
             }
-            // if (id.includes('@tanstack')) {
-            //   return 'tanstack-vendor';
-            // }
             return "vendor";
           }
           return;

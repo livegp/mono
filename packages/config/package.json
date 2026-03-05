@@ -22,9 +22,9 @@
       "types": "./vite/react-app.d.ts",
       "default": "./vite/react-app.ts"
     },
-    "./vite/storybook-react": {
-      "types": "./vite/storybook-react.d.ts",
-      "default": "./vite/storybook-react.ts"
+    "./vite/react-doc": {
+      "types": "./vite/react-doc.d.ts",
+      "default": "./vite/react-doc.ts"
     }
   },
   "peerDependencies": {
@@ -49,4 +49,5 @@
     "access": "public"
   }
 }
+
 
