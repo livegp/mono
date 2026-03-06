@@ -1,3 +1,5 @@
 {
-  "extends": "@mono/config/ts/strict"
+  "extends": "@mono/config/ts/strict",
+  "include": ["."],
+  "exclude": ["dist", "node_modules"]
 }
