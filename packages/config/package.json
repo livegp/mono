@@ -20,8 +20,8 @@
     "./vite/base": "./vite/base.ts"
   },
   "peerDependencies": {
-    "@vitejs/plugin-react": "^5.1.4",
-    "vite": "^7.3.1"
+    "@vitejs/plugin-react": "^6.0.4",
+    "vite": "^8.1.5"
   },
   "dependencies": {
     "browserslist": "^4.28.1",
