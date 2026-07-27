@@ -23,16 +23,16 @@
     "valibot": "^1.2.0"
   },
   "devDependencies": {
-    "@julr/vite-plugin-validate-env": "^2.2.0",
+    "@julr/vite-plugin-validate-env": "^2.2.2",
     "@mono/backend": "workspace:*",
     "@mono/config": "workspace:*",
     "@types/bun": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "@vitejs/plugin-react-swc": "^4.2.3",
+    "@vitejs/plugin-react-swc": "^4.3.2",
     "typescript": "catalog:",
     "vite": "catalog:",
-    "vite-plugin-bun-csp": "^2.1.1",
+    "vite-plugin-bun-csp": "^2.1.2",
     "vite-tsconfig-paths": "^6.1.1"
   }
 }

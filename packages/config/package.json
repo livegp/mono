@@ -20,11 +20,11 @@
     "./vite/base": "./vite/base.ts"
   },
   "peerDependencies": {
-    "vite": "^7.3.1"
+    "vite": "^7.3.6"
   },
   "dependencies": {
-    "browserslist": "^4.28.1",
-    "lightningcss": "^1.31.1"
+    "browserslist": "^4.28.7",
+    "lightningcss": "^1.33.0"
   },
   "devDependencies": {
     "@types/bun": "catalog:",
