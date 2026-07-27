@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "storybook dev -p 6006",
     "build": "storybook build -o dist --docs",
-    "check-types": "tsc --noEmit",
+    "check-types": "tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.node.json",
     "lint": "bunx ultracite check",
     "lint:fix": "bunx ultracite fix",
     "clean": "rm -rf .turbo dist"
@@ -24,14 +24,13 @@
     "@storybook/addon-docs": "^10.2.15",
     "@storybook/react": "^10.2.15",
     "@storybook/react-vite": "^10.2.15",
-    "@storybook/test": "^8.6.15",
+    "@tailwindcss/vite": "^4.2.1",
+    "@types/bun": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "@vitejs/plugin-react": "^5.1.4",
-    "globals": "^17.4.0",
     "storybook": "^10.2.15",
+    "tailwindcss": "^4.2.1",
     "typescript": "catalog:",
-    "vite": "catalog:",
-    "vite-tsconfig-paths": "^6.1.1"
+    "vite": "catalog:"
   }
 }

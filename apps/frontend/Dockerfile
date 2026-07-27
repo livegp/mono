@@ -1,79 +1,31 @@
 # syntax=docker/dockerfile:1
 
-# Build arguments - Global scope for all stages
-ARG BUN_VERSION=1.3.8-alpine # see all versions at https://hub.docker.com/r/oven/bun/tags
-ARG PORT=4173
-ARG USER_ID=1001
-ARG GROUP_ID=1001
-ARG PROJECT
+ARG BUN_VERSION=1.3.9-alpine
 
-# ============================================================================
-# STAGE 1: BASE - Common foundation for all stages
-# ============================================================================
-FROM oven/bun:${BUN_VERSION} AS base
-
-# Metadata labels
-LABEL app.name="${PROJECT}"
-LABEL version="1.0.0"
-LABEL security.non-root="true"
-
-# Install dependencies and clean cache
-RUN apk update && \
-    apk add --no-cache curl
-
-# ============================================================================
-# STAGE 2: PRUNE - Create minimal workspace using Turbo
-# ============================================================================
-FROM base AS prune
-WORKDIR /app
-RUN bun add -g turbo
-COPY . .
-RUN turbo prune @mono/${PROJECT} --docker
-
-# ============================================================================
-# STAGE 3: INSTALLER - Install dependencies and build
-# ============================================================================
-FROM base AS installer
+FROM oven/bun:${BUN_VERSION} AS build
 WORKDIR /app
 
-# First install the dependencies (as they change less often)
-COPY --from=prune /app/out/json/ .
-COPY --from=prune /app/out/bun-lock.json ./bun.lock
+COPY package.json bun.lock bunfig.toml turbo.json tsconfig.json biome.jsonc ./
+COPY apps ./apps
+COPY packages ./packages
+
 RUN bun install --frozen-lockfile
 
-# Build the project
-COPY --from=prune /app/out/full/ .
-RUN turbo run build --filter=@mono/${PROJECT}
+ARG VITE_WEB_PORT=9000
+ARG VITE_WEB_URL=http://localhost:9000
+ARG VITE_API_URL=http://localhost:9001
+ENV VITE_WEB_PORT=${VITE_WEB_PORT}
+ENV VITE_WEB_URL=${VITE_WEB_URL}
+ENV VITE_API_URL=${VITE_API_URL}
 
-# ============================================================================
-# STAGE 4: RUNNER - Final production image
-# ============================================================================
-FROM base AS runner
-WORKDIR /app
+RUN bunx turbo run build --filter=@mono/frontend
 
-# Don't run production as root
-RUN addgroup -g ${GROUP_ID} -S ${PROJECT}group && \
-    adduser -u ${USER_ID} -S ${PROJECT}user -G ${PROJECT}group \
-    -h /app -s /sbin/nologin
+FROM nginx:1.27-alpine AS runner
 
-# Copy built application for production serving
-COPY --from=installer --chown=${PROJECT}user:${PROJECT}group /app/apps/${PROJECT}/dist ./dist
-COPY --from=installer --chown=${PROJECT}user:${PROJECT}group /app/apps/${PROJECT}/package.json ./package.json
+COPY apps/frontend/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/apps/frontend/dist /usr/share/nginx/html
 
-# Set secure permissions
-RUN find /app -type d -exec chmod 755 {} + && \
-    find /app -type f -exec chmod 644 {} + && \
-    chmod 444 /app/package.json
+EXPOSE 9000
 
-USER ${PROJECT}user
-EXPOSE ${PORT}
-
-ENV NODE_ENV=production
-ENV PORT=${PORT}
-
-# Health check for production server
-HEALTHCHECK --interval=30s --timeout=3s --start-period=15s --retries=3 \
-    CMD curl -f http://localhost:${PORT}/ || exit 1
-
-# Start production server
-CMD ["bun", "run", "start"]
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD wget --quiet --output-document=- http://127.0.0.1:9000/health > /dev/null || exit 1

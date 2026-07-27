@@ -1,88 +1,32 @@
 # syntax=docker/dockerfile:1
 
-# Build arguments - Global scope for all stages
-ARG BUN_VERSION=1.3.8-alpine # see all versions at https://hub.docker.com/r/oven/bun/tags
-ARG PORT=3000
-ARG USER_ID=1001
-ARG GROUP_ID=1001
-ARG PROJECT
+ARG BUN_VERSION=1.3.9-alpine
 
-# ============================================================================
-# STAGE 1: BASE - Common foundation for all stages
-# ============================================================================
-FROM oven/bun:${BUN_VERSION} AS base
-
-# Metadata labels
-LABEL app.name="${PROJECT}"
-LABEL version="1.0.0"
-LABEL security.non-root="true"
-
-# Install dependencies and clean cache
-RUN apk update && \
-    apk add --no-cache curl
-
-# ============================================================================
-# STAGE 2: PRUNE - Create minimal workspace using Turbo
-# ============================================================================
-FROM base AS prune
-WORKDIR /app
-RUN bun add -g turbo
-COPY . .
-RUN turbo prune @mono/${PROJECT} --docker
-
-# ============================================================================
-# STAGE 3: BUILD - Install dependencies and build
-# ============================================================================
-FROM base AS build
+FROM oven/bun:${BUN_VERSION} AS build
 WORKDIR /app
 
-COPY --from=prune /app/out/json/ .
-COPY --from=prune /app/out/bun-lock.json ./bun.lock
+COPY package.json bun.lock bunfig.toml turbo.json tsconfig.json biome.jsonc ./
+COPY apps ./apps
+COPY packages ./packages
+
 RUN bun install --frozen-lockfile
-COPY --from=prune /app/out/full/ .
-RUN turbo run build --filter=@mono/${PROJECT}
+RUN bunx turbo run build --filter=@mono/backend
 
-# ============================================================================
-# STAGE 4: PROD-DEPS - Install production dependencies
-# ============================================================================
-FROM base AS prod-deps
-WORKDIR /app
-COPY --from=prune /app/out/json/ .
-COPY --from=prune /app/out/bun-lock.json ./bun.lock
-RUN bun install --production --frozen-lockfile
-
-# ============================================================================
-# STAGE 5: RUNNER - Final production image
-# ============================================================================
-FROM base AS runner
+FROM oven/bun:${BUN_VERSION} AS runner
 WORKDIR /app
 
-# Don't run production as root
-RUN addgroup -g ${GROUP_ID} -S ${PROJECT}group && \
-    adduser -u ${USER_ID} -S ${PROJECT}user -G ${PROJECT}group \
-    -h /app -s /sbin/nologin
+RUN apk add --no-cache curl
 
-# Copy built application for production serving
-COPY --from=build --chown=${PROJECT}user:${PROJECT}group /app/apps/${PROJECT}/dist ./dist
-COPY --from=build --chown=${PROJECT}user:${PROJECT}group /app/apps/${PROJECT}/package.json ./package.json
-COPY --from=prod-deps --chown=${PROJECT}user:${PROJECT}group /app/node_modules ./node_modules
-
-# Set secure permissions
-RUN find /app -type d -exec chmod 755 {} + && \
-    find /app -type f -exec chmod 644 {} + && \
-    chmod 444 /app/package.json
-
-USER ${PROJECT}user
-EXPOSE ${PORT}
+COPY --from=build --chown=bun:bun /app/apps/backend/dist ./dist
 
 ENV NODE_ENV=production
-ENV PORT=${PORT}
+ENV API_PORT=9001
+ENV CORS_ORIGIN=http://localhost:9000
 
-# Health check for production server
-HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD curl -f http://localhost:${PORT}/health || \
-        curl -f http://localhost:${PORT}/ || \
-        exit 1
+USER bun
+EXPOSE 9001
 
-# Start production server
-CMD ["bun", "run", "start"]
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD curl --fail --silent http://localhost:9001/api/health > /dev/null || exit 1
+
+CMD ["bun", "dist/index.js"]

@@ -1,12 +1,8 @@
-import { treaty } from "@elysiajs/eden";
 import { useEffect, useState } from "react";
 import reactLogo from "@/assets/react.svg";
+import { api } from "@/lib/eden";
 import viteLogo from "/vite.svg";
-
-import type { App as BackendApp } from "../../backend/src/index";
-import "@app.css";
-
-const app = treaty<BackendApp>("localhost:4000");
+import "./app.css";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -16,7 +12,7 @@ function App() {
   useEffect(() => {
     async function fetchGreeting() {
       try {
-        const { data, error: apiError } = await app.api
+        const { data, error: apiError } = await api.api
           .greet({ name: "Vite" })
           .get();
         if (apiError) {
