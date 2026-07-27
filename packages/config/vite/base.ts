@@ -18,7 +18,7 @@ const baseSettings: UserConfig = {
     },
     outDir: "dist",
     reportCompressedSize: true,
-    rollupOptions: {
+    rolldownOptions: {
       output: {
         manualChunks(id: string) {
           if (!id.includes("node_modules")) {
@@ -48,9 +48,6 @@ const baseSettings: UserConfig = {
       scopeBehaviour: "local",
     },
     transformer: "lightningcss",
-  },
-  esbuild: {
-    target: "esnext",
   },
   html: {
     cspNonce: NONCE,
@@ -82,7 +79,7 @@ export default defineConfig((env: ConfigEnv) => {
     ...baseSettings,
     build: {
       ...baseSettings.build,
-      minify: isDev ? false : ("esbuild" as const),
+      minify: !isDev,
       sourcemap: isDev,
     },
   };

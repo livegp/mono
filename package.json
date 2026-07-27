@@ -44,7 +44,7 @@
       "react": "^19.2.8",
       "react-dom": "^19.2.8",
       "typescript": "^5.9.3",
-      "vite": "^7.3.6"
+      "vite": "npm:rolldown-vite@7.3.1"
     }
   }
 }

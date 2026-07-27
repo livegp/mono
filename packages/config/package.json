@@ -20,7 +20,7 @@
     "./vite/base": "./vite/base.ts"
   },
   "peerDependencies": {
-    "vite": "^7.3.6"
+    "vite": "npm:rolldown-vite@7.3.1"
   },
   "dependencies": {
     "browserslist": "^4.28.7",
