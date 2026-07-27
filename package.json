@@ -17,6 +17,7 @@
     "build": "turbo run build",
     "check-types": "turbo run check-types",
     "test": "turbo run test",
+    "tsc6": "bun node_modules/typescript/bin/tsc",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "clean": "turbo run clean && turbo clean && rimraf .turbo",
@@ -25,6 +26,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.5.5",
     "@mono/config": "workspace:*",
+    "@typescript/native": "npm:typescript@7.0.2",
     "lefthook": "^2.1.10",
     "rimraf": "^6.1.3",
     "turbo": "^2.10.7",
@@ -43,7 +45,7 @@
       "@types/react-dom": "^19.2.3",
       "react": "^19.2.8",
       "react-dom": "^19.2.8",
-      "typescript": "^6.0.3",
+      "typescript": "6.0.3",
       "vite": "^8.1.5"
     }
   }
