@@ -3,11 +3,14 @@
   "compilerOptions": {
     "tsBuildInfoFile": "node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "outDir": "dist",
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     }
   },
-  "include": ["stories/**/*.tsx", ".storybook/preview.ts"],
+  "include": [
+    "stories/**/*.tsx",
+    ".storybook/preview.ts",
+    ".storybook/vite-env.d.ts"
+  ],
   "exclude": ["node_modules", "dist", ".turbo"]
 }
