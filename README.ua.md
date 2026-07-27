@@ -6,7 +6,7 @@
 
 ## Вимоги
 
-- Bun 1.3.9 або новіший
+- Bun 1.3.10 або новіший
 - Docker із підтримкою Compose (необов'язково)
 
 ## Структура
@@ -68,6 +68,7 @@ bun run build
 ```
 
 TypeScript перевіряє реальні frontend, backend, UI та Storybook проєкти. Backend-тести перевіряють health, greeting, validation і not-found відповіді без відкриття мережевого порту.
+Поточний toolchain використовує Vite 8.1.5 із Rolldown. TypeScript працює side-by-side: `tsc` запускає native compiler TypeScript 7.0.2, а `typescript` залишається TypeScript 6.0.3 для Storybook, tsdown і compiler API. Перевірити TypeScript 6 можна командою `bun run tsc6 -- --version`.
 
 ## Docker
 

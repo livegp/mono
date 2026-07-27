@@ -3,16 +3,49 @@
   "extends": ["config:recommended"],
   "packageRules": [
     {
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchUpdateTypes": ["patch"],
       "automerge": true
     },
     {
-      "matchFileNames": ["apps/**", "packages/**"],
-      "groupName": "monorepo packages"
+      "groupName": "Elysia",
+      "matchPackageNames": ["elysia", "/^@elysiajs\\//"]
+    },
+    {
+      "groupName": "React",
+      "matchPackageNames": ["react", "react-dom", "/^@types\\/react(-dom)?$/"]
+    },
+    {
+      "groupName": "Vite",
+      "matchPackageNames": [
+        "vite",
+        "rolldown-vite",
+        "@vitejs/plugin-react-swc",
+        "vite-plugin-bun-csp",
+        "@julr/vite-plugin-validate-env"
+      ],
+      "automerge": false
+    },
+    {
+      "groupName": "Tailwind",
+      "matchPackageNames": ["tailwindcss", "@tailwindcss/vite", "tailwind-merge"]
+    },
+    {
+      "groupName": "Storybook",
+      "matchPackageNames": ["storybook", "/^@storybook\\//"],
+      "automerge": false
+    },
+    {
+      "groupName": "lint tooling",
+      "matchPackageNames": ["@biomejs/biome", "ultracite"]
+    },
+    {
+      "groupName": "TypeScript",
+      "matchPackageNames": ["typescript", "/^@typescript\\//", "@types/bun"],
+      "automerge": false
     },
     {
       "groupName": "definitelyTyped",
-      "matchPackageNames": ["/^@types//"]
+      "matchPackageNames": ["/^@types\\//"]
     }
   ],
   "schedule": ["* 0-3 * * 1"],
@@ -24,6 +57,6 @@
   "platformAutomerge": true,
   "lockFileMaintenance": {
     "enabled": true,
-    "automerge": true
+    "automerge": false
   }
 }

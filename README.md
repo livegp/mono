@@ -6,7 +6,7 @@ A Bun and TypeScript monorepo with a React frontend, an Elysia backend, a shared
 
 ## Requirements
 
-- Bun 1.3.9 or newer
+- Bun 1.3.10 or newer
 - Docker with Compose support (optional)
 
 ## Workspace
@@ -68,6 +68,7 @@ bun run build
 ```
 
 TypeScript checks inspect the actual frontend, backend, UI, and Storybook projects. Backend tests exercise health, greeting, validation, and not-found responses without opening a network port.
+The current toolchain pins Vite 8.1.5 with Rolldown. TypeScript uses a side-by-side setup: `tsc` runs the native TypeScript 7.0.2 compiler, while `typescript` remains TypeScript 6.0.3 for Storybook, tsdown, and compiler API consumers. Run `bun run tsc6 -- --version` to inspect the TypeScript 6 compiler.
 
 ## Docker
 
