@@ -6,7 +6,7 @@ A Bun and TypeScript monorepo with a React frontend, an Elysia backend, a shared
 
 ## Requirements
 
-- Bun 1.3.10 or newer
+- Bun 1.3.14 or newer
 - Docker with Compose support (optional)
 
 ## Workspace
