@@ -16,11 +16,11 @@
   "dependencies": {
     "@elysiajs/eden": "^1.4.9",
     "@mono/ui": "workspace:*",
-    "@tailwindcss/vite": "^4.2.1",
+    "@tailwindcss/vite": "^4.3.3",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "tailwindcss": "^4.2.1",
-    "valibot": "^1.2.0"
+    "tailwindcss": "^4.3.3",
+    "valibot": "^1.4.2"
   },
   "devDependencies": {
     "@julr/vite-plugin-validate-env": "^2.2.2",
