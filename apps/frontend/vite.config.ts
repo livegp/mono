@@ -8,7 +8,6 @@ import react from "@vitejs/plugin-react-swc";
 import type { UserConfig } from "vite";
 import { defineConfig, loadEnv, mergeConfig } from "vite";
 import { generateCspPlugin } from "vite-plugin-bun-csp";
-import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig(({ command, mode }) => {
   const envDirectory = resolve(process.cwd(), "../..");
@@ -21,7 +20,6 @@ export default defineConfig(({ command, mode }) => {
     envDir: envDirectory,
     plugins: [
       react(),
-      tsconfigPaths(),
       tailwindcss(),
       ValidateEnv({
         configFile: "config/env",
@@ -42,6 +40,9 @@ export default defineConfig(({ command, mode }) => {
         },
       }),
     ],
+    resolve: {
+      tsconfigPaths: true,
+    },
     server: {
       port: webPort,
       proxy: {

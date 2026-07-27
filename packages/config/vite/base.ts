@@ -20,18 +20,19 @@ const baseSettings: UserConfig = {
     reportCompressedSize: true,
     rolldownOptions: {
       output: {
-        manualChunks(id: string) {
-          if (!id.includes("node_modules")) {
-            return null;
-          }
-          if (
-            id.includes("react") ||
-            id.includes("react-dom") ||
-            id.includes("scheduler")
-          ) {
-            return "react-vendor";
-          }
-          return "vendor";
+        codeSplitting: {
+          groups: [
+            {
+              name: "react-vendor",
+              priority: 20,
+              test: /node_modules[\\/](?:react(?:-dom)?|scheduler)(?:[\\/]|$)/,
+            },
+            {
+              name: "vendor",
+              priority: 10,
+              test: /node_modules[\\/]/,
+            },
+          ],
         },
       },
     },
