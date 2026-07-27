@@ -19,16 +19,6 @@ export default defineConfig(({ command, mode }) => {
   const appFrontendConfig: UserConfig = {
     base: "/",
     envDir: envDirectory,
-    server: {
-      port: webPort,
-      strictPort: true,
-      proxy: {
-        "/api": {
-          target: apiUrl,
-          changeOrigin: true,
-        },
-      },
-    },
     plugins: [
       react(),
       tsconfigPaths(),
@@ -39,19 +29,29 @@ export default defineConfig(({ command, mode }) => {
       generateCspPlugin({
         algorithm: "sha256",
         policy: {
+          "base-uri": ["'self'"],
+          "connect-src": ["'self'"],
           "default-src": ["'self'"],
           "font-src": ["'self'"],
-          "img-src": ["'self'", "data:"],
-          "script-src": ["'self'"],
-          "style-src": ["'self'"],
-          "connect-src": ["'self'"],
-          "object-src": ["'none'"],
-          "base-uri": ["'self'"],
           "form-action": ["'self'"],
           "frame-ancestors": ["'none'"],
+          "img-src": ["'self'", "data:"],
+          "object-src": ["'none'"],
+          "script-src": ["'self'"],
+          "style-src": ["'self'"],
         },
       }),
     ],
+    server: {
+      port: webPort,
+      proxy: {
+        "/api": {
+          changeOrigin: true,
+          target: apiUrl,
+        },
+      },
+      strictPort: true,
+    },
   };
 
   const resolvedBaseConfig = baseViteConfig({ command, mode });

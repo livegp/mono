@@ -1,16 +1,16 @@
 export const swaggerConfig = {
-  path: "/docs",
   documentation: {
-    openapi: "3.0.0",
-    tags: [],
     info: {
+      contact: {
+        email: "",
+        name: "Elysia Team",
+      },
+      description: "Elysia API Documentation",
       title: "Elysia API",
       version: "1.0.0",
-      description: "Elysia API Documentation",
-      contact: {
-        name: "Elysia Team",
-        email: "",
-      },
     },
+    openapi: "3.0.0",
+    tags: [],
   },
+  path: "/docs",
 };

@@ -24,8 +24,8 @@ describe("backend API", () => {
 
     expect(response.status).toBe(200);
     expect(body).toMatchObject({
-      status: "healthy",
       environment: "test",
+      status: "healthy",
     });
     expect(body["timestamp"]).toBeString();
     expect(body["uptime"]).toBeNumber();
@@ -47,8 +47,8 @@ describe("backend API", () => {
 
     expect(response.status).toBe(422);
     expect(await response.json()).toEqual({
-      success: false,
       error: "Validation Error",
+      success: false,
     });
   });
 
@@ -59,8 +59,8 @@ describe("backend API", () => {
 
     expect(response.status).toBe(404);
     expect(await response.json()).toEqual({
-      success: false,
       error: "Not Found",
+      success: false,
     });
   });
 });

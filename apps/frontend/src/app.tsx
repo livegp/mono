@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import reactLogo from "@/assets/react.svg";
 import { api } from "@/lib/eden";
 import viteLogo from "/vite.svg";
@@ -8,6 +8,10 @@ function App() {
   const [count, setCount] = useState(0);
   const [greeting, setGreeting] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const incrementCount = useCallback(() => {
+    setCount((prevCount) => prevCount + 1);
+  }, []);
 
   useEffect(() => {
     async function fetchGreeting() {
@@ -63,10 +67,7 @@ function App() {
       <h1>Vite + React</h1>
       <h2>{error ? `Error: ${error}` : (greeting ?? "Loading...")}</h2>
       <div className="card">
-        <button
-          onClick={() => setCount((prevCount) => prevCount + 1)}
-          type="button"
-        >
+        <button onClick={incrementCount} type="button">
           count is {count}
         </button>
         <p>

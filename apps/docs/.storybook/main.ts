@@ -5,12 +5,12 @@ import tailwindcss from "@tailwindcss/vite";
 import { mergeConfig } from "vite";
 
 const config: StorybookConfig = {
-  stories: ["../stories/**/*.stories.tsx"],
   addons: [getAbsolutePath("@storybook/addon-links")],
   framework: {
     name: getAbsolutePath("@storybook/react-vite"),
     options: {},
   },
+  stories: ["../stories/**/*.stories.tsx"],
   viteFinal: async (viteConfig) =>
     mergeConfig(viteConfig, {
       plugins: [tailwindcss()],

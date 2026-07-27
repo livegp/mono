@@ -1,22 +1,22 @@
 import Bun from "bun";
 
 const result = await Bun.build({
-  entrypoints: ["./src/index.ts"],
-  outdir: "./dist",
-  naming: "[dir]/[name].[ext]",
-  target: "bun",
-  format: "esm",
-  splitting: false,
-  plugins: [],
-  sourcemap: "external",
-  minify: {
-    whitespace: true,
-    syntax: true,
-  },
   define: {
     "process.env.NODE_ENV": "'production'",
   },
   drop: ["debugger"],
+  entrypoints: ["./src/index.ts"],
+  format: "esm",
+  minify: {
+    syntax: true,
+    whitespace: true,
+  },
+  naming: "[dir]/[name].[ext]",
+  outdir: "./dist",
+  plugins: [],
+  sourcemap: "external",
+  splitting: false,
+  target: "bun",
 });
 
 if (!result.success) {

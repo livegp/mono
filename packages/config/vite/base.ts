@@ -7,71 +7,71 @@ import { defineConfig, searchForWorkspaceRoot } from "vite";
 const NONCE = crypto.randomBytes(16).toString("base64");
 
 const baseSettings: UserConfig = {
-  root: ".",
-  publicDir: "public",
-  cacheDir: "node_modules/.vite",
   build: {
+    assetsInlineLimit: 4096,
     chunkSizeWarningLimit: 1000,
     cssMinify: "lightningcss",
     emptyOutDir: true,
     manifest: true,
+    modulePreload: {
+      polyfill: true,
+    },
     outDir: "dist",
+    reportCompressedSize: true,
     rollupOptions: {
       output: {
         manualChunks(id: string) {
-          if (id.includes("node_modules")) {
-            if (
-              id.includes("react") ||
-              id.includes("react-dom") ||
-              id.includes("scheduler")
-            ) {
-              return "react-vendor";
-            }
-            return "vendor";
+          if (!id.includes("node_modules")) {
+            return null;
           }
-          return;
+          if (
+            id.includes("react") ||
+            id.includes("react-dom") ||
+            id.includes("scheduler")
+          ) {
+            return "react-vendor";
+          }
+          return "vendor";
         },
       },
     },
     target: "esnext",
-    assetsInlineLimit: 4096,
-    modulePreload: {
-      polyfill: true,
-    },
-    reportCompressedSize: true,
   },
-  html: {
-    cspNonce: NONCE,
-  },
+  cacheDir: "node_modules/.vite",
   css: {
     devSourcemap: true,
+    lightningcss: {
+      targets: browserslistToTargets(browserslist(">= 0.25%")),
+    },
     modules: {
       localsConvention: "camelCase",
       scopeBehaviour: "local",
     },
     transformer: "lightningcss",
-    lightningcss: {
-      targets: browserslistToTargets(browserslist(">= 0.25%")),
-    },
-  },
-  server: {
-    strictPort: false,
-    fs: {
-      strict: true,
-      allow: [searchForWorkspaceRoot(process.cwd())],
-    },
-  },
-  preview: {
-    port: 3000,
-    strictPort: true,
-    cors: true,
-  },
-  optimizeDeps: {
-    include: ["react", "react-dom"],
-    exclude: ["@mono/ui"],
   },
   esbuild: {
     target: "esnext",
+  },
+  html: {
+    cspNonce: NONCE,
+  },
+  optimizeDeps: {
+    exclude: ["@mono/ui"],
+    include: ["react", "react-dom"],
+  },
+  preview: {
+    cors: true,
+    port: 3000,
+    strictPort: true,
+  },
+  publicDir: "public",
+  root: ".",
+  server: {
+    fs: {
+      allow: [searchForWorkspaceRoot(process.cwd())],
+      strict: true,
+    },
+    strictPort: false,
   },
 };
 
@@ -82,8 +82,8 @@ export default defineConfig((env: ConfigEnv) => {
     ...baseSettings,
     build: {
       ...baseSettings.build,
-      sourcemap: isDev,
       minify: isDev ? false : ("esbuild" as const),
+      sourcemap: isDev,
     },
   };
 });

@@ -33,9 +33,7 @@ function parseCorsOrigins(value: string | undefined): string[] {
   }
 
   for (const origin of origins) {
-    try {
-      new URL(origin);
-    } catch {
+    if (!URL.canParse(origin)) {
       throw new Error(`CORS_ORIGIN contains an invalid URL: ${origin}`);
     }
   }
