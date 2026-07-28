@@ -4,11 +4,14 @@ import { resolve } from "node:path";
 import { ValidateEnv } from "@julr/vite-plugin-validate-env";
 import { projectConfig, resolveSiteMetadata } from "@mono/config/project";
 import baseViteConfig from "@mono/config/vite/base";
+import VitePluginSvgSpritemap from "@spiriit/vite-plugin-svg-spritemap";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import type { UserConfig } from "vite";
 import { defineConfig, loadEnv, mergeConfig } from "vite";
+import { imagetools } from "vite-imagetools";
 import { generateCspPlugin } from "vite-plugin-bun-csp";
+import { webfontDownload } from "vite-plugin-webfont-dl";
 import { siteMetadataPlugin } from "./config/site-metadata";
 
 export default defineConfig(({ command, mode }) => {
@@ -26,6 +29,28 @@ export default defineConfig(({ command, mode }) => {
     plugins: [
       react(),
       tailwindcss(),
+      imagetools(),
+      VitePluginSvgSpritemap("src/assets/icons/*.svg", {
+        output: {
+          filename: "spritemap.svg",
+          name: "spritemap.svg",
+          use: true,
+          view: true,
+        },
+        oxvg: false,
+        prefix: "icon-",
+        route: "/__spritemap",
+        svgo: true,
+      }),
+      webfontDownload([projectConfig.fonts.providerCssUrl], {
+        assetsSubfolder: "fonts",
+        async: false,
+        cache: true,
+        injectAsStyleTag: false,
+        minifyCss: command === "build",
+        subsetsAllowed: [...projectConfig.fonts.subsets],
+        throwError: command === "build",
+      }),
       siteMetadataPlugin({
         ...(command === "serve"
           ? { devFaviconUrl: projectConfig.branding.faviconDevUrl }

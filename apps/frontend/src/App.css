@@ -6,6 +6,7 @@
 }
 
 .logo {
+  width: 6em;
   height: 6em;
   padding: 1.5em;
   transition: filter 300ms;
@@ -35,6 +36,19 @@
 
 .card {
   padding: 2em;
+}
+
+.og-preview {
+  display: block;
+  max-width: 600px;
+  margin: 1rem auto;
+}
+
+.og-preview img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
 }
 
 .read-the-docs {

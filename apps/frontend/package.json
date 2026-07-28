@@ -26,12 +26,16 @@
     "@julr/vite-plugin-validate-env": "^2.2.2",
     "@mono/backend": "workspace:*",
     "@mono/config": "workspace:*",
+    "@spiriit/vite-plugin-svg-spritemap": "^7.0.1",
     "@types/bun": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "@vitejs/plugin-react": "^6.0.4",
+    "svgo": "^4.0.1",
     "typescript": "catalog:",
     "vite": "catalog:",
-    "vite-plugin-bun-csp": "^2.1.2"
+    "vite-imagetools": "^10.0.1",
+    "vite-plugin-bun-csp": "^2.1.2",
+    "vite-plugin-webfont-dl": "^3.12.0"
   }
 }

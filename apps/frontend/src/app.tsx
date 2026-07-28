@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-import reactLogo from "@/assets/react.svg";
+import ogPreviewAvif from "@/assets/branding/og-image.png?w=600&format=avif&quality=70";
+import ogPreview from "@/assets/branding/og-image.png?w=600&format=png&quality=80";
+import ogPreviewWebp from "@/assets/branding/og-image.png?w=600&format=webp&quality=75";
+import { Icon } from "@/components/icon";
 import { api } from "@/lib/eden";
-import viteLogo from "/vite.svg";
 import "./app.css";
 
 function App() {
@@ -42,26 +44,10 @@ function App() {
     <>
       <div>
         <a href="https://vite.dev" rel="noopener" target="_blank">
-          <picture>
-            <img
-              alt="Vite logo"
-              className="logo"
-              height={96}
-              src={viteLogo}
-              width={96}
-            />
-          </picture>
+          <Icon className="logo" name="vite" title="Vite logo" />
         </a>
         <a href="https://react.dev" rel="noopener" target="_blank">
-          <picture>
-            <img
-              alt="React logo"
-              className="logo react"
-              height={96}
-              src={reactLogo}
-              width={96}
-            />
-          </picture>
+          <Icon className="logo react" name="react" title="React logo" />
         </a>
       </div>
       <h1>Vite + React</h1>
@@ -71,9 +57,20 @@ function App() {
           count is {count}
         </button>
         <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
+          Edit <code>src/app.tsx</code> and save to test HMR
         </p>
       </div>
+      <picture className="og-preview">
+        <source srcSet={ogPreviewAvif} type="image/avif" />
+        <source srcSet={ogPreviewWebp} type="image/webp" />
+        <img
+          alt="Mono starter monorepo"
+          height={315}
+          loading="lazy"
+          src={ogPreview}
+          width={600}
+        />
+      </picture>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
