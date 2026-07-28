@@ -22,7 +22,7 @@
     "reset": "bun run clean && rimraf node_modules apps/*/node_modules packages/*/node_modules bun.lock && bun install"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.6",
+    "@biomejs/biome": "2.5.6",
     "@mono/config": "workspace:*",
     "lefthook": "^2.1.2",
     "rimraf": "^6.1.3",
