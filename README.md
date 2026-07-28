@@ -55,6 +55,7 @@ The browser calls the API through same-origin `/api`. Vite proxies these request
 | `VITE_WEB_PORT` | `9000` | Vite development port |
 | `VITE_WEB_URL` | `http://localhost:9000` | Public frontend URL |
 | `VITE_API_URL` | `http://localhost:9001` | Development proxy target |
+| `VITE_SITE_INDEXABLE` | `false` | Generate an allow-indexing robots policy only when explicitly set to `true` |
 
 The committed defaults are safe for local development. Production secrets must not use the `VITE_` prefix because Vite variables are public.
 
@@ -65,17 +66,35 @@ bun run check-types
 bun run lint
 bun run test
 bun run build
+bun run --cwd apps/frontend verify:build
 ```
 
 TypeScript checks inspect the actual frontend, backend, UI, and Storybook projects. Backend tests exercise health, greeting, validation, and not-found responses without opening a network port.
 The current toolchain pins Vite 8.1.5 with Rolldown. TypeScript uses a side-by-side setup: `tsc` runs the native TypeScript 7.0.2 compiler, while `typescript` remains TypeScript 6.0.3 for Storybook, tsdown, and compiler API consumers. Run `bun run tsc6 -- --version` to inspect the TypeScript 6 compiler.
 
+## Project metadata and assets
+
+[`packages/config/project.ts`](packages/config/project.ts) is the typed source of truth for the project name, localized descriptions, author, locales, routes, font, colors, and branding paths. `VITE_WEB_URL` supplies the deployment-specific origin for canonical, Open Graph, and sitemap URLs; README and package manifests remain manually maintained.
+
+The frontend asset pipeline is intentionally split by lifecycle:
+
+- development and production builds use explicit `vite-imagetools` import queries, an `icon-*` SVG spritemap, and locally served Roboto files;
+- production builds additionally generate hashed favicons, `manifest.webmanifest`, global Open Graph/Twitter metadata, `sitemap.xml`, and `robots.txt`;
+- the CSP plugin remains the final HTML transform.
+
+`VITE_SITE_INDEXABLE` defaults to `false`. A real public deployment must explicitly set it to `true`; the web manifest does not install a service worker or enable offline caching.
 ## Docker
 
 Build and start the production frontend and backend:
 
 ```bash
 docker compose up --build
+```
+
+For a public production deployment, pass the real origin and explicitly enable indexing:
+
+```bash
+VITE_WEB_URL=https://example.com VITE_SITE_INDEXABLE=true docker compose up --build
 ```
 
 The frontend is served by Nginx on port 9000 and proxies `/api` to the backend container on port 9001.
@@ -97,7 +116,7 @@ Override published ports with `WEB_PORT`, `API_PORT`, or `DOCS_PORT` in the shel
 
 ## Adding optional frontend tooling
 
-The frontend intentionally keeps a small Vite core: React SWC, TypeScript paths, Tailwind CSS, environment validation, and CSP generation. Add PWA, image processing, sitemap, metadata, or bundle analysis only when the application has a concrete requirement for it. HTTP compression belongs in Nginx or the deployment CDN.
+The Vite core uses React through Oxc, TypeScript paths, Tailwind CSS, environment validation, and CSP generation. Image, icon, font, favicon, Open Graph, and sitemap tooling is already separated between development and build-only stages. PWA/service-worker behavior and bundle analysis remain optional and should be added only for a concrete requirement. HTTP compression belongs in Nginx or the deployment CDN.
 
 ## License
 

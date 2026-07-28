@@ -14,11 +14,16 @@ RUN bun install --frozen-lockfile
 ARG VITE_WEB_PORT=9000
 ARG VITE_WEB_URL=http://localhost:9000
 ARG VITE_API_URL=http://localhost:9001
+ARG VITE_SITE_INDEXABLE=false
 ENV VITE_WEB_PORT=${VITE_WEB_PORT}
 ENV VITE_WEB_URL=${VITE_WEB_URL}
 ENV VITE_API_URL=${VITE_API_URL}
+ENV VITE_SITE_INDEXABLE=${VITE_SITE_INDEXABLE}
 
-RUN bunx turbo run build --filter=@mono/frontend
+RUN --mount=type=cache,target=/app/apps/frontend/node_modules/.vite \
+    --mount=type=cache,target=/app/apps/frontend/node_modules/.cache \
+    bunx turbo run build --filter=@mono/frontend && \
+    bun run --cwd apps/frontend verify:build
 
 FROM nginx:1.27-alpine AS runner
 

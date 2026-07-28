@@ -17,6 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env:
+      VITE_SITE_INDEXABLE: "false"
+      VITE_WEB_URL: https://mono.example
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -26,12 +29,16 @@ jobs:
         with:
           bun-version: 1.3.14
 
-      - name: Cache Bun dependencies
+      - name: Cache Bun and frontend build inputs
         uses: actions/cache@v4
         with:
-          path: ~/.bun/install/cache
-          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+          path: |
+            ~/.bun/install/cache
+            apps/frontend/node_modules/.vite
+            apps/frontend/node_modules/.cache
+          key: ${{ runner.os }}-bun-assets-${{ hashFiles('**/bun.lock', 'packages/config/project.ts') }}
           restore-keys: |
+            ${{ runner.os }}-bun-assets-
             ${{ runner.os }}-bun-
 
       - name: Install dependencies
@@ -48,3 +55,7 @@ jobs:
 
       - name: Build app
         run: bun run build
+
+      - name: Verify frontend metadata and assets
+        working-directory: apps/frontend
+        run: bun run verify:build

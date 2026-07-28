@@ -40,8 +40,9 @@ services:
       args:
         <<: *common-build
         VITE_WEB_PORT: 9000
-        VITE_WEB_URL: http://localhost:${WEB_PORT:-9000}
+        VITE_WEB_URL: ${VITE_WEB_URL:-http://localhost:${WEB_PORT:-9000}}
         VITE_API_URL: http://localhost:${API_PORT:-9001}
+        VITE_SITE_INDEXABLE: ${VITE_SITE_INDEXABLE:-false}
     ports:
       - "${WEB_PORT:-9000}:9000"
     depends_on:

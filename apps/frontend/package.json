@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "bunx -b vite",
     "build": "bunx -b vite build",
+    "verify:build": "bun scripts/verify-build.ts",
     "check-types": "tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.node.json",
     "lint": "bunx ultracite check",
     "lint:fix": "bunx ultracite fix",
