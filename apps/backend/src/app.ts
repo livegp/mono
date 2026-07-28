@@ -4,6 +4,7 @@ import { swagger } from "@elysiajs/swagger";
 import { Elysia } from "elysia";
 
 import { getRuntimeConfig, type RuntimeConfig } from "./config/env";
+import { securityHeaders } from "./config/helmet";
 import { swaggerConfig } from "./config/swagger";
 import { greetRouter } from "./routes/greet";
 
@@ -11,13 +12,7 @@ export function createApp(config: RuntimeConfig = getRuntimeConfig()) {
   return new Elysia()
     .use(opentelemetry())
     .use(cors({ origin: config.corsOrigins }))
-    .onAfterHandle(({ set }) => {
-      set.headers["content-security-policy"] =
-        "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; object-src 'none'; base-uri 'self'; frame-ancestors 'none'";
-      set.headers["referrer-policy"] = "no-referrer";
-      set.headers["x-content-type-options"] = "nosniff";
-      set.headers["x-frame-options"] = "DENY";
-    })
+    .use(securityHeaders(config))
     .use(swagger(swaggerConfig))
     .onError(({ code, error, set }) => {
       if (code === "NOT_FOUND") {
