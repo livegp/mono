@@ -28,6 +28,22 @@ export function siteMetadataPlugin({
       const tags: HtmlTagDescriptor[] = [
         {
           attrs: {
+            content: metadata.authorName,
+            name: "author",
+          },
+          injectTo: "head",
+          tag: "meta",
+        },
+        {
+          attrs: {
+            href: metadata.authorUrl,
+            rel: "author",
+          },
+          injectTo: "head",
+          tag: "link",
+        },
+        {
+          attrs: {
             content: metadata.description,
             name: "description",
           },

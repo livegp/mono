@@ -19,6 +19,7 @@ export interface ProjectConfig {
     faviconDevUrl: string;
     faviconSource: string;
     ogImagePath: string;
+    ogImageSource: string;
     themeColor: string;
   };
   fonts: {
@@ -41,6 +42,8 @@ export interface ProjectConfig {
 }
 
 export interface SiteMetadata extends LocalizedProjectMetadata {
+  authorName: string;
+  authorUrl: string;
   canonicalUrl: string;
   htmlLocale: ProjectLocale;
   ogImageUrl: string;
@@ -61,6 +64,7 @@ export const projectConfig = {
     faviconDevUrl: "/src/assets/branding/favicon.svg",
     faviconSource: "src/assets/branding/favicon.svg",
     ogImagePath: "/og-image.png",
+    ogImageSource: "src/assets/branding/og-image.png",
     themeColor: "#fff",
   },
   fonts: {
@@ -113,6 +117,8 @@ export function resolveSiteMetadata(
 
   return {
     ...localized,
+    authorName: projectConfig.author.name,
+    authorUrl: projectConfig.author.url,
     canonicalUrl: baseUrl.toString(),
     htmlLocale: locale,
     ogImageUrl: new URL(projectConfig.branding.ogImagePath, baseUrl).toString(),

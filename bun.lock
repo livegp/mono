@@ -80,6 +80,9 @@
         "vite": "catalog:",
         "vite-imagetools": "^10.0.1",
         "vite-plugin-bun-csp": "^2.1.2",
+        "vite-plugin-hashed-favicons": "^2.1.1",
+        "vite-plugin-open-graph": "^2.0.6",
+        "vite-plugin-sitemap": "^0.8.2",
         "vite-plugin-webfont-dl": "^3.12.0",
       },
     },
@@ -1463,6 +1466,12 @@
     "vite-imagetools": ["vite-imagetools@10.0.1", "", { "dependencies": { "@rollup/pluginutils": "^5.0.5", "imagetools-core": "^10.0.0", "sharp": "^0.35.0" }, "peerDependencies": { "vite": ">=7.0.0" } }, "sha512-JfM1rUSLQoPAA+8RB9TFxxpfSjmBpLTkU5zaSFPlWYlgfc3g2gFfYH+u+HghqNy+6HCw6zJBmq+2exx6pMJFOg=="],
 
     "vite-plugin-bun-csp": ["vite-plugin-bun-csp@2.1.2", "", { "peerDependencies": { "vite": "^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0" } }, "sha512-zNp9lcTFawbpN21x/ryRn7me9VqwGHlRrm9u5Mm++vvMU9ighAOnx2neLb4qeSip2YLnn8UHcEszuMOgiJECMw=="],
+
+    "vite-plugin-hashed-favicons": ["vite-plugin-hashed-favicons@2.1.1", "", { "dependencies": { "sharp": "^0.35.3" }, "peerDependencies": { "vite": "^5.0.12 || ^6.0.0 || ^7.0.0 || ^8.0.0" } }, "sha512-8iFcVCymlEdS02e1SFDLQMMYc54D0DXzrByrSpuS7P7vawwaSmUQAG0+nfF/vMNMcrYqiRiglH2KOnz4/zgQTQ=="],
+
+    "vite-plugin-open-graph": ["vite-plugin-open-graph@2.0.6", "", {}, "sha512-puGPr/V4C0HN3fxtvglulxmkPZiQp6yoASZqyH54LrK/DKiOgjC0V3glWcE6BFto3X3NK50aasE6tWruzAnEMA=="],
+
+    "vite-plugin-sitemap": ["vite-plugin-sitemap@0.8.2", "", {}, "sha512-bqIw6NVOXg6je81lzX8Lm0vjf8/QSAp8di8fYQzZ3ZdVicOm8+6idBGALJiy1R1FiXNIK8rgORO6HBqXyHW+iQ=="],
 
     "vite-plugin-webfont-dl": ["vite-plugin-webfont-dl@3.12.0", "", { "dependencies": { "axios": "^1", "clean-css": "^5", "flat-cache": "^6", "picocolors": "^1" }, "peerDependencies": { "vite": "^2 || ^3 || ^4 || ^5 || ^6 || ^7 || ^8" } }, "sha512-0jxsr8ycuoK/uV5Y3ytttTRhgvfZo8v3O4JZBlVc4C7QWIws/vCLVR4B3ag+TGVkLNQya6hXfY3UnZge3M8vmA=="],
 

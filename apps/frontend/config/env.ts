@@ -11,6 +11,16 @@ export default defineConfig({
       ),
       "http://localhost:9001"
     ),
+    VITE_SITE_INDEXABLE: optional(
+      pipe(
+        string("VITE_SITE_INDEXABLE must be a string"),
+        regex(
+          /^(?:true|false)$/,
+          "VITE_SITE_INDEXABLE must be either true or false"
+        )
+      ),
+      "false"
+    ),
     VITE_WEB_PORT: optional(
       pipe(
         string("VITE_WEB_PORT must be a string"),

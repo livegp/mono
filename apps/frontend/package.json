@@ -36,6 +36,9 @@
     "vite": "catalog:",
     "vite-imagetools": "^10.0.1",
     "vite-plugin-bun-csp": "^2.1.2",
+    "vite-plugin-hashed-favicons": "^2.1.1",
+    "vite-plugin-open-graph": "^2.0.6",
+    "vite-plugin-sitemap": "^0.8.2",
     "vite-plugin-webfont-dl": "^3.12.0"
   }
 }
