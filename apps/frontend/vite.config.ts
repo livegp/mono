@@ -4,7 +4,7 @@ import { resolve } from "node:path";
 import { ValidateEnv } from "@julr/vite-plugin-validate-env";
 import baseViteConfig from "@mono/config/vite/base";
 import tailwindcss from "@tailwindcss/vite";
-import react from "@vitejs/plugin-react-swc";
+import react from "@vitejs/plugin-react";
 import type { UserConfig } from "vite";
 import { defineConfig, loadEnv, mergeConfig } from "vite";
 import { generateCspPlugin } from "vite-plugin-bun-csp";
