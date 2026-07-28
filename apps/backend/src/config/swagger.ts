@@ -1,16 +1,21 @@
+import { getProjectMetadata, projectConfig } from "@mono/config/project";
+
+const metadata = getProjectMetadata();
+
 export const swaggerConfig = {
   documentation: {
     info: {
       contact: {
         email: "",
-        name: "Elysia Team",
+        name: projectConfig.author.name,
+        url: projectConfig.author.url,
       },
-      description: "Elysia API Documentation",
-      title: "Elysia API",
-      version: "1.0.0",
+      description: metadata.description,
+      title: `${projectConfig.identity.name} API`,
+      version: projectConfig.api.version,
     },
     openapi: "3.0.0",
     tags: [],
   },
-  path: "/docs",
+  path: projectConfig.api.docsPath,
 };

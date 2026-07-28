@@ -4,14 +4,15 @@
   "license": "MIT",
   "private": true,
   "type": "module",
-  "description": "shared ts and vite configs for Mono",
+  "description": "shared ts, project, and Vite configs for Mono",
   "scripts": {
-    "check-types": "echo \"No TypeScript files to type-check in @mono/config\"",
+    "check-types": "tsc --noEmit -p tsconfig.json",
     "lint": "bunx ultracite check",
     "lint:fix": "bunx ultracite fix",
     "clean": "rm -rf .turbo dist"
   },
   "exports": {
+    "./project": "./project.ts",
     "./ts/strict": "./ts/strict.json",
     "./ts/react-app": "./ts/react-app.json",
     "./ts/react-lib": "./ts/react-lib.json",
