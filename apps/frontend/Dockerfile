@@ -25,7 +25,7 @@ RUN --mount=type=cache,target=/app/apps/frontend/node_modules/.vite \
     bunx turbo run build --filter=@mono/frontend && \
     bun run --cwd apps/frontend verify:build
 
-FROM nginx:1.27-alpine AS runner
+FROM nginx:1.31-alpine AS runner
 
 COPY apps/frontend/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/apps/frontend/dist /usr/share/nginx/html
