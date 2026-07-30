@@ -27,7 +27,7 @@
     "@julr/vite-plugin-validate-env": "^2.2.2",
     "@mono/backend": "workspace:*",
     "@mono/config": "workspace:*",
-    "@spiriit/vite-plugin-svg-spritemap": "^7.0.1",
+    "@spiriit/vite-plugin-svg-spritemap": "^7.1.0",
     "@types/bun": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",

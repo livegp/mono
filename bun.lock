@@ -71,7 +71,7 @@
         "@julr/vite-plugin-validate-env": "^2.2.2",
         "@mono/backend": "workspace:*",
         "@mono/config": "workspace:*",
-        "@spiriit/vite-plugin-svg-spritemap": "^7.0.1",
+        "@spiriit/vite-plugin-svg-spritemap": "^7.1.0",
         "@types/bun": "catalog:",
         "@types/react": "catalog:",
         "@types/react-dom": "catalog:",
@@ -638,7 +638,7 @@
 
     "@sinclair/typebox": ["@sinclair/typebox@0.34.48", "", {}, "sha512-kKJTNuK3AQOrgjjotVxMrCn1sUJwM76wMszfq1kdU4uYVJjvEWuFQ6HgvLt4Xz3fSmZlTOxJ/Ie13KnIcWQXFA=="],
 
-    "@spiriit/vite-plugin-svg-spritemap": ["@spiriit/vite-plugin-svg-spritemap@7.0.1", "", { "dependencies": { "@xmldom/xmldom": "^0.9.10", "hash-sum": "^2.0.0", "mini-svg-data-uri": "^1.4.4", "picomatch": "^4.0.5", "tinyglobby": "^0.2.17" }, "peerDependencies": { "@oxvg/napi": "^0.0.4-1", "@oxvg/napi-darwin-arm64": "^0.0.4-1", "@oxvg/napi-darwin-x64": "^0.0.4-1", "@oxvg/napi-linux-x64-gnu": "^0.0.4-1", "@oxvg/napi-win32-x64-msvc": "^0.0.4-1", "svgo": "^4.0.1", "vite": "^7.0.0 || ^8.0.0", "vue": "^3.0.0" }, "optionalPeers": ["@oxvg/napi", "@oxvg/napi-darwin-arm64", "@oxvg/napi-darwin-x64", "@oxvg/napi-linux-x64-gnu", "@oxvg/napi-win32-x64-msvc", "svgo", "vue"] }, "sha512-q2Wdu7E2c4kpMsq6PEbQ4wqdymH4ZUC142U7KOq0estmqnVUgKLwg7I4e+WmTD6L8HJPvM64P2VvzlCmV+JdmQ=="],
+    "@spiriit/vite-plugin-svg-spritemap": ["@spiriit/vite-plugin-svg-spritemap@7.1.0", "", { "dependencies": { "@xmldom/xmldom": "^0.9.10", "hash-sum": "^2.0.0", "mini-svg-data-uri": "^1.4.4", "picomatch": "^4.0.5", "tinyglobby": "^0.2.17" }, "peerDependencies": { "@oxvg/napi": "^0.0.4-1 || ^0.0.6", "@oxvg/napi-darwin-arm64": "^0.0.4-1 || ^0.0.6", "@oxvg/napi-darwin-x64": "^0.0.4-1 || ^0.0.6", "@oxvg/napi-linux-x64-gnu": "^0.0.4-1 || ^0.0.6", "@oxvg/napi-win32-x64-msvc": "^0.0.4-1 || ^0.0.6", "svgo": "^4.0.0", "vite": "^7.0.0 || ^8.0.0", "vue": "^3.0.0" }, "optionalPeers": ["@oxvg/napi", "@oxvg/napi-darwin-arm64", "@oxvg/napi-darwin-x64", "@oxvg/napi-linux-x64-gnu", "@oxvg/napi-win32-x64-msvc", "svgo", "vue"] }, "sha512-2uTZiOgb+ALcFpoV0guca/nLOvytuVBLqhmQdpup2+F5Z5y0MXdfw9JByjopVPJajTu2OPlnurI0EIFVOj/CJg=="],
 
     "@standard-schema/spec": ["@standard-schema/spec@1.1.0", "", {}, "sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w=="],
 
