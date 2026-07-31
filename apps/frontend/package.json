@@ -6,7 +6,7 @@
   "type": "module",
   "description": "frontend for Mono",
   "scripts": {
-    "dev": "bunx -b vite",
+    "dev": "bunx vite",
     "build": "bunx -b vite build",
     "verify:build": "bun scripts/verify-build.ts",
     "check-types": "tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.node.json",
@@ -31,6 +31,7 @@
     "@types/bun": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "@vitejs/devtools": "^0.4.10",
     "@vitejs/plugin-react": "^6.0.4",
     "svgo": "^4.0.1",
     "typescript": "catalog:",

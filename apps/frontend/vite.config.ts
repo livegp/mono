@@ -7,6 +7,7 @@ import baseViteConfig from "@mono/config/vite/base";
 import VitePluginSvgSpritemap from "@spiriit/vite-plugin-svg-spritemap";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
+import { DevTools } from "@vitejs/devtools";
 import type { Plugin, UserConfig } from "vite";
 import { defineConfig, loadEnv, mergeConfig } from "vite";
 import { imagetools } from "vite-imagetools";
@@ -88,10 +89,16 @@ export default defineConfig(({ command, mode }) => {
   const appFrontendConfig: UserConfig = {
     base: "/",
     envDir: envDirectory,
+    build: {
+      rolldownOptions: {
+        devtools: {},
+      },
+    },
     plugins: [
       react(),
       tailwindcss(),
       imagetools(),
+      DevTools(),
       VitePluginSvgSpritemap("src/assets/icons/*.svg", {
         output: {
           filename: "spritemap.svg",
