@@ -12,7 +12,7 @@ COPY packages ./packages
 RUN bun install --frozen-lockfile
 RUN bunx turbo run build --filter=@mono/docs
 
-FROM nginx:1.27-alpine AS runner
+FROM nginx:1.31-alpine AS runner
 
 COPY apps/docs/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/apps/docs/dist /usr/share/nginx/html
