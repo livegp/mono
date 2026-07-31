@@ -1,10 +1,10 @@
 {
   "name": "@mono/ui",
   "version": "0.0.1",
-  "license": "MIT",
   "private": true,
-  "type": "module",
   "description": "UI components for Mono",
+  "license": "MIT",
+  "type": "module",
   "exports": {
     "./styles": "./src/styles/globals.css",
     "./lib/utils": "./src/lib/utils.ts",
@@ -16,8 +16,6 @@
     "dev": "bunx -b tsdown --watch",
     "build": "bunx -b tsdown",
     "check-types": "tsc --noEmit",
-    "lint": "bunx ultracite check",
-    "lint:fix": "bunx ultracite fix",
     "clean": "rm -rf .turbo dist"
   },
   "dependencies": {

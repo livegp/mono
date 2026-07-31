@@ -1,16 +1,10 @@
 {
   "name": "@mono/config",
   "version": "0.0.1",
-  "license": "MIT",
   "private": true,
-  "type": "module",
   "description": "shared ts, project, and Vite configs for Mono",
-  "scripts": {
-    "check-types": "tsc --noEmit -p tsconfig.json",
-    "lint": "bunx ultracite check",
-    "lint:fix": "bunx ultracite fix",
-    "clean": "rm -rf .turbo dist"
-  },
+  "license": "MIT",
+  "type": "module",
   "exports": {
     "./project": "./project.ts",
     "./ts/strict": "./ts/strict.json",
@@ -20,8 +14,12 @@
     "./ts/tooling-bun": "./ts/tooling-bun.json",
     "./vite/base": "./vite/base.ts"
   },
-  "peerDependencies": {
-    "vite": "^8.1.5"
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit -p tsconfig.json",
+    "clean": "rm -rf .turbo dist"
   },
   "dependencies": {
     "browserslist": "^4.28.7",
@@ -31,7 +29,7 @@
     "@types/bun": "catalog:",
     "typescript": "catalog:"
   },
-  "publishConfig": {
-    "access": "public"
+  "peerDependencies": {
+    "vite": "^8.1.5"
   }
 }

@@ -1,25 +1,24 @@
 import { readFile } from "node:fs/promises";
-import { resolve } from "node:path";
+import path from "node:path";
+
 import type { Plugin } from "vite";
 
 interface BrandAssetsPluginOptions {
   ogImageSource: string;
 }
 
-export function brandAssetsPlugin({
+export const brandAssetsPlugin = ({
   ogImageSource,
-}: BrandAssetsPluginOptions): Plugin {
-  return {
-    apply: "build",
-    async generateBundle() {
-      const source = await readFile(resolve(process.cwd(), ogImageSource));
+}: BrandAssetsPluginOptions): Plugin => ({
+  apply: "build",
+  async generateBundle() {
+    const source = await readFile(path.resolve(process.cwd(), ogImageSource));
 
-      this.emitFile({
-        fileName: "og-image.png",
-        source,
-        type: "asset",
-      });
-    },
-    name: "mono:brand-assets",
-  };
-}
+    this.emitFile({
+      fileName: "og-image.png",
+      source,
+      type: "asset",
+    });
+  },
+  name: "mono:brand-assets",
+});

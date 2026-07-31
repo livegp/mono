@@ -7,7 +7,7 @@ type HelmetOptions = NonNullable<Parameters<typeof helmet>[0]>;
 
 const PERMISSIONS_POLICY = "camera=(), microphone=(), geolocation=()";
 
-export function securityHeaders(config: RuntimeConfig) {
+export const securityHeaders = (config: RuntimeConfig) => {
   const options = {
     contentSecurityPolicy: {
       directives: {
@@ -50,4 +50,4 @@ export function securityHeaders(config: RuntimeConfig) {
     .onRequest(({ set }) => {
       set.headers["permissions-policy"] = PERMISSIONS_POLICY;
     });
-}
+};

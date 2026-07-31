@@ -27,7 +27,11 @@
     },
     {
       "groupName": "Tailwind",
-      "matchPackageNames": ["tailwindcss", "@tailwindcss/vite", "tailwind-merge"]
+      "matchPackageNames": [
+        "tailwindcss",
+        "@tailwindcss/vite",
+        "tailwind-merge"
+      ]
     },
     {
       "groupName": "Storybook",
@@ -36,7 +40,13 @@
     },
     {
       "groupName": "lint tooling",
-      "matchPackageNames": ["@biomejs/biome", "ultracite"]
+      "matchPackageNames": [
+        "oxfmt",
+        "oxlint",
+        "oxlint-plugin-react-doctor",
+        "oxlint-tsgolint",
+        "ultracite"
+      ]
     },
     {
       "groupName": "TypeScript",

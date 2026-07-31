@@ -22,14 +22,6 @@
       "cache": true,
       "dependsOn": ["^build"]
     },
-    "lint": {
-      "cache": true,
-      "dependsOn": ["^lint"]
-    },
-    "lint:fix": {
-      "cache": false,
-      "dependsOn": ["^lint:fix"]
-    },
     "clean": {
       "cache": false,
       "dependsOn": ["^clean"]

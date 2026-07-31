@@ -5,7 +5,7 @@ ARG BUN_VERSION=1.3.14-alpine
 FROM oven/bun:${BUN_VERSION} AS build
 WORKDIR /app
 
-COPY package.json bun.lock bunfig.toml turbo.json tsconfig.json biome.jsonc ./
+COPY package.json bun.lock bunfig.toml turbo.json tsconfig.json ./
 COPY apps ./apps
 COPY packages ./packages
 

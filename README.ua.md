@@ -69,8 +69,7 @@ bun run build
 bun run --cwd apps/frontend verify:build
 ```
 
-TypeScript перевіряє реальні frontend, backend, UI та Storybook проєкти. Backend-тести перевіряють health, greeting, validation і not-found відповіді без відкриття мережевого порту.
-Поточний toolchain використовує Vite 8.1.5 із Rolldown. TypeScript працює side-by-side: `tsc` запускає native compiler TypeScript 7.0.2, а `typescript` залишається TypeScript 6.0.3 для Storybook, tsdown і compiler API. Перевірити TypeScript 6 можна командою `bun run tsc6 -- --version`.
+TypeScript перевіряє реальні frontend, backend, UI та Storybook проєкти. Backend-тести перевіряють health, greeting, validation і not-found відповіді без відкриття мережевого порту. Поточний toolchain використовує Vite 8.1.5 із Rolldown. TypeScript працює side-by-side: `tsc` запускає native compiler TypeScript 7.0.2, а `typescript` залишається TypeScript 6.0.3 для Storybook, tsdown і compiler API. Перевірити TypeScript 6 можна командою `bun run tsc6 -- --version`.
 
 ## Metadata та assets проєкту
 
@@ -83,6 +82,7 @@ Frontend asset pipeline розділено за життєвим циклом:
 - CSP plugin залишається останнім HTML transform.
 
 `VITE_SITE_INDEXABLE` має безпечне стандартне значення `false`. Публічний deployment повинен явно передати `true`; web manifest не встановлює service worker і не вмикає offline caching.
+
 ## Docker
 
 Зберіть і запустіть production frontend та backend:

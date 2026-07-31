@@ -1,13 +1,12 @@
-/** biome-ignore-all lint/complexity/useLiteralKeys: Vite loadEnv returns an index-signature map */
+import path from "node:path";
 
-import { resolve } from "node:path";
 import { ValidateEnv } from "@julr/vite-plugin-validate-env";
 import { projectConfig, resolveSiteMetadata } from "@mono/config/project";
 import baseViteConfig from "@mono/config/vite/base";
 import VitePluginSvgSpritemap from "@spiriit/vite-plugin-svg-spritemap";
 import tailwindcss from "@tailwindcss/vite";
-import react from "@vitejs/plugin-react";
 import { DevTools } from "@vitejs/devtools";
+import react from "@vitejs/plugin-react";
 import type { Plugin, UserConfig } from "vite";
 import { defineConfig, loadEnv, mergeConfig } from "vite";
 import { imagetools } from "vite-imagetools";
@@ -16,17 +15,18 @@ import hashedFaviconsPlugin from "vite-plugin-hashed-favicons";
 import openGraphPlugin from "vite-plugin-open-graph";
 import Sitemap from "vite-plugin-sitemap";
 import { webfontDownload } from "vite-plugin-webfont-dl";
+
 import { brandAssetsPlugin } from "./config/brand-assets";
 import { siteMetadataPlugin } from "./config/site-metadata";
 
 export default defineConfig(({ command, mode }) => {
-  const envDirectory = resolve(process.cwd(), "../..");
+  const envDirectory = path.resolve(process.cwd(), "../..");
   const env = loadEnv(mode, envDirectory, "VITE_");
-  const webPort = Number(env["VITE_WEB_PORT"] || 9000);
-  const apiUrl = env["VITE_API_URL"] || "http://localhost:9001";
+  const webPort = Number(env["VITE_WEB_PORT"] ?? 9000);
+  const apiUrl = env["VITE_API_URL"] ?? "http://localhost:9001";
   const siteIndexable = env["VITE_SITE_INDEXABLE"] === "true";
   const siteMetadata = resolveSiteMetadata(
-    env["VITE_WEB_URL"] || `http://localhost:${webPort}`
+    env["VITE_WEB_URL"] ?? `http://localhost:${webPort}`
   );
   const buildOnlyPlugins: Plugin[] =
     command === "build"
@@ -88,17 +88,17 @@ export default defineConfig(({ command, mode }) => {
 
   const appFrontendConfig: UserConfig = {
     base: "/",
-    envDir: envDirectory,
     build: {
       rolldownOptions: {
         devtools: {},
       },
     },
+    envDir: envDirectory,
     plugins: [
+      DevTools(),
       react(),
       tailwindcss(),
       imagetools(),
-      DevTools(),
       VitePluginSvgSpritemap("src/assets/icons/*.svg", {
         output: {
           filename: "spritemap.svg",
