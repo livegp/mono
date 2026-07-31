@@ -1,16 +1,14 @@
 {
   "name": "@mono/docs",
   "version": "0.0.1",
-  "license": "MIT",
   "private": true,
-  "type": "module",
   "description": "documentation for Mono",
+  "license": "MIT",
+  "type": "module",
   "scripts": {
     "dev": "storybook dev -p 6006",
     "build": "storybook build -o dist --docs",
     "check-types": "tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.node.json",
-    "lint": "bunx ultracite check",
-    "lint:fix": "bunx ultracite fix",
     "clean": "rm -rf .turbo dist"
   },
   "dependencies": {
@@ -20,8 +18,8 @@
   },
   "devDependencies": {
     "@mono/config": "workspace:*",
-    "@storybook/addon-links": "10.5.5",
     "@storybook/addon-docs": "10.5.5",
+    "@storybook/addon-links": "10.5.5",
     "@storybook/react": "10.5.5",
     "@storybook/react-vite": "10.5.5",
     "@tailwindcss/vite": "^4.3.3",

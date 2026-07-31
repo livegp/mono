@@ -47,7 +47,7 @@ jobs:
       - name: Type check
         run: bun run check-types
 
-      - name: Lint and format
+      - name: Lint and format with OXC
         run: bun run lint
 
       - name: Test

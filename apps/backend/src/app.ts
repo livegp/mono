@@ -3,13 +3,14 @@ import { opentelemetry } from "@elysiajs/opentelemetry";
 import { swagger } from "@elysiajs/swagger";
 import { Elysia } from "elysia";
 
-import { getRuntimeConfig, type RuntimeConfig } from "./config/env";
+import { getRuntimeConfig } from "./config/env";
+import type { RuntimeConfig } from "./config/env";
 import { securityHeaders } from "./config/helmet";
 import { swaggerConfig } from "./config/swagger";
 import { greetRouter } from "./routes/greet";
 
-export function createApp(config: RuntimeConfig = getRuntimeConfig()) {
-  return new Elysia()
+export const createApp = (config: RuntimeConfig = getRuntimeConfig()) =>
+  new Elysia()
     .use(opentelemetry())
     .use(cors({ origin: config.corsOrigins }))
     .use(securityHeaders(config))
@@ -41,6 +42,5 @@ export function createApp(config: RuntimeConfig = getRuntimeConfig()) {
       uptime: process.uptime(),
     }))
     .use(greetRouter);
-}
 
 export type App = ReturnType<typeof createApp>;

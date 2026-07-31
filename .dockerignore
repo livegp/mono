@@ -73,9 +73,6 @@ package-lock.json
 # Turbo
 .turbo
 
-# Biome
-.biome
-
 # Lefthook
 .lefthook
 

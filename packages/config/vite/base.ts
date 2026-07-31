@@ -1,4 +1,5 @@
 import crypto from "node:crypto";
+
 import browserslist from "browserslist";
 import { browserslistToTargets } from "lightningcss";
 import type { ConfigEnv, UserConfig } from "vite";
@@ -25,12 +26,12 @@ const baseSettings: UserConfig = {
             {
               name: "react-vendor",
               priority: 20,
-              test: /node_modules[\\/](?:react(?:-dom)?|scheduler)(?:[\\/]|$)/,
+              test: /node_modules[\\/](?:react(?:-dom)?|scheduler)(?:[\\/]|$)/u,
             },
             {
               name: "vendor",
               priority: 10,
-              test: /node_modules[\\/]/,
+              test: /node_modules[\\/]/u,
             },
           ],
         },

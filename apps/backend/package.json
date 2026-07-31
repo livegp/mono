@@ -1,10 +1,10 @@
 {
   "name": "@mono/backend",
   "version": "0.0.1",
-  "license": "MIT",
   "private": true,
-  "type": "module",
   "description": "backend for Mono",
+  "license": "MIT",
+  "type": "module",
   "module": "./src/app.ts",
   "exports": {
     ".": "./src/app.ts"
@@ -15,8 +15,6 @@
     "build": "bun build.ts",
     "check-types": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.scripts.json",
     "test": "bun test",
-    "lint": "bunx ultracite check",
-    "lint:fix": "bunx ultracite fix",
     "clean": "rm -rf .turbo dist"
   },
   "dependencies": {

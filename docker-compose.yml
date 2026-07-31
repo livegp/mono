@@ -23,7 +23,14 @@ services:
     ports:
       - "${API_PORT:-9001}:9001"
     healthcheck:
-      test: ["CMD", "curl", "--fail", "--silent", "http://localhost:9001/api/health"]
+      test:
+        [
+          "CMD",
+          "curl",
+          "--fail",
+          "--silent",
+          "http://localhost:9001/api/health",
+        ]
       interval: 30s
       timeout: 5s
       start_period: 10s
@@ -49,7 +56,14 @@ services:
       backend:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--output-document=-", "http://127.0.0.1:9000/health"]
+      test:
+        [
+          "CMD",
+          "wget",
+          "--quiet",
+          "--output-document=-",
+          "http://127.0.0.1:9000/health",
+        ]
       interval: 30s
       timeout: 5s
       start_period: 10s
@@ -69,7 +83,14 @@ services:
     ports:
       - "${DOCS_PORT:-6006}:6006"
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--output-document=-", "http://127.0.0.1:6006/"]
+      test:
+        [
+          "CMD",
+          "wget",
+          "--quiet",
+          "--output-document=-",
+          "http://127.0.0.1:6006/",
+        ]
       interval: 30s
       timeout: 5s
       start_period: 10s

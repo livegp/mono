@@ -1,5 +1,3 @@
-/** biome-ignore-all lint/complexity/useLiteralKeys: Response JSON is intentionally checked as unknown data */
-
 import { describe, expect, test } from "bun:test";
 
 import { createApp } from "./app";
@@ -11,11 +9,9 @@ const testConfig: RuntimeConfig = {
   nodeEnv: "test",
 };
 
-function createTestApp() {
-  return createApp(testConfig);
-}
+const createTestApp = () => createApp(testConfig);
 
-function expectSecurityHeaders(response: Response) {
+const expectSecurityHeaders = (response: Response) => {
   expect(response.headers.get("content-security-policy")).toContain(
     "default-src 'self'"
   );
@@ -40,14 +36,28 @@ function expectSecurityHeaders(response: Response) {
   );
   expect(response.headers.get("x-powered-by")).toBeNull();
   expect(response.headers.get("x-xss-protection")).toBe("0");
-}
+};
+
+const isJsonRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value !== null && !Array.isArray(value);
+
+const parseJsonRecord = async (
+  response: Response
+): Promise<Record<string, unknown>> => {
+  const body: unknown = await response.json();
+  if (!isJsonRecord(body)) {
+    throw new TypeError("Expected a JSON object response");
+  }
+
+  return body;
+};
 
 describe("backend API", () => {
   test("returns health information", async () => {
     const response = await createTestApp().handle(
       new Request("http://localhost/api/health")
     );
-    const body = (await response.json()) as Record<string, unknown>;
+    const body = await parseJsonRecord(response);
 
     expect(response.status).toBe(200);
     expect(body).toMatchObject({

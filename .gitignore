@@ -13,7 +13,7 @@
 **/node_modules/
 
 # IDE and Config
-**/.vscode/
+**/.vscode/*
 !.vscode/extensions.json
 !.vscode/settings.json
 

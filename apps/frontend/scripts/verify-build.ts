@@ -1,40 +1,44 @@
-/** biome-ignore-all lint/complexity/useLiteralKeys: NodeJS.ProcessEnv is an index-signature map */
-
 import { existsSync } from "node:fs";
 import { readdir, readFile } from "node:fs/promises";
-import { join, relative, resolve, sep } from "node:path";
+import path from "node:path";
+
 import { projectConfig, resolveSiteMetadata } from "@mono/config/project";
+import { loadEnv } from "vite";
 
 interface WebManifest {
   background_color: string;
   description: string;
-  icons: Array<{ src: string }>;
+  icons: { src: string }[];
   lang: string;
   name: string;
   short_name: string;
   theme_color: string;
 }
 
-const WEBFONT_CSS_PATTERN = /webfonts-[^/\\]+\.css$/;
+const WEBFONT_CSS_PATTERN = /webfonts-[^/\\]+\.css$/u;
 
-const appRoot = resolve(import.meta.dir, "..");
-const distDirectory = join(appRoot, "dist");
-const webUrl = process.env["VITE_WEB_URL"] ?? "http://localhost:9000";
-const siteIndexable = process.env["VITE_SITE_INDEXABLE"] === "true";
+const appRoot = path.resolve(import.meta.dir, "..");
+const distDirectory = path.join(appRoot, "dist");
+const workspaceRoot = path.resolve(appRoot, "../..");
+const buildEnvironment = loadEnv("production", workspaceRoot, "VITE_");
+const webUrl = buildEnvironment["VITE_WEB_URL"] ?? "http://localhost:9000";
+const siteIndexable = buildEnvironment["VITE_SITE_INDEXABLE"] === "true";
 const metadata = resolveSiteMetadata(webUrl);
 
 invariant(existsSync(distDirectory), "dist directory does not exist");
 
 const [html, manifestText, sitemap, robots, files] = await Promise.all([
-  readFile(join(distDirectory, "index.html"), "utf8"),
-  readFile(join(distDirectory, "manifest.webmanifest"), "utf8"),
-  readFile(join(distDirectory, "sitemap.xml"), "utf8"),
-  readFile(join(distDirectory, "robots.txt"), "utf8"),
+  readFile(path.join(distDirectory, "index.html"), "utf-8"),
+  readFile(path.join(distDirectory, "manifest.webmanifest"), "utf-8"),
+  readFile(path.join(distDirectory, "sitemap.xml"), "utf-8"),
+  readFile(path.join(distDirectory, "robots.txt"), "utf-8"),
   collectFiles(distDirectory),
 ]);
-const manifest = JSON.parse(manifestText) as WebManifest;
+const parsedManifest: unknown = JSON.parse(manifestText);
+invariant(isWebManifest(parsedManifest), "manifest has an invalid shape");
+const manifest = parsedManifest;
 const relativeFiles = files.map((file) =>
-  relative(distDirectory, file).split(sep).join("/")
+  path.relative(distDirectory, file).split(path.sep).join("/")
 );
 
 assertContains(html, `<html lang="${metadata.htmlLocale}">`, "HTML lang");
@@ -117,19 +121,20 @@ for (const icon of manifest.icons) {
   assertPublicFile(icon.src, `manifest icon ${icon.src}`);
 }
 
-for (const link of html.matchAll(/<link\b[^>]*>/g)) {
+for (const link of html.matchAll(/<link\b[^>]*>/gu)) {
   const [tag] = link;
   if (!(tag.includes('rel="icon"') || tag.includes('rel="apple-touch-icon"'))) {
     continue;
   }
-  const href = /href="([^"]+)"/.exec(tag)?.[1];
-  invariant(Boolean(href), `favicon link has no href: ${tag}`);
-  assertPublicFile(href as string, `favicon ${href}`);
+  const hrefMatch = /href="(?<href>[^"]+)"/u.exec(tag);
+  const href = hrefMatch?.groups?.["href"];
+  invariant(href !== undefined, `favicon link has no href: ${tag}`);
+  assertPublicFile(href, `favicon ${href}`);
 }
 assertPublicFile("/favicon.ico", "favicon.ico");
 assertPublicFile("/og-image.png", "Open Graph image");
 
-const ogImage = await readFile(join(distDirectory, "og-image.png"));
+const ogImage = await readFile(path.join(distDirectory, "og-image.png"));
 invariant(
   ogImage.readUInt32BE(16) === 1200,
   "Open Graph image width must be 1200"
@@ -149,7 +154,7 @@ for (const route of projectConfig.routes) {
 }
 assertContains(
   robots,
-  `Sitemap: ${new URL("/sitemap.xml", metadata.canonicalUrl)}`,
+  `Sitemap: ${new URL("/sitemap.xml", metadata.canonicalUrl).toString()}`,
   "robots sitemap"
 );
 assertContains(
@@ -158,8 +163,8 @@ assertContains(
   "robots indexability"
 );
 
-const spritemapPath = join(distDirectory, "assets", "spritemap.svg");
-const spritemap = await readFile(spritemapPath, "utf8");
+const spritemapPath = path.join(distDirectory, "assets", "spritemap.svg");
+const spritemap = await readFile(spritemapPath, "utf-8");
 for (const iconName of ["react", "ts", "vite"]) {
   assertContains(
     spritemap,
@@ -171,11 +176,11 @@ for (const iconName of ["react", "ts", "vite"]) {
 const fontFiles = relativeFiles.filter((file) => file.endsWith(".woff2"));
 invariant(fontFiles.length > 0, "no local WOFF2 files were generated");
 const webfontCssPath = files.find((file) => WEBFONT_CSS_PATTERN.test(file));
-invariant(Boolean(webfontCssPath), "generated webfont CSS is missing");
-const webfontCss = await readFile(webfontCssPath as string, "utf8");
+invariant(webfontCssPath !== undefined, "generated webfont CSS is missing");
+const webfontCss = await readFile(webfontCssPath, "utf-8");
 assertContains(webfontCss, "url(fonts/", "local webfont URL");
 invariant(
-  !/fonts\.(?:googleapis|gstatic)\.com/.test(`${html}\n${webfontCss}`),
+  !/fonts\.(?:googleapis|gstatic)\.com/u.test(`${html}\n${webfontCss}`),
   "build contains browser requests to Google Fonts"
 );
 
@@ -210,7 +215,7 @@ function assertPublicFile(publicPath: string, label: string): void {
     `${label} must use an absolute public path`
   );
   invariant(
-    existsSync(join(distDirectory, publicPath.slice(1))),
+    existsSync(path.join(distDirectory, publicPath.slice(1))),
     `${label} does not exist`
   );
 }
@@ -218,9 +223,13 @@ function assertPublicFile(publicPath: string, label: string): void {
 async function collectFiles(directory: string): Promise<string[]> {
   const entries = await readdir(directory, { withFileTypes: true });
   const nested = await Promise.all(
-    entries.map((entry) => {
-      const path = join(directory, entry.name);
-      return entry.isDirectory() ? collectFiles(path) : [path];
+    entries.map(async (entry) => {
+      const entryPath = path.join(directory, entry.name);
+      if (entry.isDirectory()) {
+        return await collectFiles(entryPath);
+      }
+
+      return [entryPath];
     })
   );
 
@@ -231,6 +240,35 @@ function countOccurrences(haystack: string, needle: string): number {
   return haystack.split(needle).length - 1;
 }
 
+function hasStringProperty(value: object, property: string): boolean {
+  return typeof Reflect.get(value, property) === "string";
+}
+
+function isManifestIcon(value: unknown): value is { src: string } {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    typeof Reflect.get(value, "src") === "string"
+  );
+}
+
+function isWebManifest(value: unknown): value is WebManifest {
+  if (typeof value !== "object" || value === null || Array.isArray(value)) {
+    return false;
+  }
+
+  const icons: unknown = Reflect.get(value, "icons");
+  return (
+    hasStringProperty(value, "background_color") &&
+    hasStringProperty(value, "description") &&
+    hasStringProperty(value, "lang") &&
+    hasStringProperty(value, "name") &&
+    hasStringProperty(value, "short_name") &&
+    hasStringProperty(value, "theme_color") &&
+    Array.isArray(icons) &&
+    icons.every((icon: unknown) => isManifestIcon(icon))
+  );
+}
 function invariant(condition: boolean, message: string): asserts condition {
   if (!condition) {
     throw new Error(`Build verification failed: ${message}`);

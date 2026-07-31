@@ -15,7 +15,7 @@ export default defineConfig({
       pipe(
         string("VITE_SITE_INDEXABLE must be a string"),
         regex(
-          /^(?:true|false)$/,
+          /^(?:true|false)$/u,
           "VITE_SITE_INDEXABLE must be either true or false"
         )
       ),
@@ -26,7 +26,7 @@ export default defineConfig({
         string("VITE_WEB_PORT must be a string"),
         nonEmpty("VITE_WEB_PORT must not be empty"),
         length(4, "VITE_WEB_PORT must be 4 characters long"),
-        regex(/^\d+$/, "VITE_WEB_PORT must be a number")
+        regex(/^\d+$/u, "VITE_WEB_PORT must be a number")
       ),
       "9000"
     ),

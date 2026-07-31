@@ -69,8 +69,7 @@ bun run build
 bun run --cwd apps/frontend verify:build
 ```
 
-TypeScript checks inspect the actual frontend, backend, UI, and Storybook projects. Backend tests exercise health, greeting, validation, and not-found responses without opening a network port.
-The current toolchain pins Vite 8.1.5 with Rolldown. TypeScript uses a side-by-side setup: `tsc` runs the native TypeScript 7.0.2 compiler, while `typescript` remains TypeScript 6.0.3 for Storybook, tsdown, and compiler API consumers. Run `bun run tsc6 -- --version` to inspect the TypeScript 6 compiler.
+TypeScript checks inspect the actual frontend, backend, UI, and Storybook projects. Backend tests exercise health, greeting, validation, and not-found responses without opening a network port. The current toolchain pins Vite 8.1.5 with Rolldown. TypeScript uses a side-by-side setup: `tsc` runs the native TypeScript 7.0.2 compiler, while `typescript` remains TypeScript 6.0.3 for Storybook, tsdown, and compiler API consumers. Run `bun run tsc6 -- --version` to inspect the TypeScript 6 compiler.
 
 ## Project metadata and assets
 
@@ -83,6 +82,7 @@ The frontend asset pipeline is intentionally split by lifecycle:
 - the CSP plugin remains the final HTML transform.
 
 `VITE_SITE_INDEXABLE` defaults to `false`. A real public deployment must explicitly set it to `true`; the web manifest does not install a service worker or enable offline caching.
+
 ## Docker
 
 Build and start the production frontend and backend:

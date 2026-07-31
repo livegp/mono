@@ -98,16 +98,14 @@ export const projectConfig = {
   routes: ["/"],
 } as const satisfies ProjectConfig;
 
-export function getProjectMetadata(
+export const getProjectMetadata = (
   locale: ProjectLocale = projectConfig.locales.default
-): LocalizedProjectMetadata {
-  return projectConfig.locales.content[locale];
-}
+): LocalizedProjectMetadata => projectConfig.locales.content[locale];
 
-export function resolveSiteMetadata(
+export const resolveSiteMetadata = (
   origin: string,
   locale: ProjectLocale = projectConfig.locales.default
-): SiteMetadata {
+): SiteMetadata => {
   const baseUrl = new URL(origin);
   baseUrl.hash = "";
   baseUrl.search = "";
@@ -124,4 +122,4 @@ export function resolveSiteMetadata(
     ogImageUrl: new URL(projectConfig.branding.ogImagePath, baseUrl).toString(),
     ogLocale: locale.replace("-", "_"),
   };
-}
+};
