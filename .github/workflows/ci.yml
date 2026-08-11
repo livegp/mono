@@ -22,7 +22,7 @@ jobs:
       VITE_WEB_URL: https://mono.example
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Install bun
         uses: oven-sh/setup-bun@v2
